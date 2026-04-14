@@ -3,8 +3,11 @@
  * Defines the intermediate representation (IR) for cross-platform plugin compatibility
  */
 
-/** Supported agent platforms */
+/** Supported agent platforms - identifies the source/origin platform of a plugin */
 export type Platform = 'codex' | 'claude-code' | 'cursor';
+
+/** Hook configuration format - identifies the format/style of hook component definitions */
+export type HookFormat = 'claude' | 'codex' | 'cursor';
 
 /** Compatibility level for cross-platform components */
 export type CompatLevel = 'full' | 'partial' | 'degraded' | 'unsupported';
@@ -87,7 +90,7 @@ export interface SkillRef {
 export interface HookRef {
   configPath: string;
   events: string[];
-  format: 'claude' | 'codex' | 'cursor';
+  format: HookFormat;
 }
 
 /** Agent component reference */

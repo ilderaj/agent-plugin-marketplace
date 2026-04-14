@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'bun:test';
 import type {
   Platform,
+  HookFormat,
   CompatLevel,
   SourceAdapter,
   DiscoveredPlugin,
@@ -32,6 +33,21 @@ describe('Type Definitions - MVP 4.3 Spec', () => {
     test('CompatLevel type accepts valid values', () => {
       const levels: CompatLevel[] = ['full', 'partial', 'degraded', 'unsupported'];
       expect(levels).toHaveLength(4);
+    });
+
+    test('HookFormat is distinct from Platform - represents hook config format not source platform', () => {
+      const hookFormat: HookFormat = 'claude';
+      const platform: Platform = 'claude-code';
+      // HookFormat represents the hook configuration format (e.g., 'claude' config style)
+      // Platform represents the source/origin platform (e.g., 'claude-code' agent)
+      // They are semantically different even if they share similar string values
+      expect(hookFormat).toBe('claude');
+      expect(platform).toBe('claude-code');
+    });
+
+    test('HookFormat type accepts valid component format values', () => {
+      const formats: HookFormat[] = ['claude', 'codex', 'cursor'];
+      expect(formats).toHaveLength(3);
     });
   });
 
