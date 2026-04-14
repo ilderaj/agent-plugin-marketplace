@@ -2,7 +2,7 @@
   "hooks": [
     {
       "name": "github-pr-hook",
-      "event": "onPullRequest",
+      "events": ["onPullRequest"],
       "tool": "gh",
       "matcher": "*.md"
     }

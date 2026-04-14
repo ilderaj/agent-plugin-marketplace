@@ -62,6 +62,25 @@ describe("Test Fixtures Structure", () => {
       JSON.parse(content); // Verify it's valid JSON
     });
 
+    test("hooks.json uses events array matching HookRef IR schema", () => {
+      const hooksPath = join(fixturePath, "hooks.json");
+      const json = JSON.parse(readFileSync(hooksPath, "utf-8"));
+
+      expect(json.hooks).toBeDefined();
+      expect(Array.isArray(json.hooks)).toBe(true);
+
+      for (const hook of json.hooks) {
+        expect(hook.events).toBeDefined();
+        expect(Array.isArray(hook.events)).toBe(true);
+        expect(hook.events.length).toBeGreaterThan(0);
+      }
+    });
+
+    test("README.md exists", () => {
+      const readmePath = join(fixturePath, "README.md");
+      expect(existsSync(readmePath)).toBe(true);
+    });
+
     test(".app.json exists", () => {
       const appJsonPath = join(fixturePath, ".app.json");
       expect(existsSync(appJsonPath)).toBe(true);
@@ -104,11 +123,10 @@ describe("Test Fixtures Structure", () => {
       expect(existsSync(skillsDir)).toBe(true);
     });
 
-    test("Claude plugin.json includes platform metadata", () => {
+    test("Claude plugin.json includes license field", () => {
       const pluginJsonPath = join(fixturePath, ".claude-plugin", "plugin.json");
       const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
 
-      // Claude should have basic metadata but follow implicit convention
       expect(json.license).toBeDefined();
     });
 
@@ -123,6 +141,25 @@ describe("Test Fixtures Structure", () => {
 
       const content = readFileSync(hooksPath, "utf-8");
       JSON.parse(content); // Verify it's valid JSON
+    });
+
+    test("hooks/hooks.json uses events array matching HookRef IR schema", () => {
+      const hooksPath = join(fixturePath, "hooks", "hooks.json");
+      const json = JSON.parse(readFileSync(hooksPath, "utf-8"));
+
+      expect(json.hooks).toBeDefined();
+      expect(Array.isArray(json.hooks)).toBe(true);
+
+      for (const hook of json.hooks) {
+        expect(hook.events).toBeDefined();
+        expect(Array.isArray(hook.events)).toBe(true);
+        expect(hook.events.length).toBeGreaterThan(0);
+      }
+    });
+
+    test("README.md exists", () => {
+      const readmePath = join(fixturePath, "README.md");
+      expect(existsSync(readmePath)).toBe(true);
     });
   });
 
@@ -165,35 +202,34 @@ describe("Test Fixtures Structure", () => {
       const pluginJsonPath = join(fixturePath, ".cursor-plugin", "plugin.json");
       const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
 
+      // Cursor is manifest-driven - these fields are required, not optional
+      expect(json.skills).toBeDefined();
+      expect(json.agents).toBeDefined();
+      expect(json.hooks).toBeDefined();
+
       // Verify skills paths exist
-      if (json.skills) {
-        const skillsArray = Array.isArray(json.skills) ? json.skills : [json.skills];
-        for (const skillPath of skillsArray) {
-          const fullPath = join(fixturePath, skillPath);
-          expect(existsSync(fullPath)).toBe(true);
-        }
+      const skillsArray = Array.isArray(json.skills) ? json.skills : [json.skills];
+      for (const skillPath of skillsArray) {
+        const fullPath = join(fixturePath, skillPath);
+        expect(existsSync(fullPath)).toBe(true);
       }
 
       // Verify agents paths exist
-      if (json.agents) {
-        const agentsArray = Array.isArray(json.agents) ? json.agents : [json.agents];
-        for (const agentPath of agentsArray) {
-          const fullPath = join(fixturePath, agentPath);
-          expect(existsSync(fullPath)).toBe(true);
-        }
+      const agentsArray = Array.isArray(json.agents) ? json.agents : [json.agents];
+      for (const agentPath of agentsArray) {
+        const fullPath = join(fixturePath, agentPath);
+        expect(existsSync(fullPath)).toBe(true);
       }
 
       // Verify hooks path exists
-      if (json.hooks) {
-        const fullPath = join(fixturePath, json.hooks);
-        expect(existsSync(fullPath)).toBe(true);
-      }
+      const fullPath = join(fixturePath, json.hooks);
+      expect(existsSync(fullPath)).toBe(true);
 
       // Verify mcp config exists
-      if (json.mcp) {
-        const fullPath = join(fixturePath, json.mcp);
-        expect(existsSync(fullPath)).toBe(true);
-      }
+      const mcpPath = json.mcp || json.mcpServers;
+      expect(mcpPath).toBeDefined();
+      const mcpFullPath = join(fixturePath, mcpPath);
+      expect(existsSync(mcpFullPath)).toBe(true);
     });
 
     test("skills/learning/SKILL.md exists", () => {
@@ -214,12 +250,31 @@ describe("Test Fixtures Structure", () => {
       JSON.parse(content); // Verify it's valid JSON
     });
 
+    test("hooks/hooks.json uses events array matching HookRef IR schema", () => {
+      const hooksPath = join(fixturePath, "hooks", "hooks.json");
+      const json = JSON.parse(readFileSync(hooksPath, "utf-8"));
+
+      expect(json.hooks).toBeDefined();
+      expect(Array.isArray(json.hooks)).toBe(true);
+
+      for (const hook of json.hooks) {
+        expect(hook.events).toBeDefined();
+        expect(Array.isArray(hook.events)).toBe(true);
+        expect(hook.events.length).toBeGreaterThan(0);
+      }
+    });
+
     test("mcp.json exists at root level", () => {
       const mcpPath = join(fixturePath, "mcp.json");
       expect(existsSync(mcpPath)).toBe(true);
 
       const content = readFileSync(mcpPath, "utf-8");
       JSON.parse(content); // Verify it's valid JSON
+    });
+
+    test("README.md exists", () => {
+      const readmePath = join(fixturePath, "README.md");
+      expect(existsSync(readmePath)).toBe(true);
     });
   });
 });

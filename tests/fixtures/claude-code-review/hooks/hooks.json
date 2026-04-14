@@ -2,7 +2,7 @@
   "hooks": [
     {
       "name": "pre-commit-review",
-      "event": "onCommit",
+      "events": ["onCommit"],
       "tool": "code-analyzer"
     }
   ]

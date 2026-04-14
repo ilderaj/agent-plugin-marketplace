@@ -2,7 +2,7 @@
   "hooks": [
     {
       "name": "learning-hook",
-      "event": "onCodeChange",
+      "events": ["onCodeChange"],
       "tool": "learning-analyzer"
     }
   ]
