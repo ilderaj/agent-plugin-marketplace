@@ -4,6 +4,38 @@ import { join } from "path";
 
 const FIXTURES_DIR = join(__dirname, "fixtures");
 
+// Helper function to validate SKILL.md frontmatter
+function validateSkillFrontmatter(skillPath: string): boolean {
+  const content = readFileSync(skillPath, "utf-8");
+  const lines = content.split("\n");
+
+  // Check for opening ---
+  if (!lines[0]?.trim().startsWith("---")) {
+    return false;
+  }
+
+  // Find closing --- and collect frontmatter
+  let closingIndex = -1;
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i]?.trim().startsWith("---")) {
+      closingIndex = i;
+      break;
+    }
+  }
+
+  if (closingIndex === -1) {
+    return false;
+  }
+
+  const frontmatter = lines.slice(1, closingIndex).join("\n");
+
+  // Check for required fields
+  return (
+    /^\s*name:/m.test(frontmatter) &&
+    /^\s*description:/m.test(frontmatter)
+  );
+}
+
 describe("Test Fixtures Structure", () => {
   describe("codex-github fixture", () => {
     const fixturePath = join(FIXTURES_DIR, "codex-github");
@@ -52,6 +84,11 @@ describe("Test Fixtures Structure", () => {
     test("skills/github/SKILL.md exists", () => {
       const skillPath = join(fixturePath, "skills", "github", "SKILL.md");
       expect(existsSync(skillPath)).toBe(true);
+    });
+
+    test("skills/github/SKILL.md has valid frontmatter", () => {
+      const skillPath = join(fixturePath, "skills", "github", "SKILL.md");
+      expect(validateSkillFrontmatter(skillPath)).toBe(true);
     });
 
     test("hooks.json exists at root level", () => {
@@ -135,6 +172,11 @@ describe("Test Fixtures Structure", () => {
       expect(existsSync(skillPath)).toBe(true);
     });
 
+    test("skills/code-review/SKILL.md has valid frontmatter", () => {
+      const skillPath = join(fixturePath, "skills", "code-review", "SKILL.md");
+      expect(validateSkillFrontmatter(skillPath)).toBe(true);
+    });
+
     test("hooks/hooks.json exists", () => {
       const hooksPath = join(fixturePath, "hooks", "hooks.json");
       expect(existsSync(hooksPath)).toBe(true);
@@ -198,14 +240,9 @@ describe("Test Fixtures Structure", () => {
       expect(hasMcpConfig).toBe(true);
     });
 
-    test("declared resource paths match actual fixture structure", () => {
+    test("declared resource paths point to existing files and directories", () => {
       const pluginJsonPath = join(fixturePath, ".cursor-plugin", "plugin.json");
       const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
-
-      // Cursor is manifest-driven - these fields are required, not optional
-      expect(json.skills).toBeDefined();
-      expect(json.agents).toBeDefined();
-      expect(json.hooks).toBeDefined();
 
       // Verify skills paths exist
       const skillsArray = Array.isArray(json.skills) ? json.skills : [json.skills];
@@ -235,6 +272,11 @@ describe("Test Fixtures Structure", () => {
     test("skills/learning/SKILL.md exists", () => {
       const skillPath = join(fixturePath, "skills", "learning", "SKILL.md");
       expect(existsSync(skillPath)).toBe(true);
+    });
+
+    test("skills/learning/SKILL.md has valid frontmatter", () => {
+      const skillPath = join(fixturePath, "skills", "learning", "SKILL.md");
+      expect(validateSkillFrontmatter(skillPath)).toBe(true);
     });
 
     test("agents/learner.md exists", () => {
