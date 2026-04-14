@@ -10,6 +10,25 @@ import type {
   RuleRef,
 } from '../adapters/types';
 
+export function normalizeGeneratedPluginName(ir: PluginIR) {
+  if (ir.source.platform === 'claude-code') {
+    return `claude--${ir.manifest.name}`;
+  }
+
+  return `${ir.source.platform}--${ir.manifest.name}`;
+}
+
+export function platformLabel(platform: PluginIR['source']['platform']) {
+  switch (platform) {
+    case 'claude-code':
+      return 'Claude Code';
+    case 'codex':
+      return 'Codex';
+    case 'cursor':
+      return 'Cursor';
+  }
+}
+
 interface GeneratedPluginManifest {
   name: string;
   displayName: string;
@@ -62,11 +81,11 @@ export class VsCodePluginGenerator {
     ir: PluginIR,
     compatibility: GeneratedPluginManifest['_compatibility']
   ): GeneratedPluginManifest {
-    const normalizedName = this.normalizePluginName(ir);
+    const normalizedName = normalizeGeneratedPluginName(ir);
 
     return {
       name: normalizedName,
-      displayName: `${this.humanizeName(ir.manifest.displayName ?? ir.manifest.name)} (from ${this.platformLabel(ir.source.platform)})`,
+      displayName: `${this.humanizeName(ir.manifest.displayName ?? ir.manifest.name)} (from ${platformLabel(ir.source.platform)})`,
       version: ir.manifest.version,
       description: ir.manifest.description,
       author: ir.manifest.author,
@@ -327,25 +346,6 @@ export class VsCodePluginGenerator {
         : '- No platform-specific app connectors were dropped.',
       '',
     ].join('\n');
-  }
-
-  private normalizePluginName(ir: PluginIR) {
-    if (ir.source.platform === 'claude-code') {
-      return `claude--${ir.manifest.name}`;
-    }
-
-    return `${ir.source.platform}--${ir.manifest.name}`;
-  }
-
-  private platformLabel(platform: PluginIR['source']['platform']) {
-    switch (platform) {
-      case 'claude-code':
-        return 'Claude Code';
-      case 'codex':
-        return 'Codex';
-      case 'cursor':
-        return 'Cursor';
-    }
   }
 
   private humanizeName(name: string) {
