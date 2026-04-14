@@ -131,6 +131,49 @@ describe("Test Fixtures Structure", () => {
       const content = readFileSync(appJsonPath, "utf-8");
       JSON.parse(content); // Verify it's valid JSON
     });
+
+    test("agents/reviewer.yaml exists", () => {
+      const agentPath = join(fixturePath, "agents", "reviewer.yaml");
+      expect(existsSync(agentPath)).toBe(true);
+      
+      const content = readFileSync(agentPath, "utf-8");
+      expect(content).toContain("name:");
+      expect(content).toContain("description:");
+    });
+
+    test(".mcp.json exists and has valid structure", () => {
+      const mcpPath = join(fixturePath, ".mcp.json");
+      expect(existsSync(mcpPath)).toBe(true);
+      
+      const content = readFileSync(mcpPath, "utf-8");
+      const json = JSON.parse(content);
+      
+      expect(json.servers).toBeDefined();
+      expect(typeof json.servers).toBe("object");
+      
+      // Verify at least one server exists
+      const serverNames = Object.keys(json.servers);
+      expect(serverNames.length).toBeGreaterThan(0);
+      
+      // Verify server structure
+      for (const serverName of serverNames) {
+        const server = json.servers[serverName];
+        expect(server.command).toBeDefined();
+        expect(server.transport).toBeDefined();
+      }
+    });
+
+    test("hooks-multi.json exists for testing hook aggregation", () => {
+      const hooksMultiPath = join(fixturePath, "hooks-multi.json");
+      expect(existsSync(hooksMultiPath)).toBe(true);
+      
+      const content = readFileSync(hooksMultiPath, "utf-8");
+      const json = JSON.parse(content);
+      
+      expect(json.hooks).toBeDefined();
+      expect(Array.isArray(json.hooks)).toBe(true);
+      expect(json.hooks.length).toBeGreaterThanOrEqual(2); // Multi-hook test fixture
+    });
   });
 
   describe("claude-code-review fixture", () => {
