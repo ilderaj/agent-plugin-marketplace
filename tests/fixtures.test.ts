@@ -81,6 +81,19 @@ describe("Test Fixtures Structure", () => {
       expect(json.hooks).toBeDefined();
     });
 
+    test("plugin.json hooks path resolves to existing file", () => {
+      const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
+      const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
+
+      // Verify hooks path is declared
+      expect(json.hooks).toBeDefined();
+      expect(typeof json.hooks).toBe("string");
+
+      // Resolve and verify the hooks file exists
+      const hooksFilePath = join(fixturePath, json.hooks);
+      expect(existsSync(hooksFilePath)).toBe(true);
+    });
+
     test("skills/github/SKILL.md exists", () => {
       const skillPath = join(fixturePath, "skills", "github", "SKILL.md");
       expect(existsSync(skillPath)).toBe(true);
@@ -105,6 +118,7 @@ describe("Test Fixtures Structure", () => {
 
       expect(json.hooks).toBeDefined();
       expect(Array.isArray(json.hooks)).toBe(true);
+      expect(json.hooks.length).toBeGreaterThan(0);
 
       for (const hook of json.hooks) {
         expect(hook.events).toBeDefined();
@@ -191,6 +205,7 @@ describe("Test Fixtures Structure", () => {
 
       expect(json.hooks).toBeDefined();
       expect(Array.isArray(json.hooks)).toBe(true);
+      expect(json.hooks.length).toBeGreaterThan(0);
 
       for (const hook of json.hooks) {
         expect(hook.events).toBeDefined();
@@ -298,6 +313,7 @@ describe("Test Fixtures Structure", () => {
 
       expect(json.hooks).toBeDefined();
       expect(Array.isArray(json.hooks)).toBe(true);
+      expect(json.hooks.length).toBeGreaterThan(0);
 
       for (const hook of json.hooks) {
         expect(hook.events).toBeDefined();
