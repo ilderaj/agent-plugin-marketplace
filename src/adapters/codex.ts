@@ -16,8 +16,6 @@ import type {
   AgentRef,
   AppRef,
   McpRef,
-  CommandRef,
-  RuleRef,
 } from './types';
 
 export class CodexAdapter implements SourceAdapter {

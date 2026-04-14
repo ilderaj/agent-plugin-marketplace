@@ -209,10 +209,14 @@ describe('CodexAdapter', () => {
   });
 
   test('parse throws on invalid JSON in plugin.json', async () => {
-    const badJsonFixture = join(import.meta.dir, '../fixtures/bad-json-fixture');
+    const { mkdir, writeFile, rm } = await import('fs/promises');
+    const { tmpdir } = await import('os');
+    const { randomBytes } = await import('crypto');
+    
+    const tempDir = join(tmpdir(), `test-bad-json-${randomBytes(8).toString('hex')}`);
+    const badJsonFixture = join(tempDir, 'bad-json-fixture');
     
     // Create a temporary fixture with invalid JSON
-    const { mkdir, writeFile, rm } = await import('fs/promises');
     await mkdir(join(badJsonFixture, '.codex-plugin'), { recursive: true });
     await writeFile(join(badJsonFixture, '.codex-plugin', 'plugin.json'), '{invalid json}');
     
@@ -221,14 +225,18 @@ describe('CodexAdapter', () => {
       await expect(adapter.parse(badJsonFixture)).rejects.toThrow();
     } finally {
       // Clean up
-      await rm(badJsonFixture, { recursive: true, force: true });
+      await rm(tempDir, { recursive: true, force: true });
     }
   });
 
   test('parseHooks throws on invalid JSON in hooks file', async () => {
-    const badHooksFixture = join(import.meta.dir, '../fixtures/bad-hooks-fixture');
-    
     const { mkdir, writeFile, rm } = await import('fs/promises');
+    const { tmpdir } = await import('os');
+    const { randomBytes } = await import('crypto');
+    
+    const tempDir = join(tmpdir(), `test-bad-hooks-${randomBytes(8).toString('hex')}`);
+    const badHooksFixture = join(tempDir, 'bad-hooks-fixture');
+    
     await mkdir(join(badHooksFixture, '.codex-plugin'), { recursive: true });
     await mkdir(join(badHooksFixture, 'skills/test'), { recursive: true });
     
@@ -256,7 +264,7 @@ describe('CodexAdapter', () => {
       // Should throw on invalid hooks JSON, not silently ignore
       await expect(adapter.parse(badHooksFixture)).rejects.toThrow();
     } finally {
-      await rm(badHooksFixture, { recursive: true, force: true });
+      await rm(tempDir, { recursive: true, force: true });
     }
   });
 });

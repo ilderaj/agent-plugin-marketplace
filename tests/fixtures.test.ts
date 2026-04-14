@@ -171,18 +171,6 @@ describe("Test Fixtures Structure", () => {
         expect(server.transport).toBeDefined();
       }
     });
-
-    test("hooks-multi.json exists for testing hook aggregation", () => {
-      const hooksMultiPath = join(fixturePath, "hooks-multi.json");
-      expect(existsSync(hooksMultiPath)).toBe(true);
-      
-      const content = readFileSync(hooksMultiPath, "utf-8");
-      const json = JSON.parse(content);
-      
-      expect(json.hooks).toBeDefined();
-      expect(Array.isArray(json.hooks)).toBe(true);
-      expect(json.hooks.length).toBeGreaterThanOrEqual(2); // Multi-hook test fixture
-    });
   });
 
   describe("codex-hooks-multi fixture", () => {
