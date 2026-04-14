@@ -9,6 +9,8 @@ import type {
   Components,
   Compatibility,
   CompatLevel,
+  ComponentCompat,
+  DroppedComponent,
   SkillRef,
   HookRef,
   AgentRef,
@@ -45,13 +47,19 @@ export class CodexAdapter implements SourceAdapter {
                 markerPath,
               });
             }
-          } catch {
-            // Skip if no valid marker directory or plugin.json
+          } catch (err: any) {
+            // Skip only if marker/plugin.json doesn't exist (expected)
+            if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+              throw err;
+            }
           }
         }
       }
-    } catch (err) {
-      // Return empty array if directory doesn't exist
+    } catch (err: any) {
+      // Return empty array only if repo directory doesn't exist (expected)
+      if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+        throw err;
+      }
     }
     
     return plugins;
@@ -131,8 +139,11 @@ export class CodexAdapter implements SourceAdapter {
         try {
           const scriptsStat = await stat(scriptsPath);
           hasScripts = scriptsStat.isDirectory();
-        } catch {
-          // No scripts directory
+        } catch (err: any) {
+          // Only ignore if scripts directory doesn't exist (optional)
+          if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+            throw err;
+          }
         }
         
         const name = skillPath.split('/').pop() || skillPath;
@@ -177,8 +188,11 @@ export class CodexAdapter implements SourceAdapter {
             format: 'codex',
           });
         }
-      } catch {
-        // No hooks file or invalid format
+      } catch (err: any) {
+        // Only ignore if hooks file doesn't exist (optional component)
+        if (err.code !== 'ENOENT') {
+          throw err;
+        }
       }
     }
     
@@ -195,17 +209,21 @@ export class CodexAdapter implements SourceAdapter {
         const entries = await readdir(agentsPath, { withFileTypes: true });
         
         for (const entry of entries) {
-          if (entry.isFile() && entry.name.endsWith('.yaml')) {
+          if (entry.isFile() && (entry.name.endsWith('.yaml') || entry.name.endsWith('.yml'))) {
+            const name = entry.name.replace(/\.ya?ml$/, '');
             agents.push({
-              name: entry.name.replace('.yaml', ''),
+              name,
               path: `agents/${entry.name}`,
               format: 'codex-yaml',
             });
           }
         }
       }
-    } catch {
-      // No agents directory
+    } catch (err: any) {
+      // Only ignore if agents directory doesn't exist (optional component)
+      if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+        throw err;
+      }
     }
     
     return agents;
@@ -223,8 +241,11 @@ export class CodexAdapter implements SourceAdapter {
         configPath: '.app.json',
         description: appJson.description || `App config: ${appJson.appId}`,
       });
-    } catch {
-      // No .app.json file
+    } catch (err: any) {
+      // Only ignore if .app.json doesn't exist (optional component)
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
     }
     
     return apps;
@@ -255,17 +276,20 @@ export class CodexAdapter implements SourceAdapter {
           servers,
         });
       }
-    } catch {
-      // No .mcp.json file
+    } catch (err: any) {
+      // Only ignore if .mcp.json doesn't exist (optional component)
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
     }
     
     return mcpServers;
   }
 
   private computeCompatibility(components: Components): Compatibility {
-    const details = [];
-    const warnings = [];
-    const droppedComponents = [];
+    const details: ComponentCompat[] = [];
+    const warnings: string[] = [];
+    const droppedComponents: DroppedComponent[] = [];
     
     // Skills are fully compatible
     for (const skill of components.skills) {
@@ -318,7 +342,10 @@ export class CodexAdapter implements SourceAdapter {
       }
     }
     
-    const overall: CompatLevel = droppedComponents.length > 0 ? 'partial' : 'full';
+    // Compute overall compatibility
+    const hasPartialOrDegraded = details.some(d => d.level === 'partial' || d.level === 'degraded');
+    const hasDropped = droppedComponents.length > 0;
+    const overall: CompatLevel = (hasPartialOrDegraded || hasDropped) ? 'partial' : 'full';
     
     return {
       overall,

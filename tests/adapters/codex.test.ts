@@ -60,39 +60,24 @@ describe('CodexAdapter', () => {
   });
 
   test('parse aggregates multiple hooks from same config file into single HookRef', async () => {
-    // Create a plugin config pointing to hooks-multi.json
-    const fixtureDir = FIXTURE;
-    const pluginJsonPath = join(fixtureDir, '.codex-plugin', 'plugin.json');
-    const { readFile, writeFile } = await import('fs/promises');
-    const originalContent = await readFile(pluginJsonPath, 'utf-8');
-    const originalJson = JSON.parse(originalContent);
+    const multiHooksFixture = join(import.meta.dir, '../fixtures/codex-hooks-multi');
+    const ir = await adapter.parse(multiHooksFixture);
     
-    // Temporarily modify plugin.json to point to hooks-multi.json
-    const modifiedJson = { ...originalJson, hooks: 'hooks-multi.json' };
-    await writeFile(pluginJsonPath, JSON.stringify(modifiedJson, null, 2));
+    // Should produce exactly ONE HookRef for the config file
+    expect(ir.components.hooks.length).toBe(1);
     
-    try {
-      const ir = await adapter.parse(fixtureDir);
-      
-      // Should produce exactly ONE HookRef for the config file
-      expect(ir.components.hooks.length).toBe(1);
-      
-      const hookRef = ir.components.hooks[0];
-      expect(hookRef.configPath).toBe('hooks-multi.json');
-      expect(hookRef.format).toBe('codex');
-      
-      // Events should be aggregated (deduplicated)
-      expect(hookRef.events).toContain('onPullRequest');
-      expect(hookRef.events).toContain('onCommit');
-      expect(hookRef.events).toContain('onPush');
-      
-      // Should have exactly 3 unique events
-      const uniqueEvents = new Set(hookRef.events);
-      expect(uniqueEvents.size).toBe(3);
-    } finally {
-      // Restore original plugin.json
-      await writeFile(pluginJsonPath, originalContent);
-    }
+    const hookRef = ir.components.hooks[0];
+    expect(hookRef.configPath).toBe('hooks-multi.json');
+    expect(hookRef.format).toBe('codex');
+    
+    // Events should be aggregated (deduplicated)
+    expect(hookRef.events).toContain('onPullRequest');
+    expect(hookRef.events).toContain('onCommit');
+    expect(hookRef.events).toContain('onPush');
+    
+    // Should have exactly 3 unique events
+    const uniqueEvents = new Set(hookRef.events);
+    expect(uniqueEvents.size).toBe(3);
   });
 
   test('parse extracts app configuration', async () => {
@@ -111,6 +96,52 @@ describe('CodexAdapter', () => {
     expect(Array.isArray(ir.compatibility.droppedComponents)).toBe(true);
   });
 
+  test('compatibility overall is partial when components have partial/degraded compatibility', async () => {
+    const ir = await adapter.parse(FIXTURE);
+    
+    // Current fixture has hooks (partial) and agents (partial), so overall should be partial
+    // even though apps might be dropped
+    expect(ir.compatibility.overall).toBe('partial');
+    
+    // Verify we have some partial/degraded components
+    const partialOrDegraded = ir.compatibility.details.filter(
+      d => d.level === 'partial' || d.level === 'degraded'
+    );
+    expect(partialOrDegraded.length).toBeGreaterThan(0);
+  });
+
+  test('compatibility overall logic considers both details and droppedComponents', async () => {
+    const ir = await adapter.parse(FIXTURE);
+    
+    const hasPartialOrDegraded = ir.compatibility.details.some(
+      d => d.level === 'partial' || d.level === 'degraded'
+    );
+    const hasDropped = ir.compatibility.droppedComponents.length > 0;
+    
+    // Overall should be partial if either condition is true
+    if (hasPartialOrDegraded || hasDropped) {
+      expect(ir.compatibility.overall).toBe('partial');
+    } else {
+      expect(ir.compatibility.overall).toBe('full');
+    }
+  });
+
+  test('compatibility overall is partial when only details are partial (no dropped components)', async () => {
+    const noAppFixture = join(import.meta.dir, '../fixtures/codex-no-app');
+    const ir = await adapter.parse(noAppFixture);
+    
+    // This fixture has hooks (partial) and agents (partial) but no app to drop
+    expect(ir.compatibility.droppedComponents.length).toBe(0);
+    
+    const hasPartialOrDegraded = ir.compatibility.details.some(
+      d => d.level === 'partial' || d.level === 'degraded'
+    );
+    expect(hasPartialOrDegraded).toBe(true);
+    
+    // Overall should still be partial because of partial details
+    expect(ir.compatibility.overall).toBe('partial');
+  });
+
   test('compatibility marks apps as dropped for other platforms', async () => {
     const ir = await adapter.parse(FIXTURE);
     const droppedApps = ir.compatibility.droppedComponents.filter(c => c.type === 'app');
@@ -120,11 +151,11 @@ describe('CodexAdapter', () => {
 
   test('parse extracts agents with codex-yaml format', async () => {
     const ir = await adapter.parse(FIXTURE);
-    expect(ir.components.agents.length).toBe(1);
-    const agent = ir.components.agents[0];
-    expect(agent.name).toBe('reviewer');
-    expect(agent.path).toBe('agents/reviewer.yaml');
-    expect(agent.format).toBe('codex-yaml');
+    expect(ir.components.agents.length).toBeGreaterThanOrEqual(1);
+    const agent = ir.components.agents.find(a => a.name === 'reviewer');
+    expect(agent).toBeDefined();
+    expect(agent?.path).toBe('agents/reviewer.yaml');
+    expect(agent?.format).toBe('codex-yaml');
   });
 
   test('parse extracts MCP servers with correct transport', async () => {
@@ -149,5 +180,83 @@ describe('CodexAdapter', () => {
     const skill = ir.components.skills[0];
     // Current fixture has no scripts/ directory, so hasScripts should be false
     expect(skill.hasScripts).toBe(false);
+  });
+
+  test('parseAgents supports both .yaml and .yml extensions', async () => {
+    const ir = await adapter.parse(FIXTURE);
+    
+    // Should find both reviewer.yaml and tester.yml
+    expect(ir.components.agents.length).toBe(2);
+    
+    const yamlAgent = ir.components.agents.find(a => a.name === 'reviewer');
+    expect(yamlAgent).toBeDefined();
+    expect(yamlAgent?.path).toBe('agents/reviewer.yaml');
+    expect(yamlAgent?.format).toBe('codex-yaml');
+    
+    const ymlAgent = ir.components.agents.find(a => a.name === 'tester');
+    expect(ymlAgent).toBeDefined();
+    expect(ymlAgent?.path).toBe('agents/tester.yml');
+    expect(ymlAgent?.format).toBe('codex-yaml');
+  });
+
+  test('discover returns empty array for non-existent directory (expected ENOENT)', async () => {
+    const nonExistentPath = '/path/that/does/not/exist/at/all';
+    const plugins = await adapter.discover(nonExistentPath);
+    
+    // Should gracefully return empty array for expected errors
+    expect(Array.isArray(plugins)).toBe(true);
+    expect(plugins.length).toBe(0);
+  });
+
+  test('parse throws on invalid JSON in plugin.json', async () => {
+    const badJsonFixture = join(import.meta.dir, '../fixtures/bad-json-fixture');
+    
+    // Create a temporary fixture with invalid JSON
+    const { mkdir, writeFile, rm } = await import('fs/promises');
+    await mkdir(join(badJsonFixture, '.codex-plugin'), { recursive: true });
+    await writeFile(join(badJsonFixture, '.codex-plugin', 'plugin.json'), '{invalid json}');
+    
+    try {
+      // Should throw, not silently return empty/default
+      await expect(adapter.parse(badJsonFixture)).rejects.toThrow();
+    } finally {
+      // Clean up
+      await rm(badJsonFixture, { recursive: true, force: true });
+    }
+  });
+
+  test('parseHooks throws on invalid JSON in hooks file', async () => {
+    const badHooksFixture = join(import.meta.dir, '../fixtures/bad-hooks-fixture');
+    
+    const { mkdir, writeFile, rm } = await import('fs/promises');
+    await mkdir(join(badHooksFixture, '.codex-plugin'), { recursive: true });
+    await mkdir(join(badHooksFixture, 'skills/test'), { recursive: true });
+    
+    const validPluginJson = {
+      name: "test",
+      version: "1.0.0",
+      description: "test",
+      author: { name: "test" },
+      license: "MIT",
+      skills: ["skills/test"],
+      hooks: "hooks.json"
+    };
+    
+    await writeFile(
+      join(badHooksFixture, '.codex-plugin', 'plugin.json'),
+      JSON.stringify(validPluginJson)
+    );
+    await writeFile(join(badHooksFixture, 'hooks.json'), '{invalid json}');
+    await writeFile(
+      join(badHooksFixture, 'skills/test/SKILL.md'),
+      '---\nname: test\ndescription: test\n---\n# Test'
+    );
+    
+    try {
+      // Should throw on invalid hooks JSON, not silently ignore
+      await expect(adapter.parse(badHooksFixture)).rejects.toThrow();
+    } finally {
+      await rm(badHooksFixture, { recursive: true, force: true });
+    }
   });
 });

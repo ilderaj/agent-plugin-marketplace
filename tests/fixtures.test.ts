@@ -141,6 +141,15 @@ describe("Test Fixtures Structure", () => {
       expect(content).toContain("description:");
     });
 
+    test("agents/tester.yml exists to verify .yml extension support", () => {
+      const agentPath = join(fixturePath, "agents", "tester.yml");
+      expect(existsSync(agentPath)).toBe(true);
+      
+      const content = readFileSync(agentPath, "utf-8");
+      expect(content).toContain("name:");
+      expect(content).toContain("description:");
+    });
+
     test(".mcp.json exists and has valid structure", () => {
       const mcpPath = join(fixturePath, ".mcp.json");
       expect(existsSync(mcpPath)).toBe(true);
@@ -173,6 +182,74 @@ describe("Test Fixtures Structure", () => {
       expect(json.hooks).toBeDefined();
       expect(Array.isArray(json.hooks)).toBe(true);
       expect(json.hooks.length).toBeGreaterThanOrEqual(2); // Multi-hook test fixture
+    });
+  });
+
+  describe("codex-hooks-multi fixture", () => {
+    const fixturePath = join(FIXTURES_DIR, "codex-hooks-multi");
+
+    test("directory exists", () => {
+      expect(existsSync(fixturePath)).toBe(true);
+      expect(statSync(fixturePath).isDirectory()).toBe(true);
+    });
+
+    test(".codex-plugin/plugin.json exists and points to hooks-multi.json", () => {
+      const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
+      expect(existsSync(pluginJsonPath)).toBe(true);
+
+      const content = readFileSync(pluginJsonPath, "utf-8");
+      const json = JSON.parse(content);
+
+      expect(json.hooks).toBe("hooks-multi.json");
+    });
+
+    test("hooks-multi.json has multiple hooks for aggregation testing", () => {
+      const hooksPath = join(fixturePath, "hooks-multi.json");
+      expect(existsSync(hooksPath)).toBe(true);
+
+      const content = readFileSync(hooksPath, "utf-8");
+      const json = JSON.parse(content);
+
+      expect(json.hooks).toBeDefined();
+      expect(Array.isArray(json.hooks)).toBe(true);
+      expect(json.hooks.length).toBeGreaterThanOrEqual(2);
+
+      // Verify events array exists in each hook
+      for (const hook of json.hooks) {
+        expect(hook.events).toBeDefined();
+        expect(Array.isArray(hook.events)).toBe(true);
+      }
+    });
+  });
+
+  describe("codex-no-app fixture", () => {
+    const fixturePath = join(FIXTURES_DIR, "codex-no-app");
+
+    test("directory exists", () => {
+      expect(existsSync(fixturePath)).toBe(true);
+      expect(statSync(fixturePath).isDirectory()).toBe(true);
+    });
+
+    test(".codex-plugin/plugin.json exists", () => {
+      const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
+      expect(existsSync(pluginJsonPath)).toBe(true);
+
+      const content = readFileSync(pluginJsonPath, "utf-8");
+      JSON.parse(content); // Verify valid JSON
+    });
+
+    test("has no .app.json to test compatibility without dropped components", () => {
+      const appJsonPath = join(fixturePath, ".app.json");
+      expect(existsSync(appJsonPath)).toBe(false);
+    });
+
+    test("has hooks and agents for partial compatibility testing", () => {
+      const hooksPath = join(fixturePath, "hooks.json");
+      expect(existsSync(hooksPath)).toBe(true);
+
+      const agentsDir = join(fixturePath, "agents");
+      expect(existsSync(agentsDir)).toBe(true);
+      expect(statSync(agentsDir).isDirectory()).toBe(true);
     });
   });
 
