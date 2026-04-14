@@ -1,0 +1,10 @@
+{
+  "hooks": [
+    {
+      "name": "github-pr-hook",
+      "event": "onPullRequest",
+      "tool": "gh",
+      "matcher": "*.md"
+    }
+  ]
+}

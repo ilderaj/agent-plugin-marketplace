@@ -1,0 +1,13 @@
+{
+  "name": "github",
+  "version": "1.0.0",
+  "description": "GitHub integration plugin for Codex",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com"
+  },
+  "license": "MIT",
+  "skills": ["skills/github"],
+  "interface": "agent"
+}

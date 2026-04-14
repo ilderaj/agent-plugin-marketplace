@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "name": "learning-hook",
+      "event": "onCodeChange",
+      "tool": "learning-analyzer"
+    }
+  ]
+}

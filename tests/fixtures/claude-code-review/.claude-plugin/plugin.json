@@ -1,0 +1,9 @@
+{
+  "name": "code-review",
+  "version": "2.1.0",
+  "description": "Automated code review assistant for Claude Code",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  }
+}
