@@ -115,6 +115,22 @@ describe("SyncStateManager", () => {
     expect(state.lastSyncAt).toBe(state.sources.cursor?.plugins.learning.syncedAt);
   });
 
+  test("updateSource stores repo metadata without requiring a plugin update", async () => {
+    const manager = new SyncStateManager(stateFilePath);
+
+    await manager.load();
+    manager.updateSource("codex", "file:///repos/codex.git", "repo-sha-22");
+    await manager.save();
+
+    const state = await new SyncStateManager(stateFilePath).load();
+    expect(state.sources.codex).toEqual({
+      repoUrl: "file:///repos/codex.git",
+      lastCommit: "repo-sha-22",
+      plugins: {},
+    });
+    expect(state.lastSyncAt).toBe("");
+  });
+
   test("load throws when the state file contains invalid JSON", async () => {
     await mkdir(join(workspaceDir, "data"), { recursive: true });
     await writeFile(stateFilePath, "{ invalid json", "utf-8");

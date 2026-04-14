@@ -99,13 +99,38 @@ export class SyncStateManager {
     return plugin.commitSha !== currentSha;
   }
 
-  markSynced(platform: string, pluginName: string, sha: string): void {
+  updateSource(platform: string, repoUrl: string, lastCommit: string): void {
+    const source = (this.state.sources[platform] ??= {
+      repoUrl: "",
+      lastCommit: "",
+      plugins: {},
+    });
+
+    source.repoUrl = repoUrl;
+    source.lastCommit = lastCommit;
+    this.hasLoaded = true;
+  }
+
+  markSynced(
+    platform: string,
+    pluginName: string,
+    sha: string,
+    sourceMetadata?: { repoUrl?: string; lastCommit?: string },
+  ): void {
     const syncedAt = new Date().toISOString();
     const source = (this.state.sources[platform] ??= {
       repoUrl: "",
       lastCommit: "",
       plugins: {},
     });
+
+    if (sourceMetadata?.repoUrl) {
+      source.repoUrl = sourceMetadata.repoUrl;
+    }
+
+    if (sourceMetadata?.lastCommit) {
+      source.lastCommit = sourceMetadata.lastCommit;
+    }
 
     source.plugins[pluginName] = {
       commitSha: sha,
