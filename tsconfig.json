@@ -14,8 +14,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "rootDir": "src",
-    "outDir": "dist",
+    "noEmit": true,
     "types": ["bun-types"]
   },
   "include": ["src/**/*.ts"],

@@ -2,7 +2,7 @@
   "name": "agent-plugin-marketplace",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "test": "bun test",
     "sync": "bun run src/index.ts sync",
     "generate": "bun run src/index.ts generate"
