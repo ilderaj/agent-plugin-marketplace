@@ -73,14 +73,6 @@ describe("Test Fixtures Structure", () => {
       }
     });
 
-    test("plugin.json declares hooks field for Codex format", () => {
-      const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
-      const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
-
-      // Codex uses root-level hooks.json, but plugin.json should reference it
-      expect(json.hooks).toBeDefined();
-    });
-
     test("plugin.json hooks path resolves to existing file", () => {
       const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
       const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
@@ -277,11 +269,17 @@ describe("Test Fixtures Structure", () => {
       const fullPath = join(fixturePath, json.hooks);
       expect(existsSync(fullPath)).toBe(true);
 
-      // Verify mcp config exists
-      const mcpPath = json.mcp || json.mcpServers;
-      expect(mcpPath).toBeDefined();
-      const mcpFullPath = join(fixturePath, mcpPath);
-      expect(existsSync(mcpFullPath)).toBe(true);
+      // Verify mcp config exists - check the specific field from this fixture
+      // This fixture uses json.mcp (string path), not json.mcpServers (object)
+      if (typeof json.mcp === "string") {
+        const mcpFullPath = join(fixturePath, json.mcp);
+        expect(existsSync(mcpFullPath)).toBe(true);
+      } else if (typeof json.mcpServers === "string") {
+        const mcpFullPath = join(fixturePath, json.mcpServers);
+        expect(existsSync(mcpFullPath)).toBe(true);
+      } else {
+        throw new Error("Neither mcp nor mcpServers is a string path");
+      }
     });
 
     test("skills/learning/SKILL.md exists", () => {
