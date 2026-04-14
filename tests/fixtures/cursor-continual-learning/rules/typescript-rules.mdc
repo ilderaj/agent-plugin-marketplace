@@ -1,0 +1,10 @@
+---
+alwaysApply: false
+globs:
+  - **/*.ts
+  - **/*.tsx
+---
+
+# TypeScript Learning Rules
+
+Apply learning patterns specific to TypeScript code.

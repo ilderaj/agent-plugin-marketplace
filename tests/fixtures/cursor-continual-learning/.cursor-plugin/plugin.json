@@ -10,5 +10,7 @@
   "skills": ["skills/learning"],
   "agents": ["agents/learner.md"],
   "hooks": "hooks/hooks.json",
-  "mcp": "mcp.json"
+  "mcp": "mcp.json",
+  "rules": ["rules/learning-context.mdc", "rules/typescript-rules.mdc"],
+  "commands": ["commands/analyze.sh"]
 }
