@@ -10,7 +10,7 @@ import { SyncStateManager } from "./sync/sync-state";
 const DEFAULT_REPO_URLS = {
   codex: "https://github.com/openai/plugins.git",
   "claude-code": "https://github.com/anthropics/claude-code.git",
-  cursor: "https://github.com/getcursor/plugins.git",
+  cursor: "https://github.com/cursor/plugins.git",
 } satisfies SyncConfig["repoUrls"];
 
 type PipelineRunner = Pick<SyncPipeline, "run">;

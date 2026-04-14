@@ -1,0 +1,44 @@
+{
+  "name": "codex--life-science-research",
+  "displayName": "Life Science Research (from Codex)",
+  "version": "0.1.0",
+  "description": "General life-sciences research workflows with query routing, evidence synthesis, and optional parallel subagent analysis across genetics, omics, biology, chemistry, structure, clinical evidence, and public dataset discovery.",
+  "author": {
+    "name": "OpenAI"
+  },
+  "license": "Proprietary",
+  "homepage": "https://github.com/openai/openai/tree/master/plugins/life-science-research",
+  "repository": "https://github.com/openai/openai/tree/master/plugins/life-science-research",
+  "keywords": [
+    "life-science",
+    "research",
+    "bioinformatics",
+    "human-genetics",
+    "functional-genomics",
+    "transcriptomics",
+    "proteomics",
+    "metabolomics",
+    "clinical-research",
+    "drug-discovery",
+    "skill-routing",
+    "evidence-synthesis",
+    "parallel-analysis",
+    "gwas",
+    "variant-interpretation",
+    "pathway-biology",
+    "protein-structure"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/life-science-research",
+    "commitSha": "fb0a18376bcd9f2604047fbe7459ec5aed70c64b",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

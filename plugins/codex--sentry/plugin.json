@@ -1,0 +1,32 @@
+{
+  "name": "codex--sentry",
+  "displayName": "Sentry (from Codex)",
+  "version": "0.1.0",
+  "description": "Inspect recent issues and events in Sentry from Codex.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://sentry.io/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "sentry",
+    "observability",
+    "triage"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/sentry",
+    "commitSha": "0a2c3b82d2ebd1da0f3dc2f09391d20da40d731c",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

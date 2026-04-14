@@ -275,6 +275,52 @@ describe('CursorAdapter', () => {
     );
   });
 
+  test('parse expands manifest directory paths for skills, agents, and rules', async () => {
+    await withTempPlugin(
+      'directory-paths',
+      async (pluginRoot) => {
+        await mkdir(join(pluginRoot, '.cursor-plugin'), { recursive: true });
+        await mkdir(join(pluginRoot, 'skills/one'), { recursive: true });
+        await mkdir(join(pluginRoot, 'skills/two'), { recursive: true });
+        await mkdir(join(pluginRoot, 'agents'), { recursive: true });
+        await mkdir(join(pluginRoot, 'rules'), { recursive: true });
+
+        await writeFile(
+          join(pluginRoot, '.cursor-plugin', 'plugin.json'),
+          JSON.stringify({
+            name: 'directory-paths',
+            version: '1.0.0',
+            description: 'directory style paths',
+            author: { name: 'Cursor Team' },
+            skills: './skills/',
+            agents: './agents/',
+            rules: './rules/',
+          }),
+        );
+        await writeFile(
+          join(pluginRoot, 'skills/one/SKILL.md'),
+          '---\nname: one\ndescription: one\n---\n# One\n',
+        );
+        await writeFile(
+          join(pluginRoot, 'skills/two/SKILL.md'),
+          '---\nname: two\ndescription: two\n---\n# Two\n',
+        );
+        await writeFile(join(pluginRoot, 'agents/first.md'), '# First\n');
+        await writeFile(
+          join(pluginRoot, 'rules/first-rule.mdc'),
+          '---\nalwaysApply: true\ndescription: first rule\n---\n# Rule\n',
+        );
+      },
+      async (pluginRoot) => {
+        const ir = await adapter.parse(pluginRoot);
+
+        expect(ir.components.skills.map(skill => skill.name).sort()).toEqual(['one', 'two']);
+        expect(ir.components.agents.map(agent => agent.name)).toEqual(['first']);
+        expect(ir.components.rules.map(rule => rule.path)).toEqual(['rules/first-rule.mdc']);
+      },
+    );
+  });
+
   test('discover returns empty array for non-existent directory (expected ENOENT)', async () => {
     const nonExistentPath = '/path/that/does/not/exist/at/all';
     const plugins = await adapter.discover(nonExistentPath);

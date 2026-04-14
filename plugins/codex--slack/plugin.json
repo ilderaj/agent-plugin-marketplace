@@ -1,0 +1,41 @@
+{
+  "name": "codex--slack",
+  "displayName": "Slack (from Codex)",
+  "version": "0.1.0",
+  "description": "Work with Slack using the configured Slack integration.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://slack.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "slack",
+    "chat",
+    "collaboration"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/slack",
+    "commitSha": "d88301d4694edc6282ca554e97fb8425cbd5a250",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

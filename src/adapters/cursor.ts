@@ -1,5 +1,5 @@
 import { readdir, readFile, stat } from 'fs/promises';
-import { join } from 'path';
+import { join, relative } from 'path';
 import type {
   SourceAdapter,
   DiscoveredPlugin,
@@ -117,7 +117,7 @@ export class CursorAdapter implements SourceAdapter {
   private async parseSkills(pluginDir: string, pluginJson: any): Promise<SkillRef[]> {
     const skills: SkillRef[] = [];
 
-    for (const skillPath of this.asPathList(pluginJson.skills)) {
+    for (const skillPath of await this.resolveSkillPaths(pluginDir, pluginJson.skills)) {
       const scriptsPath = join(pluginDir, skillPath, 'scripts');
       let hasScripts = false;
 
@@ -164,8 +164,10 @@ export class CursorAdapter implements SourceAdapter {
     return hooks;
   }
 
-  private async parseAgents(_pluginDir: string, pluginJson: any): Promise<AgentRef[]> {
-    return this.asPathList(pluginJson.agents).map((agentPath) => {
+  private async parseAgents(pluginDir: string, pluginJson: any): Promise<AgentRef[]> {
+    return (await this.resolveDirectoryEntries(pluginDir, pluginJson.agents, {
+      include: (entry) => entry.isFile() && entry.name.endsWith('.md'),
+    })).map((agentPath) => {
       const fileName = agentPath.split('/').pop() || agentPath;
       return {
         name: fileName.replace(/\.md$/, ''),
@@ -175,8 +177,11 @@ export class CursorAdapter implements SourceAdapter {
     });
   }
 
-  private async parseCommands(_pluginDir: string, pluginJson: any): Promise<CommandRef[]> {
-    return this.asPathList(pluginJson.commands).map((commandPath) => ({
+  private async parseCommands(pluginDir: string, pluginJson: any): Promise<CommandRef[]> {
+    return (await this.resolveDirectoryEntries(pluginDir, pluginJson.commands, {
+      include: (entry) =>
+        entry.isFile() && (entry.name.endsWith('.sh') || entry.name.endsWith('.js') || entry.name.endsWith('.ts')),
+    })).map((commandPath) => ({
       name: commandPath.split('/').pop() || commandPath,
       path: commandPath,
     }));
@@ -185,7 +190,9 @@ export class CursorAdapter implements SourceAdapter {
   private async parseRules(pluginDir: string, pluginJson: any): Promise<RuleRef[]> {
     const rules: RuleRef[] = [];
 
-    for (const rulePath of this.asPathList(pluginJson.rules)) {
+    for (const rulePath of await this.resolveDirectoryEntries(pluginDir, pluginJson.rules, {
+      include: (entry) => entry.isFile() && entry.name.endsWith('.mdc'),
+    })) {
       try {
         const ruleContent = await readFile(join(pluginDir, rulePath), 'utf-8');
         const { alwaysApply, globs } = this.parseRuleFrontmatter(ruleContent, rulePath);
@@ -258,6 +265,74 @@ export class CursorAdapter implements SourceAdapter {
       return value.filter((entry): entry is string => typeof entry === 'string');
     }
     return [];
+  }
+
+  private async resolveSkillPaths(pluginDir: string, value: unknown): Promise<string[]> {
+    const resolved: string[] = [];
+
+    for (const pathSpec of this.asPathList(value)) {
+      const fullPath = join(pluginDir, pathSpec);
+      const pathStat = await stat(fullPath);
+
+      if (!pathStat.isDirectory()) {
+        resolved.push(this.toRelativePluginPath(pluginDir, fullPath));
+        continue;
+      }
+
+      try {
+        const skillManifest = join(fullPath, 'SKILL.md');
+        const skillManifestStat = await stat(skillManifest);
+        if (skillManifestStat.isFile()) {
+          resolved.push(this.toRelativePluginPath(pluginDir, fullPath));
+          continue;
+        }
+      } catch (err: any) {
+        if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+          throw err;
+        }
+      }
+
+      const entries = await readdir(fullPath, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory()) {
+          resolved.push(this.toRelativePluginPath(pluginDir, join(fullPath, entry.name)));
+        }
+      }
+    }
+
+    return resolved;
+  }
+
+  private async resolveDirectoryEntries(
+    pluginDir: string,
+    value: unknown,
+    options: { include: (entry: { isFile(): boolean; name: string }) => boolean },
+  ): Promise<string[]> {
+    const resolved: string[] = [];
+
+    for (const pathSpec of this.asPathList(value)) {
+      const fullPath = join(pluginDir, pathSpec);
+      const pathStat = await stat(fullPath);
+
+      if (!pathStat.isDirectory()) {
+        resolved.push(this.toRelativePluginPath(pluginDir, fullPath));
+        continue;
+      }
+
+      const entries = await readdir(fullPath, { withFileTypes: true });
+      for (const entry of entries) {
+        const normalizedEntry = { isFile: () => entry.isFile(), name: entry.name as string };
+        if (options.include(normalizedEntry)) {
+          resolved.push(this.toRelativePluginPath(pluginDir, join(fullPath, normalizedEntry.name)));
+        }
+      }
+    }
+
+    return resolved;
+  }
+
+  private toRelativePluginPath(pluginDir: string, fullPath: string): string {
+    return relative(pluginDir, fullPath).replace(/\\/g, '/');
   }
 
   private buildHookRef(configPath: string, hooksJson: any): HookRef | null {

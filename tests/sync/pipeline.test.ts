@@ -46,7 +46,7 @@ async function createLocalUpstream() {
   const upstreamRoot = join(workspaceDir, "upstream");
   const bareRepo = join(upstreamRoot, "origin.git");
   const sourceRepo = join(upstreamRoot, "source");
-  const pluginDir = join(sourceRepo, "codex-github");
+  const pluginDir = join(sourceRepo, "plugins", "codex-github");
 
   await mkdir(upstreamRoot, { recursive: true });
   await runGit(["init", "--bare", bareRepo]);
@@ -126,7 +126,7 @@ describe("SyncPipeline", () => {
     );
 
     await writeFile(join(upstream.pluginDir, "README.md"), "# Updated plugin\n", "utf-8");
-    await runGit(["add", "codex-github/README.md"], upstream.sourceRepo);
+    await runGit(["add", "plugins/codex-github/README.md"], upstream.sourceRepo);
     await runGit(["commit", "-m", "Update plugin"], upstream.sourceRepo);
     const updatedHead = await runGit(["rev-parse", "HEAD"], upstream.sourceRepo);
     await runGit(["push", "origin", "HEAD"], upstream.sourceRepo);

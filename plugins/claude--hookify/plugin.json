@@ -1,0 +1,28 @@
+{
+  "name": "claude--hookify",
+  "displayName": "Hookify (from Claude Code)",
+  "version": "0.1.0",
+  "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns",
+  "author": {
+    "name": "Daisy Hollman",
+    "email": "daisy@anthropic.com"
+  },
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/hookify",
+    "commitSha": "59372c0921b0170e81f9c63777962d02347411d5",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      "Agent: partial — Claude markdown agents may require format conversion for other platforms"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

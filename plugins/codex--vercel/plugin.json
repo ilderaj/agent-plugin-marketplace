@@ -1,0 +1,42 @@
+{
+  "name": "codex--vercel",
+  "displayName": "Vercel (from Codex)",
+  "version": "0.21.0",
+  "description": "Build and deploy web apps and agents",
+  "author": {
+    "name": "Vercel Labs",
+    "url": "https://github.com/vercel"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://vercel.com/",
+  "repository": "https://github.com/vercel/vercel-plugin",
+  "keywords": [
+    "vercel",
+    "nextjs",
+    "ai-sdk",
+    "turborepo",
+    "turbopack",
+    "workflow",
+    "deployment",
+    "edge-functions",
+    "serverless",
+    "ai-gateway",
+    "chat-sdk",
+    "chat-bot",
+    "slack-bot",
+    "discord-bot"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/vercel",
+    "commitSha": "3198496a136f13e3bd56b913d537080906c525a0",
+    "version": "0.21.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

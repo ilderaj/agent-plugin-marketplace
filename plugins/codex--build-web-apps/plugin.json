@@ -1,0 +1,41 @@
+{
+  "name": "codex--build-web-apps",
+  "displayName": "Build Web Apps (from Codex)",
+  "version": "0.1.0",
+  "description": "Build web apps with workflows for UI reviews, React improvements, deployment, payments, and database design.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://openai.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "build-web-apps",
+    "build",
+    "react",
+    "vercel",
+    "stripe",
+    "supabase",
+    "shadcn",
+    "full-stack",
+    "ui-review"
+  ],
+  "agents": "./agents/",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/build-web-apps",
+    "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Agent definitions require format conversion"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

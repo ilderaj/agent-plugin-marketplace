@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, writeFile } from "fs/promises";
+import { mkdir, readdir, readFile, stat, writeFile } from "fs/promises";
 import { join, relative } from "path";
 import type { Platform, PluginIR, SourceAdapter } from "../adapters/types";
 import type {
@@ -53,7 +53,7 @@ export class SyncPipeline {
       const headSha = await getHeadSha(repoDir);
       this.options.stateManager.updateSource(adapter.platform, repoUrl, headSha);
 
-      const discoveredPlugins = (await adapter.discover(repoDir)).sort((left, right) =>
+      const discoveredPlugins = (await this.discoverPlugins(adapter, repoDir)).sort((left, right) =>
         left.name.localeCompare(right.name),
       );
 
@@ -99,6 +99,26 @@ export class SyncPipeline {
         commitSha,
       },
     };
+  }
+
+  private async discoverPlugins(adapter: SourceAdapter, repoDir: string) {
+    const nestedPluginsDir = join(repoDir, "plugins");
+
+    try {
+      const nestedStat = await stat(nestedPluginsDir);
+      if (nestedStat.isDirectory()) {
+        const discoveredInNestedDir = await adapter.discover(nestedPluginsDir);
+        if (discoveredInNestedDir.length > 0) {
+          return discoveredInNestedDir;
+        }
+      }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT" && (error as NodeJS.ErrnoException).code !== "ENOTDIR") {
+        throw error;
+      }
+    }
+
+    return adapter.discover(repoDir);
   }
 
   private async loadGeneratedMarketplaceEntries(): Promise<MarketplacePluginEntry[]> {
