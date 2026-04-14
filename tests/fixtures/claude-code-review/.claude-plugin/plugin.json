@@ -5,5 +5,6 @@
   "author": {
     "name": "Anthropic",
     "email": "support@anthropic.com"
-  }
+  },
+  "license": "MIT"
 }

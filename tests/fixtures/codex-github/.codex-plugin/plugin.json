@@ -9,5 +9,6 @@
   },
   "license": "MIT",
   "skills": ["skills/github"],
+  "hooks": "hooks.json",
   "interface": "agent"
 }
