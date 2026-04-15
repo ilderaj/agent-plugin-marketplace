@@ -1,0 +1,16 @@
+{
+  "displayName": "Cloudflare (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/cloudflare",
+    "commitSha": "c33798c8a1e6da61a75e06e33ceae39a35f05ea5",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

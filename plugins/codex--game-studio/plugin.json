@@ -1,6 +1,5 @@
 {
   "name": "codex--game-studio",
-  "displayName": "Game Studio (from Codex)",
   "version": "0.1.0",
   "description": "Design, prototype, and ship browser games with guided 2D and 3D workflows, asset pipelines, and playtesting support.",
   "author": {
@@ -22,17 +21,5 @@
     "sprites",
     "playtest"
   ],
-  "_source": {
-    "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/game-studio",
-    "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
-    "version": "0.1.0"
-  },
-  "_compatibility": {
-    "overall": "full",
-    "notes": [],
-    "warnings": [],
-    "droppedComponents": []
-  }
+  "strict": false
 }

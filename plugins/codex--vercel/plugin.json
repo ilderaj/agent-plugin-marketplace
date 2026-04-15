@@ -1,6 +1,5 @@
 {
   "name": "codex--vercel",
-  "displayName": "Vercel (from Codex)",
   "version": "0.21.0",
   "description": "Build and deploy web apps and agents",
   "author": {
@@ -26,17 +25,5 @@
     "slack-bot",
     "discord-bot"
   ],
-  "_source": {
-    "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/vercel",
-    "commitSha": "3198496a136f13e3bd56b913d537080906c525a0",
-    "version": "0.21.0"
-  },
-  "_compatibility": {
-    "overall": "full",
-    "notes": [],
-    "warnings": [],
-    "droppedComponents": []
-  }
+  "strict": false
 }

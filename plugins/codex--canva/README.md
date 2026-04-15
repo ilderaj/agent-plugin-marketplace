@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--canva
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/canva
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/canva
 - Version: 1.0.0
 
 ## Compatibility Summary

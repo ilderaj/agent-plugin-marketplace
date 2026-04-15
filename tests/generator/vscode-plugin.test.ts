@@ -33,15 +33,24 @@ describe('VsCodePluginGenerator', () => {
 
     await new VsCodePluginGenerator().generate(ir, outDir);
 
+    // plugin.json: official fields only, no displayName/_source/_compatibility
     const manifest = await readJson(join(outDir, 'plugin.json'));
     expect(manifest.name).toBe('codex--github');
-    expect(manifest.displayName).toBe('GitHub (from Codex)');
+    expect(manifest.strict).toBe(false);
     expect(manifest.skills).toBe('./skills/');
     expect(manifest.agents).toBe('./agents/');
     expect(manifest.hooks).toBe('./hooks/hooks.json');
-    expect(manifest._source.platform).toBe('codex');
-    expect(manifest._compatibility.overall).toBe('partial');
-    expect(manifest._compatibility.droppedComponents).toEqual(
+    expect(manifest.displayName).toBeUndefined();
+    expect(manifest._source).toBeUndefined();
+    expect(manifest._compatibility).toBeUndefined();
+    expect(manifest.instructions).toBeUndefined();
+
+    // _meta.json: displayName/_source/_compatibility
+    const meta = await readJson(join(outDir, '_meta.json'));
+    expect(meta.displayName).toBe('GitHub (from Codex)');
+    expect(meta._source.platform).toBe('codex');
+    expect(meta._compatibility.overall).toBe('partial');
+    expect(meta._compatibility.droppedComponents).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           type: 'app',
@@ -63,12 +72,21 @@ describe('VsCodePluginGenerator', () => {
 
     await new VsCodePluginGenerator().generate(ir, outDir);
 
+    // plugin.json: official manifest only
     const manifest = await readJson(join(outDir, 'plugin.json'));
     expect(manifest.name).toBe('claude--code-review');
-    expect(manifest.displayName).toBe('Code Review (from Claude Code)');
-    expect(manifest._source.platform).toBe('claude-code');
+    expect(manifest.strict).toBe(false);
     expect(manifest.hooks).toBe('./hooks/hooks.json');
     expect(manifest.mcpServers).toBe('./.mcp.json');
+    expect(manifest.displayName).toBeUndefined();
+    expect(manifest._source).toBeUndefined();
+    expect(manifest._compatibility).toBeUndefined();
+
+    // _meta.json: sidecar with platform info
+    const meta = await readJson(join(outDir, '_meta.json'));
+    expect(meta.displayName).toBe('Code Review (from Claude Code)');
+    expect(meta._source.platform).toBe('claude-code');
+
     expect(await readFile(join(outDir, 'README.md'), 'utf-8')).toContain('claude-code');
   });
 
@@ -80,14 +98,21 @@ describe('VsCodePluginGenerator', () => {
 
     await new VsCodePluginGenerator().generate(ir, outDir);
 
+    // plugin.json: official manifest, no instructions field, no _source/_compatibility
     const manifest = await readJson(join(outDir, 'plugin.json'));
     expect(manifest.name).toBe('cursor--continual-learning');
+    expect(manifest.strict).toBe(false);
     expect(manifest.hooks).toBe('./hooks/hooks.json');
     expect(manifest.mcpServers).toBe('./.mcp.json');
-    expect(manifest.instructions).toBe('./instructions/');
-    expect(manifest._compatibility.droppedComponents.some((component: { type: string }) => component.type === 'command')).toBe(false);
-    expect(manifest._compatibility.notes.join('\n')).toContain('.instructions.md');
-    expect(manifest._compatibility.notes.join('\n')).toContain('manual verification');
+    expect(manifest.instructions).toBeUndefined();
+    expect(manifest._source).toBeUndefined();
+    expect(manifest._compatibility).toBeUndefined();
+
+    // _meta.json: compatibility info lives here
+    const meta = await readJson(join(outDir, '_meta.json'));
+    expect(meta._compatibility.droppedComponents.some((component: { type: string }) => component.type === 'command')).toBe(false);
+    expect(meta._compatibility.notes.join('\n')).toContain('.instructions.md');
+    expect(meta._compatibility.notes.join('\n')).toContain('manual verification');
 
     const alwaysInstruction = await readFile(
       join(outDir, 'instructions/learning-context.instructions.md'),
@@ -161,10 +186,46 @@ describe('VsCodePluginGenerator', () => {
 
       await new VsCodePluginGenerator().generate(ir, outDir);
 
+      // _compatibility lives in _meta.json now
+      const meta = await readJson(join(outDir, '_meta.json'));
+      expect(meta._compatibility.overall).toBe('degraded');
+
+      // plugin.json must have strict: false and no _compatibility
       const manifest = await readJson(join(outDir, 'plugin.json'));
-      expect(manifest._compatibility.overall).toBe('degraded');
+      expect(manifest.strict).toBe(false);
+      expect(manifest._compatibility).toBeUndefined();
     } finally {
       await rm(sourceRoot, { recursive: true, force: true });
     }
+  });
+
+  test('plugin.json and _meta.json are proper split of official and meta fields', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'split-check');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const manifest = await readJson(join(outDir, 'plugin.json'));
+    const meta = await readJson(join(outDir, '_meta.json'));
+
+    // Official manifest must not contain private fields
+    const forbiddenInManifest = ['displayName', '_source', '_compatibility', 'instructions'];
+    for (const field of forbiddenInManifest) {
+      expect(manifest).not.toHaveProperty(field);
+    }
+
+    // Official manifest must have strict: false
+    expect(manifest.strict).toBe(false);
+
+    // Meta sidecar must contain all private fields
+    expect(meta).toHaveProperty('displayName');
+    expect(meta).toHaveProperty('_source');
+    expect(meta).toHaveProperty('_compatibility');
+    expect(meta._source).toHaveProperty('platform');
+    expect(meta._source).toHaveProperty('upstream');
+    expect(meta._source).toHaveProperty('pluginPath');
+    expect(meta._source).toHaveProperty('commitSha');
+    expect(meta._source).toHaveProperty('version');
   });
 });

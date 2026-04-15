@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--linear
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/linear
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/linear
 - Version: undefined
 
 ## Compatibility Summary

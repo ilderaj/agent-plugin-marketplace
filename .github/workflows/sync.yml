@@ -33,7 +33,7 @@ jobs:
         id: changes
         shell: bash
         run: |
-          if [[ -n "$(git status --short -- marketplace.json data/sync-state.json plugins/)" ]]; then
+          if [[ -n "$(git status --short -- marketplace.json .github/plugin/marketplace.json data/sync-state.json plugins/)" ]]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
@@ -57,7 +57,7 @@ jobs:
           if [[ -d plugins ]]; then
             git add -f plugins/
           fi
-          git add marketplace.json data/sync-state.json
+          git add marketplace.json .github/plugin/marketplace.json data/sync-state.json
           git commit -m "chore: sync upstream plugins"
           git push --set-upstream origin "$BRANCH_NAME"
           gh pr create \

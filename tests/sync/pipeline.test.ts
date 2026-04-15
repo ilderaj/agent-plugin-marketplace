@@ -110,11 +110,19 @@ describe("SyncPipeline", () => {
     expect(firstReport).toEqual({ updated: 1, total: 1 });
 
     const generatedPluginDir = join(workspaceDir, "output", "plugins", "codex--github");
+    // _source now lives in _meta.json
+    const generatedMeta = JSON.parse(
+      await readFile(join(generatedPluginDir, "_meta.json"), "utf-8"),
+    ) as { _source: { upstream: string; commitSha: string } };
+    expect(generatedMeta._source.upstream).toBe(upstream.bareRepoUrl);
+    expect(generatedMeta._source.commitSha).toMatch(/^[0-9a-f]{40}$/);
+
+    // plugin.json must have strict: false and no _source
     const generatedManifest = JSON.parse(
       await readFile(join(generatedPluginDir, "plugin.json"), "utf-8"),
-    ) as { _source: { upstream: string; commitSha: string } };
-    expect(generatedManifest._source.upstream).toBe(upstream.bareRepoUrl);
-    expect(generatedManifest._source.commitSha).toMatch(/^[0-9a-f]{40}$/);
+    ) as { strict: boolean; _source?: unknown };
+    expect(generatedManifest.strict).toBe(false);
+    expect(generatedManifest._source).toBeUndefined();
 
     const stateAfterFirstRun = JSON.parse(await readFile(stateFile, "utf-8")) as {
       sources: Record<string, { repoUrl: string; lastCommit: string; plugins: Record<string, { commitSha: string }> }>;
@@ -122,7 +130,7 @@ describe("SyncPipeline", () => {
     expect(stateAfterFirstRun.sources.codex?.repoUrl).toBe(upstream.bareRepoUrl);
     expect(stateAfterFirstRun.sources.codex?.lastCommit).toMatch(/^[0-9a-f]{40}$/);
     expect(stateAfterFirstRun.sources.codex?.plugins["codex-github"]?.commitSha).toBe(
-      generatedManifest._source.commitSha,
+      generatedMeta._source.commitSha,
     );
 
     await writeFile(join(upstream.pluginDir, "README.md"), "# Updated plugin\n", "utf-8");
@@ -134,21 +142,32 @@ describe("SyncPipeline", () => {
     const secondReport = await pipeline.run();
     expect(secondReport).toEqual({ updated: 1, total: 1 });
 
-    const regeneratedManifest = JSON.parse(
-      await readFile(join(generatedPluginDir, "plugin.json"), "utf-8"),
+    const regeneratedMeta = JSON.parse(
+      await readFile(join(generatedPluginDir, "_meta.json"), "utf-8"),
     ) as { _source: { commitSha: string } };
-    expect(regeneratedManifest._source.commitSha).toBe(updatedHead);
+    expect(regeneratedMeta._source.commitSha).toBe(updatedHead);
 
     const marketplace = JSON.parse(
       await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8"),
-    ) as { plugins: Array<{ name: string; source: string }> };
+    ) as { plugins: Array<{ name: string; source: string; strict: boolean }> };
     expect(marketplace.plugins).toEqual([
       {
         name: "codex--github",
         source: "plugins/codex--github",
         description: "GitHub integration plugin for Codex (from Codex)",
+        version: "1.0.0",
+        author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
+        strict: false,
       },
     ]);
+
+    // Dual-write: .github/plugin/marketplace.json must match root marketplace.json
+    const githubMarketplace = JSON.parse(
+      await readFile(join(workspaceDir, "output", ".github", "plugin", "marketplace.json"), "utf-8"),
+    ) as object;
+    expect(githubMarketplace).toEqual(
+      JSON.parse(await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")),
+    );
   });
 
   test("run keeps marketplace complete when nothing changed on the second sync", async () => {
@@ -179,6 +198,9 @@ describe("SyncPipeline", () => {
         name: "codex--github",
         source: "plugins/codex--github",
         description: "GitHub integration plugin for Codex (from Codex)",
+        version: "1.0.0",
+        author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
+        strict: false,
       },
     ]);
   });

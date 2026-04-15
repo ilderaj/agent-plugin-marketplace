@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--cursor-team-kit
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/cursor/cursor-team-kit
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/cursor-team-kit
 - Version: 1.0.0
 
 ## Compatibility Summary

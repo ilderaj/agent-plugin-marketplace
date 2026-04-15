@@ -1,6 +1,5 @@
 {
   "name": "codex--stripe",
-  "displayName": "Stripe (from Codex)",
   "version": "1.0.0",
   "description": "Payments and business tools",
   "author": {
@@ -10,26 +9,5 @@
   "homepage": "https://stripe.com",
   "repository": "https://github.com/openai/plugins",
   "keywords": [],
-  "_source": {
-    "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/stripe",
-    "commitSha": "83b5c6c37251ffd7d5be0df0db02be6dc6e64df0",
-    "version": "1.0.0"
-  },
-  "_compatibility": {
-    "overall": "partial",
-    "notes": [
-      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
-    ],
-    "warnings": [
-      "App connector will be dropped when converting to other platforms"
-    ],
-    "droppedComponents": [
-      {
-        "type": "app",
-        "reason": "App connectors are Codex-specific and not supported on other platforms"
-      }
-    ]
-  }
+  "strict": false
 }

@@ -1,6 +1,5 @@
 {
   "name": "cursor--teaching",
-  "displayName": "Teaching (from Cursor)",
   "version": "1.0.0",
   "description": "Skill mapping, practice plans, and learning retrospectives. Builds personalized roadmaps with milestones and practice checkpoints, and runs periodic reviews to adjust based on progress.",
   "author": {
@@ -17,20 +16,7 @@
     "feedback",
     "mentorship"
   ],
+  "category": "utilities",
   "skills": "./skills/",
-  "_source": {
-    "platform": "cursor",
-    "upstream": "https://github.com/cursor/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/cursor/teaching",
-    "commitSha": "2cf89ae30b83b8e2ae2361ea457169bdc5bc74d8",
-    "version": "1.0.0"
-  },
-  "_compatibility": {
-    "overall": "full",
-    "notes": [
-      "Skill: full — Skills are cross-platform compatible"
-    ],
-    "warnings": [],
-    "droppedComponents": []
-  }
+  "strict": false
 }

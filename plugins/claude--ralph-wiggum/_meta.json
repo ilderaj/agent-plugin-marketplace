@@ -1,0 +1,16 @@
+{
+  "displayName": "Ralph Wiggum (from Claude Code)",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/ralph-wiggum",
+    "commitSha": "c2022d3698c2ed89a5d9ca4a724571d2819057a5",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

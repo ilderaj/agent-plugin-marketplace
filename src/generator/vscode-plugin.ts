@@ -9,6 +9,7 @@ import type {
   PluginIR,
   RuleRef,
 } from '../adapters/types';
+import type { MetaPluginManifest, OfficialPluginManifest } from './marketplace';
 
 export function normalizeGeneratedPluginName(ir: PluginIR) {
   if (ir.source.platform === 'claude-code') {
@@ -29,36 +30,6 @@ export function platformLabel(platform: PluginIR['source']['platform']) {
   }
 }
 
-interface GeneratedPluginManifest {
-  name: string;
-  displayName: string;
-  version: string;
-  description: string;
-  author: PluginIR['manifest']['author'];
-  license?: string;
-  homepage?: string;
-  repository?: string;
-  keywords?: string[];
-  skills?: './skills/';
-  agents?: './agents/';
-  hooks?: './hooks/hooks.json';
-  mcpServers?: './.mcp.json';
-  instructions?: './instructions/';
-  _source: {
-    platform: PluginIR['source']['platform'];
-    upstream: string;
-    pluginPath: string;
-    commitSha: string;
-    version: string;
-  };
-  _compatibility: {
-    overall: Compatibility['overall'];
-    notes: string[];
-    warnings: string[];
-    droppedComponents: DroppedComponent[];
-  };
-}
-
 export class VsCodePluginGenerator {
   async generate(ir: PluginIR, outDir: string): Promise<void> {
     await mkdir(outDir, { recursive: true });
@@ -72,20 +43,18 @@ export class VsCodePluginGenerator {
     await this.writeMcpConfig(ir, outDir);
     await this.writeInstructions(ir, outDir);
 
-    const manifest = this.buildManifest(ir, compatibility);
-    await writeFile(join(outDir, 'plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`, 'utf-8');
-    await writeFile(join(outDir, 'README.md'), this.buildReadme(ir, manifest), 'utf-8');
+    const official = this.buildOfficialManifest(ir);
+    const meta = this.buildMeta(ir, compatibility);
+    await writeFile(join(outDir, 'plugin.json'), `${JSON.stringify(official, null, 2)}\n`, 'utf-8');
+    await writeFile(join(outDir, '_meta.json'), `${JSON.stringify(meta, null, 2)}\n`, 'utf-8');
+    await writeFile(join(outDir, 'README.md'), this.buildReadme(ir, meta), 'utf-8');
   }
 
-  private buildManifest(
-    ir: PluginIR,
-    compatibility: GeneratedPluginManifest['_compatibility']
-  ): GeneratedPluginManifest {
+  private buildOfficialManifest(ir: PluginIR): OfficialPluginManifest {
     const normalizedName = normalizeGeneratedPluginName(ir);
 
     return {
       name: normalizedName,
-      displayName: `${this.humanizeName(ir.manifest.displayName ?? ir.manifest.name)} (from ${platformLabel(ir.source.platform)})`,
       version: ir.manifest.version,
       description: ir.manifest.description,
       author: ir.manifest.author,
@@ -93,11 +62,23 @@ export class VsCodePluginGenerator {
       homepage: ir.manifest.homepage,
       repository: ir.manifest.repository,
       keywords: ir.manifest.keywords,
+      category: ir.manifest.category,
       ...(ir.components.skills.length > 0 ? { skills: './skills/' as const } : {}),
       ...(ir.components.agents.length > 0 ? { agents: './agents/' as const } : {}),
       ...(ir.components.hooks.length > 0 ? { hooks: './hooks/hooks.json' as const } : {}),
       ...(ir.components.mcpServers.length > 0 ? { mcpServers: './.mcp.json' as const } : {}),
-      ...(ir.components.rules.length > 0 ? { instructions: './instructions/' as const } : {}),
+      strict: false,
+    };
+  }
+
+  private buildMeta(
+    ir: PluginIR,
+    compatibility: MetaPluginManifest['_compatibility']
+  ): MetaPluginManifest {
+    const normalizedName = normalizeGeneratedPluginName(ir);
+
+    return {
+      displayName: `${this.humanizeName(ir.manifest.displayName ?? ir.manifest.name)} (from ${platformLabel(ir.source.platform)})`,
       _source: {
         platform: ir.source.platform,
         upstream: ir.source.repoUrl,
@@ -221,7 +202,7 @@ export class VsCodePluginGenerator {
     return `${header}${body.endsWith('\n') ? body : `${body}\n`}`;
   }
 
-  private buildGeneratedCompatibility(ir: PluginIR): GeneratedPluginManifest['_compatibility'] {
+  private buildGeneratedCompatibility(ir: PluginIR): MetaPluginManifest['_compatibility'] {
     const droppedComponents = [...ir.compatibility.droppedComponents];
     const notes = this.summarizeCompatibility(ir.compatibility.details, droppedComponents, ir);
     const warnings = [...ir.compatibility.warnings];
@@ -290,7 +271,7 @@ export class VsCodePluginGenerator {
     return levels.reduce((worst, current) => (order[current] > order[worst] ? current : worst), 'full');
   }
 
-  private buildReadme(ir: PluginIR, manifest: GeneratedPluginManifest) {
+  private buildReadme(ir: PluginIR, meta: MetaPluginManifest) {
     const componentLines = [
       ir.components.skills.length > 0 ? `- Skills: ${ir.components.skills.map((skill) => skill.name).join(', ')}` : '- Skills: none',
       ir.components.agents.length > 0 ? `- Agents: ${ir.components.agents.map((agent) => basename(agent.path)).join(', ')}` : '- Agents: none',
@@ -307,14 +288,14 @@ export class VsCodePluginGenerator {
     ];
 
     const droppedLines =
-      manifest._compatibility.droppedComponents.length > 0
-        ? manifest._compatibility.droppedComponents.map(
+      meta._compatibility.droppedComponents.length > 0
+        ? meta._compatibility.droppedComponents.map(
             (component) => `- ${this.labelForType(component.type)}: ${component.reason}`
           )
         : ['- None'];
 
     return [
-      `# ${manifest.displayName}`,
+      `# ${meta.displayName}`,
       '',
       '## Source',
       `- Platform: ${ir.source.platform}`,
@@ -324,9 +305,9 @@ export class VsCodePluginGenerator {
       `- Version: ${ir.source.version}`,
       '',
       '## Compatibility Summary',
-      `- Overall: ${manifest._compatibility.overall}`,
-      ...manifest._compatibility.notes.map((note) => `- ${note}`),
-      ...manifest._compatibility.warnings.map((warning) => `- Warning: ${warning}`),
+      `- Overall: ${meta._compatibility.overall}`,
+      ...meta._compatibility.notes.map((note) => `- ${note}`),
+      ...meta._compatibility.warnings.map((warning) => `- Warning: ${warning}`),
       '',
       '## Components',
       ...componentLines,
@@ -341,7 +322,7 @@ export class VsCodePluginGenerator {
       ir.components.commands.length > 0
         ? '- Command files were copied to the generated plugin, but they require manual verification in VS Code.'
         : '- No command files required manual verification.',
-      manifest._compatibility.droppedComponents.some((component) => component.type === 'app')
+      meta._compatibility.droppedComponents.some((component) => component.type === 'app')
         ? '- Codex `.app.json` support is not available in VS Code and was omitted from the generated plugin.'
         : '- No platform-specific app connectors were dropped.',
       '',

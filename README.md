@@ -22,18 +22,32 @@ Outputs:
 
 ## Using Plugins in GitHub Copilot
 
-### Option A: Use This Git Marketplace Directly
+### Option A: Copilot CLI Marketplace (Recommended)
 
-Point your Copilot / VS Code agent configuration at this repository's Git URL. The repository contains a ready-to-consume `marketplace.json` and a full `plugins/` tree.
+This repository publishes a standard `.github/plugin/marketplace.json` that the Copilot CLI can consume directly.
 
-**Steps:**
+```bash
+# Add this marketplace to Copilot CLI
+copilot plugin marketplace add <owner>/agent-plugin-marketplace
 
-1. Clone or add this repo as a Git-based marketplace source in your VS Code agent plugin settings.
-2. In VS Code, open the Command Palette → search for marketplace or plugin management related commands.
-3. Add the Git repository URL (e.g. `https://github.com/<you>/agent-plugin-marketplace.git`) as a marketplace source.
-4. Browse and install plugins from the marketplace panel. Each plugin is a self-contained directory under `plugins/<name>/`.
+# Or add from a local clone
+copilot plugin marketplace add /path/to/agent-plugin-marketplace
 
-You can also cherry-pick a single plugin by copying its `plugins/<name>/` directory into your local `.github/copilot/` or `.copilot/` instructions tree.
+# Browse available plugins in this marketplace
+copilot plugin marketplace browse agent-plugin-marketplace
+
+# Install a specific plugin from this marketplace
+copilot plugin install <plugin-name>@agent-plugin-marketplace
+
+# List installed plugins
+copilot plugin list
+
+# Update an installed plugin
+copilot plugin update <name>
+
+# Uninstall a plugin
+copilot plugin uninstall <name>
+```
 
 ### Option B: Self-Hosted — Fork and Customize
 
@@ -108,7 +122,7 @@ flowchart TD
 3. **Check** per-plugin commit SHA against `sync-state.json` — skip if unchanged
 4. **Parse** each plugin into a unified `PluginIR` via its platform adapter
 5. **Generate** VS Code plugin directory with converted files under `plugins/`
-6. **Build** `marketplace.json` from all `plugins/*/plugin.json` manifests
+6. **Build** `marketplace.json` (and `.github/plugin/marketplace.json`) from all `plugins/*/plugin.json` + `_meta.json` pairs
 7. **Persist** sync state for next incremental run
 
 ### Incremental Sync
@@ -148,7 +162,7 @@ Each generated `plugin.json` includes `_compatibility` metadata with per-compone
 A GitHub Actions workflow (`.github/workflows/sync.yml`) runs weekly (Monday 03:00 UTC) and on manual dispatch:
 
 1. Checks out the repo, installs Bun, runs `bun run sync`
-2. If `plugins/`, `marketplace.json`, or `data/sync-state.json` changed, creates a PR automatically
+2. If `plugins/`, `marketplace.json`, `.github/plugin/marketplace.json`, or `data/sync-state.json` changed, creates a PR automatically
 
 To enable: push this repo to GitHub and ensure Actions are enabled. The workflow uses `GITHUB_TOKEN` — no extra secrets required.
 
@@ -215,12 +229,12 @@ bun run sync             # full sync pipeline
 - Add Slack / Discord webhook notification on sync PR creation
 - Add CI validation: type-check + test gate before PR merge
 
-### v0.3 — Copilot-Native Integration
+### v0.3 — Copilot-Native Integration ✓
 
-- Generate `.copilot/plugins/` layout directly consumable by Copilot without manual copy
-- Produce a `copilot-marketplace.json` manifest tailored to Copilot's plugin discovery protocol
+- Standard `.github/plugin/marketplace.json` written on every sync (complete)
+- `plugin.json` now contains only official Copilot CLI manifest fields with `strict: false`
+- Per-plugin `_meta.json` sidecar preserves source platform, compatibility, and display metadata
 - Support Copilot custom instructions (`.instructions.md`) as a first-class conversion target
-- Publish a VS Code extension that reads `marketplace.json` and offers one-click plugin install into workspace
 
 ### v0.4 — Plugin Quality and Curation
 
