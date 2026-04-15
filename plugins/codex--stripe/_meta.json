@@ -2,8 +2,8 @@
   "displayName": "Stripe (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/stripe",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/stripe",
     "commitSha": "83b5c6c37251ffd7d5be0df0db02be6dc6e64df0",
     "version": "1.0.0"
   },

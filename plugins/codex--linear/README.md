@@ -3,9 +3,9 @@
 ## Source
 - Platform: codex
 - Plugin ID: codex--linear
-- Upstream: https://github.com/openai/plugins.git
+- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/linear
-- Version: undefined
+- Version: 0.0.0
 
 ## Compatibility Summary
 - Overall: partial

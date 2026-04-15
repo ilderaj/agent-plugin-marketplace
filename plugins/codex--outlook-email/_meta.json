@@ -2,8 +2,8 @@
   "displayName": "Outlook Email (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/outlook-email",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/outlook-email",
     "commitSha": "bfb04a0796c9e29717bca758876a868a32b9e4d0",
     "version": "0.1.0"
   },

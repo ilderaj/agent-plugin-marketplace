@@ -3,7 +3,7 @@
 ## Source
 - Platform: codex
 - Plugin ID: codex--figma
-- Upstream: https://github.com/openai/plugins.git
+- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/figma
 - Version: 2.0.7
 

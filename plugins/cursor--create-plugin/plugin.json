@@ -15,6 +15,11 @@
     "marketplace",
     "plugin-authoring"
   ],
+  "tags": [
+    "meta",
+    "authoring",
+    "templates"
+  ],
   "category": "developer-tools",
   "skills": "./skills/",
   "agents": "./agents/",

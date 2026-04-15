@@ -143,6 +143,7 @@
       "source": "plugins/codex--box",
       "description": "Search and reference your documents (from Codex)",
       "strict": false,
+      "version": "0.0.0",
       "author": {
         "name": "OpenAI",
         "url": "https://www.box.com/home"
@@ -463,6 +464,7 @@
       "source": "plugins/codex--linear",
       "description": "Find and reference issues and projects. (from Codex)",
       "strict": false,
+      "version": "0.0.0",
       "author": {
         "name": "OpenAI",
         "url": "https://linear.app/"
@@ -700,7 +702,13 @@
         "startup",
         "validation"
       ],
-      "category": "developer-tools"
+      "category": "developer-tools",
+      "tags": [
+        "agents",
+        "compatibility",
+        "quality",
+        "workflow"
+      ]
     },
     {
       "name": "cursor--cli-for-agent",
@@ -722,7 +730,13 @@
         "flags",
         "help"
       ],
-      "category": "developer-tools"
+      "category": "developer-tools",
+      "tags": [
+        "cli",
+        "agents",
+        "automation",
+        "developer-tools"
+      ]
     },
     {
       "name": "cursor--continual-learning",
@@ -742,7 +756,12 @@
         "hooks",
         "incremental"
       ],
-      "category": "developer-tools"
+      "category": "developer-tools",
+      "tags": [
+        "automation",
+        "memory",
+        "transcripts"
+      ]
     },
     {
       "name": "cursor--create-plugin",
@@ -761,7 +780,12 @@
         "marketplace",
         "plugin-authoring"
       ],
-      "category": "developer-tools"
+      "category": "developer-tools",
+      "tags": [
+        "meta",
+        "authoring",
+        "templates"
+      ]
     },
     {
       "name": "cursor--cursor-team-kit",
@@ -781,7 +805,12 @@
         "shipping",
         "testing"
       ],
-      "category": "developer-tools"
+      "category": "developer-tools",
+      "tags": [
+        "internal-workflows",
+        "quality",
+        "delivery"
+      ]
     },
     {
       "name": "cursor--ralph-loop",
@@ -802,7 +831,12 @@
         "automation",
         "iterative-development"
       ],
-      "category": "developer-tools"
+      "category": "developer-tools",
+      "tags": [
+        "automation",
+        "iteration",
+        "agent-loop"
+      ]
     },
     {
       "name": "cursor--teaching",
@@ -822,7 +856,12 @@
         "feedback",
         "mentorship"
       ],
-      "category": "utilities"
+      "category": "utilities",
+      "tags": [
+        "teaching",
+        "education",
+        "practice"
+      ]
     }
   ]
 }

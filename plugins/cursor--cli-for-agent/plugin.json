@@ -18,6 +18,12 @@
     "flags",
     "help"
   ],
+  "tags": [
+    "cli",
+    "agents",
+    "automation",
+    "developer-tools"
+  ],
   "category": "developer-tools",
   "skills": "./skills/",
   "strict": false

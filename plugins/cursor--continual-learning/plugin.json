@@ -16,6 +16,11 @@
     "hooks",
     "incremental"
   ],
+  "tags": [
+    "automation",
+    "memory",
+    "transcripts"
+  ],
   "category": "developer-tools",
   "skills": "./skills/",
   "agents": "./agents/",

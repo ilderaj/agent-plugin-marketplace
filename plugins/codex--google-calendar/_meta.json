@@ -2,8 +2,8 @@
   "displayName": "Google Calendar (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/google-calendar",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/google-calendar",
     "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
     "version": "1.2.0"
   },

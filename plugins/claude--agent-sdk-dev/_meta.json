@@ -2,8 +2,8 @@
   "displayName": "Agent Sdk Dev (from Claude Code)",
   "_source": {
     "platform": "claude-code",
-    "upstream": "https://github.com/anthropics/claude-code.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/agent-sdk-dev",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+    "pluginPath": "plugins/agent-sdk-dev",
     "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
     "version": "1.0.0"
   },

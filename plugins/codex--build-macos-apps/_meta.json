@@ -2,8 +2,8 @@
   "displayName": "Build Macos Apps (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/build-macos-apps",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/build-macos-apps",
     "commitSha": "c989653d89097f901adbead90921fcb82b907fad",
     "version": "0.1.2"
   },

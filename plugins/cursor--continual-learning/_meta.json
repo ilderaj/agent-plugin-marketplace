@@ -2,8 +2,8 @@
   "displayName": "Continual Learning (from Cursor)",
   "_source": {
     "platform": "cursor",
-    "upstream": "https://github.com/cursor/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/continual-learning",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/cursor.git",
+    "pluginPath": "continual-learning",
     "commitSha": "9c39b574a4c2f4374b568effd115b6dc6fbe3bf4",
     "version": "1.0.0"
   },

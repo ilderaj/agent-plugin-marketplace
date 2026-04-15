@@ -2,8 +2,8 @@
   "displayName": "Outlook Calendar (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/outlook-calendar",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/outlook-calendar",
     "commitSha": "dd74c49bdf9bafc07c085dbc45ed7774cd8e6a5c",
     "version": "0.1.0"
   },

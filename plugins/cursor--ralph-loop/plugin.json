@@ -17,6 +17,11 @@
     "automation",
     "iterative-development"
   ],
+  "tags": [
+    "automation",
+    "iteration",
+    "agent-loop"
+  ],
   "category": "developer-tools",
   "skills": "./skills/",
   "strict": false

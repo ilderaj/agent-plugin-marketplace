@@ -2,8 +2,8 @@
   "displayName": "Teaching (from Cursor)",
   "_source": {
     "platform": "cursor",
-    "upstream": "https://github.com/cursor/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/teaching",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/cursor.git",
+    "pluginPath": "teaching",
     "commitSha": "2cf89ae30b83b8e2ae2361ea457169bdc5bc74d8",
     "version": "1.0.0"
   },

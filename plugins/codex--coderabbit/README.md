@@ -3,7 +3,7 @@
 ## Source
 - Platform: codex
 - Plugin ID: codex--coderabbit
-- Upstream: https://github.com/openai/plugins.git
+- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/coderabbit
 - Version: 1.1.0
 

@@ -3,7 +3,7 @@
 ## Source
 - Platform: claude-code
 - Plugin ID: claude-code--claude-opus-4-5-migration
-- Upstream: https://github.com/anthropics/claude-code.git
+- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/claude-opus-4-5-migration
 - Version: 1.0.0
 

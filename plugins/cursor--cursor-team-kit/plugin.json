@@ -16,6 +16,11 @@
     "shipping",
     "testing"
   ],
+  "tags": [
+    "internal-workflows",
+    "quality",
+    "delivery"
+  ],
   "category": "developer-tools",
   "skills": "./skills/",
   "agents": "./agents/",

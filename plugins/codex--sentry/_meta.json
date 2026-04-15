@@ -2,8 +2,8 @@
   "displayName": "Sentry (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/sentry",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/sentry",
     "commitSha": "0a2c3b82d2ebd1da0f3dc2f09391d20da40d731c",
     "version": "0.1.0"
   },

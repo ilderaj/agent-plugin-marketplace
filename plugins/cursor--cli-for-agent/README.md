@@ -3,7 +3,7 @@
 ## Source
 - Platform: cursor
 - Plugin ID: cursor--cli-for-agent
-- Upstream: https://github.com/cursor/plugins.git
+- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/cursor.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/cli-for-agent
 - Version: 1.0.0
 

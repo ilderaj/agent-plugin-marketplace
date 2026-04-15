@@ -2,8 +2,8 @@
   "displayName": "Life Science Research (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/life-science-research",
+    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "pluginPath": "plugins/life-science-research",
     "commitSha": "fb0a18376bcd9f2604047fbe7459ec5aed70c64b",
     "version": "0.1.0"
   },

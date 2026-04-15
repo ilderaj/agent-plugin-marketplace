@@ -18,6 +18,12 @@
     "startup",
     "validation"
   ],
+  "tags": [
+    "agents",
+    "compatibility",
+    "quality",
+    "workflow"
+  ],
   "category": "developer-tools",
   "skills": "./skills/",
   "agents": "./agents/",
