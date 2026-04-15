@@ -99,6 +99,14 @@ export class SyncStateManager {
     return plugin.commitSha !== currentSha;
   }
 
+  hasPlugin(platform: string, pluginName: string): boolean {
+    return Boolean(this.state.sources[platform]?.plugins[pluginName]);
+  }
+
+  getKnownPluginNames(platform: string): string[] {
+    return Object.keys(this.state.sources[platform]?.plugins ?? {});
+  }
+
   updateSource(platform: string, repoUrl: string, lastCommit: string): void {
     const source = (this.state.sources[platform] ??= {
       repoUrl: "",

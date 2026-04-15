@@ -22,9 +22,17 @@ export interface SyncConfig {
   marketplace: MarketplaceConfig;
 }
 
+export interface SyncReportEntry {
+  name: string;
+  platform: string;
+}
+
 export interface SyncReport {
   updated: number;
   total: number;
+  added: SyncReportEntry[];
+  removed: SyncReportEntry[];
+  changed: SyncReportEntry[];
 }
 
 export interface SyncPipelineOptions {
@@ -42,6 +50,9 @@ export class SyncPipeline {
     await this.options.stateManager.load();
 
     let updated = 0;
+    const added: SyncReportEntry[] = [];
+    const changed: SyncReportEntry[] = [];
+    const removed: SyncReportEntry[] = [];
 
     for (const adapter of this.options.adapters) {
       const repoUrl = this.options.config.repoUrls[adapter.platform];
@@ -54,15 +65,23 @@ export class SyncPipeline {
       const headSha = await getHeadSha(repoDir);
       this.options.stateManager.updateSource(adapter.platform, repoUrl, headSha);
 
+      const previousPluginNames = new Set(
+        this.options.stateManager.getKnownPluginNames(adapter.platform),
+      );
+
       const discoveredPlugins = (await this.discoverPlugins(adapter, repoDir)).sort((left, right) =>
         left.name.localeCompare(right.name),
       );
+
+      const discoveredNames = new Set(discoveredPlugins.map((p) => p.name));
 
       for (const plugin of discoveredPlugins) {
         const pluginCommitSha = await getFileCommitSha(repoDir, relative(repoDir, plugin.path));
         if (!this.options.stateManager.needsUpdate(adapter.platform, plugin.name, pluginCommitSha)) {
           continue;
         }
+
+        const isNew = !this.options.stateManager.hasPlugin(adapter.platform, plugin.name);
 
         const ir = await adapter.parse(plugin.path);
         const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha, relative(repoDir, plugin.path));
@@ -78,6 +97,20 @@ export class SyncPipeline {
           lastCommit: headSha,
         });
         updated += 1;
+
+        const entry: SyncReportEntry = { name: plugin.name, platform: adapter.platform };
+        if (isNew) {
+          added.push(entry);
+        } else {
+          changed.push(entry);
+        }
+      }
+
+      // Plugins previously known but no longer discovered are removed
+      for (const name of previousPluginNames) {
+        if (!discoveredNames.has(name)) {
+          removed.push({ name, platform: adapter.platform });
+        }
       }
     }
 
@@ -88,6 +121,9 @@ export class SyncPipeline {
     return {
       updated,
       total: marketplaceEntries.length,
+      added,
+      removed,
+      changed,
     };
   }
 
