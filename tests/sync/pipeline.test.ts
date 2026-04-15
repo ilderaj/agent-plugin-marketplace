@@ -157,6 +157,7 @@ describe("SyncPipeline", () => {
         description: "GitHub integration plugin for Codex (from Codex)",
         version: "1.0.0",
         author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
+        tags: ["github", "vcs", "code-review"],
         strict: false,
       },
     ]);
@@ -200,6 +201,7 @@ describe("SyncPipeline", () => {
         description: "GitHub integration plugin for Codex (from Codex)",
         version: "1.0.0",
         author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
+        tags: ["github", "vcs", "code-review"],
         strict: false,
       },
     ]);

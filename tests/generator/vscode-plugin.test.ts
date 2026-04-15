@@ -40,6 +40,7 @@ describe('VsCodePluginGenerator', () => {
     expect(manifest.skills).toBe('./skills/');
     expect(manifest.agents).toBe('./agents/');
     expect(manifest.hooks).toBe('./hooks/hooks.json');
+    expect(manifest.tags).toEqual(['github', 'vcs', 'code-review']);
     expect(manifest.displayName).toBeUndefined();
     expect(manifest._source).toBeUndefined();
     expect(manifest._compatibility).toBeUndefined();
@@ -227,5 +228,20 @@ describe('VsCodePluginGenerator', () => {
     expect(meta._source).toHaveProperty('pluginPath');
     expect(meta._source).toHaveProperty('commitSha');
     expect(meta._source).toHaveProperty('version');
+  });
+
+  test('tags round-trip: adapter parses tags, plugin.json and marketplace entry both carry them', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'tags-roundtrip');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    // IR must carry tags from the fixture manifest
+    expect(ir.manifest.tags).toEqual(['github', 'vcs', 'code-review']);
+
+    // plugin.json must include tags
+    const manifest = await readJson(join(outDir, 'plugin.json'));
+    expect(manifest.tags).toEqual(['github', 'vcs', 'code-review']);
   });
 });

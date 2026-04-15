@@ -8,6 +8,7 @@
     "url": "https://openai.com"
   },
   "license": "MIT",
+  "tags": ["github", "vcs", "code-review"],
   "skills": ["skills/github"],
   "hooks": "hooks.json",
   "interface": "agent"

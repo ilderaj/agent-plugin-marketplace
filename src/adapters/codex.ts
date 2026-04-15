@@ -119,6 +119,7 @@ export class CodexAdapter implements SourceAdapter {
       homepage: pluginJson.homepage,
       repository: pluginJson.repository,
       keywords: pluginJson.keywords,
+      tags: pluginJson.tags,
       category: pluginJson.category,
       logo: pluginJson.logo,
       raw: pluginJson,

@@ -62,6 +62,7 @@ export class VsCodePluginGenerator {
       homepage: ir.manifest.homepage,
       repository: ir.manifest.repository,
       keywords: ir.manifest.keywords,
+      tags: ir.manifest.tags,
       category: ir.manifest.category,
       ...(ir.components.skills.length > 0 ? { skills: './skills/' as const } : {}),
       ...(ir.components.agents.length > 0 ? { agents: './agents/' as const } : {}),

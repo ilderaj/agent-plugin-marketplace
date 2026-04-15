@@ -70,6 +70,52 @@ describe('MarketplaceGenerator', () => {
     expect(entry.strict).toBe(false);
   });
 
+  test('createMarketplaceEntry populates tags from IR when present', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const entry = createMarketplaceEntry(ir);
+
+    expect(entry.tags).toEqual(['github', 'vcs', 'code-review']);
+  });
+
+  test('createMarketplaceEntry omits tags when absent from IR', async () => {
+    const ir = await new ClaudeAdapter().parse(join(FIXTURES_DIR, 'claude-code-review'));
+    const entry = createMarketplaceEntry(ir);
+
+    expect(entry.tags).toBeUndefined();
+  });
+
+  test('createMarketplaceEntryFromManifests preserves tags round-trip', () => {
+    const official: OfficialPluginManifest = {
+      name: 'codex--github',
+      version: '1.0.0',
+      description: 'GitHub integration plugin for Codex',
+      author: { name: 'OpenAI', email: 'support@openai.com' },
+      tags: ['github', 'vcs', 'code-review'],
+      strict: false,
+    };
+
+    const meta: MetaPluginManifest = {
+      displayName: 'GitHub (from Codex)',
+      _source: {
+        platform: 'codex',
+        upstream: 'https://github.com/openai/codex.git',
+        pluginPath: '/fixtures/codex-github',
+        commitSha: 'abc123',
+        version: '1.0.0',
+      },
+      _compatibility: {
+        overall: 'full',
+        notes: [],
+        warnings: [],
+        droppedComponents: [],
+      },
+    };
+
+    const entry = createMarketplaceEntryFromManifests(official, meta);
+
+    expect(entry.tags).toEqual(['github', 'vcs', 'code-review']);
+  });
+
   test('createMarketplaceEntryFromManifests builds entry from official + meta manifests', () => {
     const official: OfficialPluginManifest = {
       name: 'codex--github',

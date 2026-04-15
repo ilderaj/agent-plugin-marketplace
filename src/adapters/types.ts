@@ -63,6 +63,7 @@ export interface ManifestInfo {
   homepage?: string;
   repository?: string;
   keywords?: string[];
+  tags?: string[];
   category?: string;
   logo?: string;
   raw: unknown;

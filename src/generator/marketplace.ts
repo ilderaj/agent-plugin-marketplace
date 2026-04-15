@@ -92,6 +92,7 @@ export function createMarketplaceEntry(ir: PluginIR): MarketplacePluginEntry {
   if (author) entry.author = author;
   if (ir.manifest.repository) entry.repository = ir.manifest.repository;
   if (ir.manifest.keywords) entry.keywords = ir.manifest.keywords;
+  if (ir.manifest.tags) entry.tags = ir.manifest.tags;
   if (ir.manifest.category) entry.category = ir.manifest.category;
 
   return entry;
