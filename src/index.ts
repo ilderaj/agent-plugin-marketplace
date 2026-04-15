@@ -1,10 +1,12 @@
 import { join } from "path";
+import { writeFile } from "fs/promises";
 import { ClaudeAdapter } from "./adapters/claude";
 import { CodexAdapter } from "./adapters/codex";
 import { CursorAdapter } from "./adapters/cursor";
 import { MarketplaceGenerator } from "./generator/marketplace";
 import { VsCodePluginGenerator } from "./generator/vscode-plugin";
 import { SyncPipeline, type SyncConfig, type SyncReport } from "./sync/pipeline";
+import { formatSyncReportAsMarkdown } from "./sync/report-formatter";
 import { SyncStateManager } from "./sync/sync-state";
 
 const DEFAULT_REPO_URLS = {
@@ -76,6 +78,12 @@ export async function main(
   try {
     const report = await pipeline.run();
     logger.log(`Synced ${report.updated}/${report.total} plugins`);
+
+    const reportPath = Bun.env.SYNC_REPORT_PATH;
+    if (reportPath) {
+      await writeFile(reportPath, formatSyncReportAsMarkdown(report), "utf-8");
+    }
+
     return report;
   } catch (error) {
     logger.error(`Sync failed: ${error instanceof Error ? error.message : String(error)}`);
