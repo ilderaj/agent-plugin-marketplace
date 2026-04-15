@@ -1,0 +1,18 @@
+{
+  "displayName": "Test Android Apps (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/test-android-apps",
+    "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Agent definitions require format conversion"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

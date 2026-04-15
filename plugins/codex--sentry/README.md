@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--sentry
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/sentry
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/sentry
 - Version: 0.1.0
 
 ## Compatibility Summary

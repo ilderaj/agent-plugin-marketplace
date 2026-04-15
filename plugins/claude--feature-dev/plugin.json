@@ -1,6 +1,5 @@
 {
   "name": "claude--feature-dev",
-  "displayName": "Feature Dev (from Claude Code)",
   "version": "1.0.0",
   "description": "Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review",
   "author": {
@@ -8,19 +7,5 @@
     "email": "sbidasaria@anthropic.com"
   },
   "agents": "./agents/",
-  "_source": {
-    "platform": "claude-code",
-    "upstream": "https://github.com/anthropics/claude-code.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/feature-dev",
-    "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
-    "version": "1.0.0"
-  },
-  "_compatibility": {
-    "overall": "partial",
-    "notes": [
-      "Agent: partial — Claude markdown agents may require format conversion for other platforms"
-    ],
-    "warnings": [],
-    "droppedComponents": []
-  }
+  "strict": false
 }

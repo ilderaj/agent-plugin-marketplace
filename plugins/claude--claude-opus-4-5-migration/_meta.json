@@ -1,0 +1,18 @@
+{
+  "displayName": "Claude Opus 4 5 Migration (from Claude Code)",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "plugins/claude-opus-4-5-migration",
+    "commitSha": "a194a9d41b7384879fe88368d67367d7ae1a59e7",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

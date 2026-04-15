@@ -1,0 +1,19 @@
+{
+  "displayName": "Hookify (from Claude Code)",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "plugins/hookify",
+    "commitSha": "59372c0921b0170e81f9c63777962d02347411d5",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      "Agent: partial — Claude markdown agents may require format conversion for other platforms"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

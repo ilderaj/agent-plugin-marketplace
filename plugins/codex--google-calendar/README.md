@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--google-calendar
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/google-calendar
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/google-calendar
 - Version: 1.2.0
 
 ## Compatibility Summary

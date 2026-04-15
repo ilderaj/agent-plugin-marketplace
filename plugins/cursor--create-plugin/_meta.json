@@ -1,0 +1,22 @@
+{
+  "displayName": "Create Plugin (from Cursor)",
+  "_source": {
+    "platform": "cursor",
+    "upstream": "https://github.com/cursor/plugins.git",
+    "pluginPath": "create-plugin",
+    "commitSha": "82d7c797faccace88376505c1ae7d06cb84a549f",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      "Agent: partial — Agent definitions require format conversion",
+      "Rules: partial — converted to VS Code `.instructions.md` files"
+    ],
+    "warnings": [
+      "Cursor .mdc rules require conversion to VS Code .instructions.md files"
+    ],
+    "droppedComponents": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "displayName": "Cursor Team Kit (from Cursor)",
+  "_source": {
+    "platform": "cursor",
+    "upstream": "https://github.com/cursor/plugins.git",
+    "pluginPath": "cursor-team-kit",
+    "commitSha": "469d9f7d7885e0f6dcaa46ad66228b8a150380c0",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      "Agent: partial — Agent definitions require format conversion",
+      "Rules: partial — converted to VS Code `.instructions.md` files"
+    ],
+    "warnings": [
+      "Cursor .mdc rules require conversion to VS Code .instructions.md files"
+    ],
+    "droppedComponents": []
+  }
+}

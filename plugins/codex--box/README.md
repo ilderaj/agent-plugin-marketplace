@@ -4,8 +4,8 @@
 - Platform: codex
 - Plugin ID: codex--box
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/box
-- Version: undefined
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/box
+- Version: 0.0.0
 
 ## Compatibility Summary
 - Overall: partial

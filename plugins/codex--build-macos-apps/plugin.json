@@ -1,6 +1,5 @@
 {
   "name": "codex--build-macos-apps",
-  "displayName": "Build Macos Apps (from Codex)",
   "version": "0.1.2",
   "description": "Build, run, test, debug, instrument, and implement local macOS apps using Xcode, SwiftUI, AppKit interop, unified logging, and shell-first desktop workflows.",
   "author": {
@@ -25,19 +24,5 @@
     "oslog"
   ],
   "agents": "./agents/",
-  "_source": {
-    "platform": "codex",
-    "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/build-macos-apps",
-    "commitSha": "c989653d89097f901adbead90921fcb82b907fad",
-    "version": "0.1.2"
-  },
-  "_compatibility": {
-    "overall": "partial",
-    "notes": [
-      "Agent: partial — Agent definitions require format conversion"
-    ],
-    "warnings": [],
-    "droppedComponents": []
-  }
+  "strict": false
 }

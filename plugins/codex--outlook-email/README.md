@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--outlook-email
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/outlook-email
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/outlook-email
 - Version: 0.1.0
 
 ## Compatibility Summary

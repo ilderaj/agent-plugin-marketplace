@@ -1,4 +1,4 @@
-import type { ManifestAuthor, Platform, PluginIR } from '../adapters/types';
+import type { Compatibility, DroppedComponent, ManifestAuthor, Platform, PluginIR } from '../adapters/types';
 import { normalizeGeneratedPluginName, platformLabel } from './vscode-plugin';
 
 export interface MarketplaceConfig {
@@ -13,6 +13,13 @@ export interface MarketplacePluginEntry {
   name: string;
   source: string;
   description: string;
+  version?: string;
+  author?: ManifestAuthor;
+  repository?: string;
+  keywords?: string[];
+  category?: string;
+  tags?: string[];
+  strict: boolean;
 }
 
 export interface MarketplaceDocument {
@@ -22,31 +29,95 @@ export interface MarketplaceDocument {
   plugins: MarketplacePluginEntry[];
 }
 
-export interface GeneratedPluginMarketplaceManifest {
+/** Official plugin manifest — written to `plugin.json` (Copilot CLI compatible). */
+export interface OfficialPluginManifest {
   name: string;
+  version: string;
   description: string;
+  author?: ManifestAuthor;
+  license?: string;
+  homepage?: string;
+  repository?: string;
+  keywords?: string[];
+  category?: string;
+  tags?: string[];
+  skills?: './skills/';
+  agents?: './agents/';
+  hooks?: './hooks/hooks.json';
+  mcpServers?: './.mcp.json';
+  strict: false;
+}
+
+/** Meta sidecar — written to `_meta.json` (internal use, not part of the official manifest). */
+export interface MetaPluginManifest {
+  displayName: string;
   _source: {
     platform: Platform;
+    upstream: string;
+    pluginPath: string;
+    commitSha: string;
+    version: string;
   };
+  _compatibility: {
+    overall: Compatibility['overall'];
+    notes: string[];
+    warnings: string[];
+    droppedComponents: DroppedComponent[];
+  };
+}
+
+/** Returns a sanitized author suitable for inclusion in marketplace.json, or undefined if invalid. */
+function sanitizeAuthor(author: ManifestAuthor | undefined): ManifestAuthor | undefined {
+  if (!author?.name) return undefined;
+  const sanitized: ManifestAuthor = { name: author.name };
+  // Only include email if it is a single valid email address
+  if (author.email && /^[^\s@,]+@[^\s@,]+\.[^\s@,]+$/.test(author.email)) {
+    sanitized.email = author.email;
+  }
+  if (author.url) sanitized.url = author.url;
+  return sanitized;
 }
 
 export function createMarketplaceEntry(ir: PluginIR): MarketplacePluginEntry {
   const name = normalizeGeneratedPluginName(ir);
-  return {
+  const entry: MarketplacePluginEntry = {
     name,
     source: `plugins/${name}`,
     description: `${ir.manifest.description} (from ${platformLabel(ir.source.platform)})`,
+    strict: false,
   };
+
+  if (ir.manifest.version) entry.version = ir.manifest.version;
+  const author = sanitizeAuthor(ir.manifest.author);
+  if (author) entry.author = author;
+  if (ir.manifest.repository) entry.repository = ir.manifest.repository;
+  if (ir.manifest.keywords) entry.keywords = ir.manifest.keywords;
+  if (ir.manifest.tags) entry.tags = ir.manifest.tags;
+  if (ir.manifest.category) entry.category = ir.manifest.category;
+
+  return entry;
 }
 
-export function createMarketplaceEntryFromGeneratedManifest(
-  manifest: GeneratedPluginMarketplaceManifest,
+export function createMarketplaceEntryFromManifests(
+  official: OfficialPluginManifest,
+  meta: MetaPluginManifest,
 ): MarketplacePluginEntry {
-  return {
-    name: manifest.name,
-    source: `plugins/${manifest.name}`,
-    description: `${manifest.description} (from ${platformLabel(manifest._source.platform)})`,
+  const entry: MarketplacePluginEntry = {
+    name: official.name,
+    source: `plugins/${official.name}`,
+    description: `${official.description} (from ${platformLabel(meta._source.platform)})`,
+    strict: false,
   };
+
+  if (official.version) entry.version = official.version;
+  const author = sanitizeAuthor(official.author);
+  if (author) entry.author = author;
+  if (official.repository) entry.repository = official.repository;
+  if (official.keywords) entry.keywords = official.keywords;
+  if (official.category) entry.category = official.category;
+  if (official.tags) entry.tags = official.tags;
+
+  return entry;
 }
 
 export class MarketplaceGenerator {

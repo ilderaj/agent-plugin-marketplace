@@ -4,7 +4,7 @@
 - Platform: claude-code
 - Plugin ID: claude-code--commit-commands
 - Upstream: https://github.com/anthropics/claude-code.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/commit-commands
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/commit-commands
 - Version: 1.0.0
 
 ## Compatibility Summary

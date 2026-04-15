@@ -1,0 +1,25 @@
+{
+  "displayName": "Netlify (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/netlify",
+    "commitSha": "b4940fd0a222022ecd7852e20a4c89ed36b9e9de",
+    "version": "1.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}
