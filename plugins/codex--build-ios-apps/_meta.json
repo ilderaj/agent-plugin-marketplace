@@ -2,7 +2,7 @@
   "displayName": "Build Ios Apps (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/build-ios-apps",
     "commitSha": "c87105903f39c2150438927e41988ff3d17e5648",
     "version": "0.1.0"

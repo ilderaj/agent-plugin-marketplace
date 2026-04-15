@@ -3,7 +3,7 @@
 ## Source
 - Platform: claude-code
 - Plugin ID: claude-code--commit-commands
-- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git
+- Upstream: https://github.com/anthropics/claude-code.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/commit-commands
 - Version: 1.0.0
 

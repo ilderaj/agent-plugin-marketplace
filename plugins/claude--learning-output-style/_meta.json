@@ -2,7 +2,7 @@
   "displayName": "Learning Output Style (from Claude Code)",
   "_source": {
     "platform": "claude-code",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+    "upstream": "https://github.com/anthropics/claude-code.git",
     "pluginPath": "plugins/learning-output-style",
     "commitSha": "3af8ef29be10d2f0dc98ee5db4ae7e9558ff48e5",
     "version": "1.0.0"

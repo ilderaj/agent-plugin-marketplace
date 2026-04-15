@@ -2,7 +2,7 @@
   "displayName": "Figma (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/figma",
     "commitSha": "78e4d982f8f0610d8d0f83140b90ea41acb8bd66",
     "version": "2.0.7"

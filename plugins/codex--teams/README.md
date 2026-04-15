@@ -3,7 +3,7 @@
 ## Source
 - Platform: codex
 - Plugin ID: codex--teams
-- Upstream: file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git
+- Upstream: https://github.com/openai/plugins.git
 - Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/teams
 - Version: 0.1.0
 

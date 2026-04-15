@@ -2,7 +2,7 @@
   "displayName": "Frontend Design (from Claude Code)",
   "_source": {
     "platform": "claude-code",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+    "upstream": "https://github.com/anthropics/claude-code.git",
     "pluginPath": "plugins/frontend-design",
     "commitSha": "c91a6b660de1b1a607f8d7ec3eea53ec567d710a",
     "version": "1.0.0"

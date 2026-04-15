@@ -2,7 +2,7 @@
   "displayName": "Pr Review Toolkit (from Claude Code)",
   "_source": {
     "platform": "claude-code",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+    "upstream": "https://github.com/anthropics/claude-code.git",
     "pluginPath": "plugins/pr-review-toolkit",
     "commitSha": "f7ab5c799caf2ec8c7cd1b99d2bc2f158459ef5e",
     "version": "1.0.0"

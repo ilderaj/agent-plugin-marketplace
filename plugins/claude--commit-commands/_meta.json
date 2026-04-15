@@ -2,7 +2,7 @@
   "displayName": "Commit Commands (from Claude Code)",
   "_source": {
     "platform": "claude-code",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+    "upstream": "https://github.com/anthropics/claude-code.git",
     "pluginPath": "plugins/commit-commands",
     "commitSha": "207b22de658ee343561159f576fd8c6f0e97c7ae",
     "version": "1.0.0"

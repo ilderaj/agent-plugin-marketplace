@@ -2,7 +2,7 @@
   "displayName": "Create Plugin (from Cursor)",
   "_source": {
     "platform": "cursor",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/cursor.git",
+    "upstream": "https://github.com/cursor/plugins.git",
     "pluginPath": "create-plugin",
     "commitSha": "82d7c797faccace88376505c1ae7d06cb84a549f",
     "version": "1.0.0"

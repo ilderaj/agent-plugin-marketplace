@@ -2,7 +2,7 @@
   "displayName": "Build Web Apps (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/build-web-apps",
     "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
     "version": "0.1.0"

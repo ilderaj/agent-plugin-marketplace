@@ -2,7 +2,7 @@
   "displayName": "Coderabbit (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/coderabbit",
     "commitSha": "1f87561ac4dae225447336612b9304903921bb85",
     "version": "1.1.0"

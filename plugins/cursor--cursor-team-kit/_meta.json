@@ -2,7 +2,7 @@
   "displayName": "Cursor Team Kit (from Cursor)",
   "_source": {
     "platform": "cursor",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/cursor.git",
+    "upstream": "https://github.com/cursor/plugins.git",
     "pluginPath": "cursor-team-kit",
     "commitSha": "469d9f7d7885e0f6dcaa46ad66228b8a150380c0",
     "version": "1.0.0"

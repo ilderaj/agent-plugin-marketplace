@@ -2,7 +2,7 @@
   "displayName": "Box (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/box",
     "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
     "version": "0.0.0"

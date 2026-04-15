@@ -2,7 +2,7 @@
   "displayName": "Security Guidance (from Claude Code)",
   "_source": {
     "platform": "claude-code",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+    "upstream": "https://github.com/anthropics/claude-code.git",
     "pluginPath": "plugins/security-guidance",
     "commitSha": "f876b851167130da1fac34f655a1ae55aa31a068",
     "version": "1.0.0"

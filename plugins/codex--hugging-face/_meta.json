@@ -2,7 +2,7 @@
   "displayName": "Hugging Face (from Codex)",
   "_source": {
     "platform": "codex",
-    "upstream": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+    "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/hugging-face",
     "commitSha": "d58c20d407d49fd63ac2fb07c0c4dcdf7bbdc35d",
     "version": "1.0.0"

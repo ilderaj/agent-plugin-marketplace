@@ -2,7 +2,7 @@
   "lastSyncAt": "2026-04-15T16:06:24.202Z",
   "sources": {
     "codex": {
-      "repoUrl": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/codex.git",
+      "repoUrl": "https://github.com/openai/plugins.git",
       "lastCommit": "689b4b481d14af5234d311d42b0fb7e9375f699b",
       "plugins": {
         "box": {
@@ -120,7 +120,7 @@
       }
     },
     "claude-code": {
-      "repoUrl": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/claude-code.git",
+      "repoUrl": "https://github.com/anthropics/claude-code.git",
       "lastCommit": "f348a16da8280fced433f24ede16de612dd55ffd",
       "plugins": {
         "agent-sdk-dev": {
@@ -174,7 +174,7 @@
       }
     },
     "cursor": {
-      "repoUrl": "file:///Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/local-mirrors/cursor.git",
+      "repoUrl": "https://github.com/cursor/plugins.git",
       "lastCommit": "08c2bbe2ae8a022a21dc6c32faf611f14a6e8343",
       "plugins": {
         "agent-compatibility": {
