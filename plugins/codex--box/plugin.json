@@ -1,0 +1,34 @@
+{
+  "name": "codex--box",
+  "displayName": "Box (from Codex)",
+  "description": "Search and reference your documents",
+  "author": {
+    "name": "OpenAI",
+    "url": "https://www.box.com/home"
+  },
+  "license": "MIT",
+  "homepage": "https://www.box.com/home",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/box",
+    "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

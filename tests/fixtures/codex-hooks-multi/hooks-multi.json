@@ -1,0 +1,14 @@
+{
+  "hooks": [
+    {
+      "name": "pr-hook",
+      "events": ["onPullRequest"],
+      "tool": "gh"
+    },
+    {
+      "name": "commit-hook",
+      "events": ["onCommit", "onPush"],
+      "tool": "git"
+    }
+  ]
+}

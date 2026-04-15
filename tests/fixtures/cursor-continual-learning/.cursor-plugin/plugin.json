@@ -1,0 +1,16 @@
+{
+  "name": "continual-learning",
+  "version": "0.8.0",
+  "description": "Continual learning and knowledge accumulation for Cursor",
+  "author": {
+    "name": "Cursor Team",
+    "email": "hello@cursor.com"
+  },
+  "license": "Apache-2.0",
+  "skills": ["skills/learning"],
+  "agents": ["agents/learner.md"],
+  "hooks": "hooks/hooks.json",
+  "mcp": "mcp.json",
+  "rules": ["rules/learning-context.mdc", "rules/typescript-rules.mdc"],
+  "commands": ["commands/analyze.sh"]
+}

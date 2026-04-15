@@ -1,0 +1,14 @@
+{
+  "servers": {
+    "code-analyzer": {
+      "command": "npx",
+      "args": ["code-analyzer-mcp"],
+      "transport": "stdio"
+    },
+    "linter": {
+      "command": "npx",
+      "args": ["linter-mcp"],
+      "transport": "sse"
+    }
+  }
+}

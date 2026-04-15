@@ -1,0 +1,26 @@
+{
+  "name": "claude--pr-review-toolkit",
+  "displayName": "Pr Review Toolkit (from Claude Code)",
+  "version": "1.0.0",
+  "description": "Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification",
+  "author": {
+    "name": "Daisy",
+    "email": "daisy@anthropic.com"
+  },
+  "agents": "./agents/",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/pr-review-toolkit",
+    "commitSha": "f7ab5c799caf2ec8c7cd1b99d2bc2f158459ef5e",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Claude markdown agents may require format conversion for other platforms"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

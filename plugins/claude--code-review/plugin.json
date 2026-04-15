@@ -1,0 +1,23 @@
+{
+  "name": "claude--code-review",
+  "displayName": "Code Review (from Claude Code)",
+  "version": "1.0.0",
+  "description": "Automated code review for pull requests using multiple specialized agents with confidence-based scoring",
+  "author": {
+    "name": "Boris Cherny",
+    "email": "boris@anthropic.com"
+  },
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/code-review",
+    "commitSha": "db8834ba1d72e9a26fba30ac85f3bc4316bb0689",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

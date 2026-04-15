@@ -1,0 +1,42 @@
+{
+  "name": "codex--hugging-face",
+  "displayName": "Hugging Face (from Codex)",
+  "version": "1.0.0",
+  "description": "Inspect models, datasets, Spaces, and research",
+  "author": {
+    "name": "Hugging Face",
+    "url": "https://huggingface.co"
+  },
+  "license": "MIT",
+  "homepage": "https://huggingface.co",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "hugging-face",
+    "models",
+    "datasets",
+    "spaces",
+    "machine-learning"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/hugging-face",
+    "commitSha": "d58c20d407d49fd63ac2fb07c0c4dcdf7bbdc35d",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

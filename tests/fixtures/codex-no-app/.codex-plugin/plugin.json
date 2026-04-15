@@ -1,0 +1,12 @@
+{
+  "name": "test-no-app",
+  "displayName": "Test Plugin Without App",
+  "version": "1.0.0",
+  "description": "Test plugin for compatibility testing",
+  "author": {
+    "name": "Test"
+  },
+  "license": "MIT",
+  "skills": ["skills/test"],
+  "hooks": "hooks.json"
+}

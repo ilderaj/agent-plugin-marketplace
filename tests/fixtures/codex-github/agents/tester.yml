@@ -1,0 +1,6 @@
+name: tester
+description: Test automation agent
+version: 1.0.0
+capabilities:
+  - test-generation
+  - test-execution

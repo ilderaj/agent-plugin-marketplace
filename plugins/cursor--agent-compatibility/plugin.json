@@ -1,0 +1,40 @@
+{
+  "name": "cursor--agent-compatibility",
+  "displayName": "Agent Compatibility (from Cursor)",
+  "version": "1.0.0",
+  "description": "CLI-backed repo compatibility scans plus Cursor agents that audit startup, validation, and docs against reality.",
+  "author": {
+    "name": "Cursor",
+    "email": "plugins@cursor.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/cursor/plugins/tree/main/agent-compatibility",
+  "repository": "https://github.com/cursor/plugins",
+  "keywords": [
+    "agent-compatibility",
+    "agents",
+    "compatibility",
+    "cursor-plugin",
+    "repo-audit",
+    "startup",
+    "validation"
+  ],
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "_source": {
+    "platform": "cursor",
+    "upstream": "https://github.com/cursor/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/cursor/agent-compatibility",
+    "commitSha": "f006be721cf80886bfa0055872cd8bc39ec4cd02",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      "Agent: partial — Agent definitions require format conversion"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

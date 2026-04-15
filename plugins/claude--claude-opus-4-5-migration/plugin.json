@@ -1,0 +1,26 @@
+{
+  "name": "claude--claude-opus-4-5-migration",
+  "displayName": "Claude Opus 4 5 Migration (from Claude Code)",
+  "version": "1.0.0",
+  "description": "Migrate your code and prompts from Sonnet 4.x and Opus 4.1 to Opus 4.5.",
+  "author": {
+    "name": "William Hu",
+    "email": "whu@anthropic.com"
+  },
+  "skills": "./skills/",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/claude-opus-4-5-migration",
+    "commitSha": "a194a9d41b7384879fe88368d67367d7ae1a59e7",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

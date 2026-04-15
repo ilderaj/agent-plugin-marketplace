@@ -1,0 +1,10 @@
+{
+  "appId": "github-connector",
+  "version": "1.0.0",
+  "connectors": [
+    {
+      "type": "github",
+      "endpoint": "https://api.github.com"
+    }
+  ]
+}

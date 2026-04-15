@@ -1,0 +1,42 @@
+{
+  "name": "codex--build-ios-apps",
+  "displayName": "Build Ios Apps (from Codex)",
+  "version": "0.1.0",
+  "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance audits, and simulator debugging.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://openai.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "ios",
+    "swift",
+    "swiftui",
+    "app-intents",
+    "shortcuts",
+    "siri",
+    "spotlight",
+    "xcode",
+    "performance",
+    "debugging"
+  ],
+  "agents": "./agents/",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/build-ios-apps",
+    "commitSha": "c87105903f39c2150438927e41988ff3d17e5648",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Agent definitions require format conversion"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}
