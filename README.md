@@ -1,153 +1,251 @@
-# agent-plugin-marketplace
+# Agent Plugin Marketplace
 
-A Bun-based sync pipeline that pulls official plugin repositories from Codex, Claude Code, and Cursor, converts them into VS Code-compatible plugin packages, and writes a marketplace manifest that can be consumed from Git.
+Cross-platform agent plugin sync pipeline. Pulls plugins from **Codex**, **Claude Code**, and **Cursor** upstream repos, converts them to **VS Code / GitHub Copilot** compatible format, and publishes a Git-hosted marketplace manifest.
 
-## What this repository does
-
-This repository syncs upstream agent plugin ecosystems and republishes them in a VS Code marketplace-friendly layout.
-
-Today, the implemented CLI entrypoint is `sync`:
-
-- clone or update upstream plugin repositories
-- discover supported plugins through platform adapters
-- normalize each plugin into a shared intermediate representation (IR)
-- generate VS Code-oriented plugin outputs under `plugins/`
-- generate `marketplace.json`
-- persist sync metadata in `data/sync-state.json`
-
-## Supported platforms
-
-- Codex
-- Claude Code
-- Cursor
-
-## Install and run locally
-
-### Prerequisites
-
-- [Bun](https://bun.sh/)
-- [Git](https://git-scm.com/)
-
-### Install dependencies
+## Quick Start
 
 ```bash
 bun install
+bun run sync        # clone upstreams → convert → generate marketplace.json
 ```
 
-### Run a local sync
+Outputs:
+
+| Path | Purpose |
+|------|---------|
+| `plugins/` | Generated VS Code plugin directories |
+| `marketplace.json` | Marketplace manifest listing all plugins |
+| `data/sync-state.json` | Incremental sync bookkeeping |
+| `.cache/sync/` | Local upstream repo clones (gitignored) |
+
+---
+
+## Using Plugins in GitHub Copilot
+
+### Option A: Use This Git Marketplace Directly
+
+Point your Copilot / VS Code agent configuration at this repository's Git URL. The repository contains a ready-to-consume `marketplace.json` and a full `plugins/` tree.
+
+**Steps:**
+
+1. Clone or add this repo as a Git-based marketplace source in your VS Code agent plugin settings.
+2. In VS Code, open the Command Palette → search for marketplace or plugin management related commands.
+3. Add the Git repository URL (e.g. `https://github.com/<you>/agent-plugin-marketplace.git`) as a marketplace source.
+4. Browse and install plugins from the marketplace panel. Each plugin is a self-contained directory under `plugins/<name>/`.
+
+You can also cherry-pick a single plugin by copying its `plugins/<name>/` directory into your local `.github/copilot/` or `.copilot/` instructions tree.
+
+### Option B: Self-Hosted — Fork and Customize
+
+Fork this repository, then run the sync pipeline yourself to maintain your own marketplace with customizations.
 
 ```bash
+# 1. Fork and clone
+git clone https://github.com/<you>/agent-plugin-marketplace.git
+cd agent-plugin-marketplace
+
+# 2. Install and sync
+bun install
+bun run sync
+
+# 3. Review generated plugins, customize as needed
+# 4. Push — your fork is now a live marketplace
+git add -A && git commit -m "chore: sync upstream plugins" && git push
+```
+
+**To override upstream repo URLs** (e.g. private forks):
+
+```bash
+CODEX_REPO_URL=https://github.com/your-org/codex-plugins.git \
+CLAUDE_CODE_REPO_URL=https://github.com/your-org/claude-plugins.git \
+CURSOR_REPO_URL=https://github.com/your-org/cursor-plugins.git \
 bun run sync
 ```
 
-This runs `src/index.ts sync` and executes the full sync pipeline.
+### Option C: Manual Plugin Install
 
-## Generated outputs
-
-Running `bun run sync` writes or updates these repository artifacts:
-
-- `plugins/` — generated VS Code plugin directories, one directory per normalized plugin name
-- `marketplace.json` — marketplace manifest that lists generated plugins with relative `plugins/<name>` sources
-- `data/sync-state.json` — sync bookkeeping used to detect unchanged upstream plugins between runs
-
-The pipeline also keeps local upstream clones in `.cache/sync/`.
-
-## Using the generated marketplace in VS Code
-
-This repository is meant to be published to a Git remote that contains both `marketplace.json` and the `plugins/` directory.
-
-Generic setup flow:
-
-1. Push this repository to a Git host that VS Code or your marketplace consumer can access.
-2. Configure your VS Code marketplace integration to use the Git-hosted marketplace source for this repo.
-3. Point that integration at the repository content that includes `marketplace.json` and the generated `plugins/` tree.
-4. Refresh or reload the marketplace integration so it re-reads the manifest.
-
-The exact UI labels depend on the VS Code extension or internal tooling you use, so this README intentionally avoids hard-coded menu text.
-
-## Current compatibility and limitations
-
-This project focuses on practical conversion, not perfect platform parity.
-
-- Codex `.app.json` is detected but not emitted in generated VS Code plugins.
-- Command files are copied into generated plugins, but they may need manual verification before relying on them in VS Code.
-- Cursor rules are converted into VS Code `.instructions.md` files.
-- Generated output does not guarantee 1:1 parity with the upstream platform behavior.
-- Compatibility is tracked per generated plugin inside its `plugin.json` metadata.
-- In practice, only the `sync` CLI flow is implemented and documented as supported.
-
-## Architecture and data flow
-
-```text
-Codex repo      Claude Code repo      Cursor repo
-     \               |                 /
-      \              |                /
-       +-------- platform adapters ----+
-                        |
-                        v
-                   Plugin IR
-                        |
-          +-------------+-------------+
-          |                           |
-          v                           v
-VsCodePluginGenerator          MarketplaceGenerator
-          |                           |
-          v                           v
-      plugins/<name>/            marketplace.json
-                        |
-                        v
-               SyncStateManager
-                        |
-                        v
-               data/sync-state.json
-```
-
-## Core pipeline pieces
-
-- `src/adapters/` — platform-specific discovery and parsing
-- `src/generator/vscode-plugin.ts` — writes generated plugin folders and compatibility metadata
-- `src/generator/marketplace.ts` — builds the top-level marketplace document
-- `src/sync/pipeline.ts` — orchestrates cloning, parsing, generation, and state updates
-- `src/index.ts` — CLI entrypoint that currently supports `sync`
-
-## CI automation
-
-`.github/workflows/sync.yml` installs dependencies with Bun and runs:
+Copy any plugin directory straight into your project:
 
 ```bash
-bun run sync
+# Copy a single plugin into your workspace
+cp -r plugins/claude--code-review/ .github/copilot/plugins/code-review/
+
+# Or symlink for easy updates
+ln -s "$(pwd)/plugins/claude--code-review" .github/copilot/plugins/code-review
 ```
 
-If `plugins/`, `marketplace.json`, or `data/sync-state.json` changed, the workflow opens a pull request with the synced output.
+Skills (`.md` files), agents, and instructions are immediately available to Copilot after reload.
 
-## Contributing and extending
+---
 
-### Add a new adapter
+## How the Sync Pipeline Works
 
-To support another upstream plugin ecosystem:
+```mermaid
+flowchart TD
+    codex[Codex repo] --> codexAdapter[CodexAdapter]
+    claude[Claude Code repo] --> claudeAdapter[ClaudeAdapter]
+    cursor[Cursor repo] --> cursorAdapter[CursorAdapter]
 
-1. Add a new adapter in `src/adapters/` that implements the `SourceAdapter` interface.
-2. Make the adapter discover upstream plugins and parse them into the shared `PluginIR` shape.
-3. Register the adapter in `createPipeline()` in `src/index.ts`.
-4. Reuse the existing generators unless the new platform introduces a format that requires generator changes.
-5. Add tests that cover discovery, parsing, compatibility, and sync behavior.
+    codexAdapter --> ir[Plugin IR<br/>unified intermediate representation]
+    claudeAdapter --> ir
+    cursorAdapter --> ir
 
-### Data flow to keep in mind
+    ir --> vscodeGen[VsCodePluginGenerator]
+    ir --> marketplaceGen[MarketplaceGenerator]
 
-The repository is organized around this path:
+    vscodeGen --> plugins[plugins/<name>/]
+    marketplaceGen --> marketplace[marketplace.json]
 
-`adapter -> IR -> generator -> marketplace -> sync pipeline`
+    plugins --> state[SyncStateManager]
+    marketplace --> state
+    state --> syncState[data/sync-state.json]
+```
 
-More concretely:
+### Sync Steps
 
-- adapter: reads one upstream platform format
-- IR: normalizes plugin metadata and components into `PluginIR`
-- generator: writes VS Code-oriented plugin output from the IR
-- marketplace: indexes generated plugin folders into `marketplace.json`
-- sync pipeline: coordinates upstream fetches, incremental updates, and persisted sync state
+1. **Clone / pull** each upstream repo into `.cache/sync/<platform>/`
+2. **Discover** plugins via platform-specific marker directories (`.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/`)
+3. **Check** per-plugin commit SHA against `sync-state.json` — skip if unchanged
+4. **Parse** each plugin into a unified `PluginIR` via its platform adapter
+5. **Generate** VS Code plugin directory with converted files under `plugins/`
+6. **Build** `marketplace.json` from all `plugins/*/plugin.json` manifests
+7. **Persist** sync state for next incremental run
 
-## Development notes
+### Incremental Sync
 
-- Use `bun run build` to compile TypeScript into `dist/`.
-- Use `bun test` to run the current test suite.
-- The README intentionally does not claim a completed full catalog sync; generated results depend on when and where you run `bun run sync`.
+The pipeline tracks each plugin's latest commit SHA. On re-run, only plugins whose source files actually changed are re-generated. This keeps sync fast and diff-friendly for PR reviews.
+
+---
+
+## Upstream Adapter Conversion
+
+| Upstream Feature | VS Code Output | Compatibility |
+|-----------------|----------------|---------------|
+| Skills (`.md`) | Copied as-is | Full |
+| MCP servers | Copied as-is | Full |
+| Agents (`.md` / `.yaml`) | Copied with format note | Partial |
+| Hooks (`hooks.json`) | Copied with adaptation warning | Partial |
+| Commands (`.sh` / `.ts`) | Copied, needs manual verification | Partial |
+| Cursor rules (`.mdc`) | Converted to `.instructions.md` | Partial |
+| Codex app connectors (`.app.json`) | Dropped | Unsupported |
+
+Each generated `plugin.json` includes `_compatibility` metadata with per-component details and warnings.
+
+---
+
+## Supported Platforms
+
+| Platform | Upstream Repo | Adapter |
+|----------|--------------|---------|
+| Codex (OpenAI) | `https://github.com/openai/plugins.git` | `CodexAdapter` |
+| Claude Code (Anthropic) | `https://github.com/anthropics/claude-code.git` | `ClaudeAdapter` |
+| Cursor | `https://github.com/cursor/plugins.git` | `CursorAdapter` |
+
+---
+
+## CI / Automated Sync
+
+A GitHub Actions workflow (`.github/workflows/sync.yml`) runs weekly (Monday 03:00 UTC) and on manual dispatch:
+
+1. Checks out the repo, installs Bun, runs `bun run sync`
+2. If `plugins/`, `marketplace.json`, or `data/sync-state.json` changed, creates a PR automatically
+
+To enable: push this repo to GitHub and ensure Actions are enabled. The workflow uses `GITHUB_TOKEN` — no extra secrets required.
+
+---
+
+## Project Structure
+
+```
+src/
+├── index.ts                  # CLI entrypoint (sync command)
+├── adapters/
+│   ├── codex.ts              # Codex plugin discovery + parsing
+│   ├── claude.ts             # Claude Code plugin discovery + parsing
+│   └── cursor.ts             # Cursor plugin discovery + parsing
+├── generator/
+│   ├── vscode-plugin.ts      # IR → VS Code plugin directory + plugin.json
+│   └── marketplace.ts        # All plugins → marketplace.json
+├── sync/
+│   ├── pipeline.ts           # Orchestrates clone → parse → generate → state
+│   └── sync-state.ts         # Tracks per-plugin commit SHA for incremental sync
+└── utils/
+    └── git.ts                # Git clone/pull/SHA helpers
+```
+
+---
+
+## Environment Variables
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CODEX_REPO_URL` | `https://github.com/openai/plugins.git` | Override Codex upstream |
+| `CLAUDE_CODE_REPO_URL` | `https://github.com/anthropics/claude-code.git` | Override Claude Code upstream |
+| `CURSOR_REPO_URL` | `https://github.com/cursor/plugins.git` | Override Cursor upstream |
+| `MARKETPLACE_OWNER_NAME` | `agent-plugin-marketplace` | Marketplace owner name |
+| `MARKETPLACE_OWNER_EMAIL` | — | Marketplace owner email |
+| `MARKETPLACE_OWNER_URL` | — | Marketplace owner URL |
+| `MARKETPLACE_DESCRIPTION` | `Cross-platform agent plugins converted for VS Code` | Marketplace description |
+
+---
+
+## Development
+
+```bash
+bun install              # install dependencies
+bun test                 # run tests
+bun run build            # compile TypeScript → dist/
+bun run sync             # full sync pipeline
+```
+
+### Add a New Platform Adapter
+
+1. Create `src/adapters/<platform>.ts` implementing the `SourceAdapter` interface
+2. Register in `createPipeline()` in `src/index.ts`
+3. Add tests covering discovery, parsing, compatibility, and sync
+
+---
+
+## Roadmap
+
+### v0.2 — Automated Upstream Sync (CI)
+
+- Improve the existing GitHub Actions workflow with richer PR descriptions (diff summary, new/removed plugin counts, compatibility changes)
+- Add configurable sync frequency (daily / weekly / on-demand) via workflow inputs
+- Add Slack / Discord webhook notification on sync PR creation
+- Add CI validation: type-check + test gate before PR merge
+
+### v0.3 — Copilot-Native Integration
+
+- Generate `.copilot/plugins/` layout directly consumable by Copilot without manual copy
+- Produce a `copilot-marketplace.json` manifest tailored to Copilot's plugin discovery protocol
+- Support Copilot custom instructions (`.instructions.md`) as a first-class conversion target
+- Publish a VS Code extension that reads `marketplace.json` and offers one-click plugin install into workspace
+
+### v0.4 — Plugin Quality and Curation
+
+- Add automated compatibility testing: install each plugin in a headless VS Code instance and verify activation
+- Implement plugin scoring based on upstream activity, compatibility level, and component coverage
+- Add a `curated` tag to manually reviewed plugins, with an allowlist/blocklist mechanism
+- Generate a browsable static site (GitHub Pages) from `marketplace.json` for human discovery
+
+### v0.5 — Multi-Target Generation
+
+- Support Cursor as an output target (reverse adapter: IR → Cursor `.mdc` rules)
+- Support Claude Code as an output target (IR → Claude Code plugin format)
+- Enable cross-pollination: install a Codex plugin in Cursor, or a Cursor plugin in Claude Code
+- Add `bun run generate --target=copilot|cursor|claude` CLI flag
+
+### v0.6 — Cloud-Native Automation
+
+- Move sync pipeline to a cloud-native runtime (Cloudflare Workers / AWS Lambda) for serverless execution
+- Support event-driven sync: trigger on upstream repo webhook push events instead of polling
+- Add a central registry API (`GET /plugins`, `GET /plugins/:name`) for programmatic access
+- Implement plugin versioning with semver: track upstream version bumps and generate changelogs
+- Add telemetry: track plugin install counts and surface popular plugins in the marketplace
+
+---
+
+## License
+
+See upstream plugin repositories for individual plugin licenses. This pipeline code is provided as-is.
