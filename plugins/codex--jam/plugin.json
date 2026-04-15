@@ -1,0 +1,35 @@
+{
+  "name": "codex--jam",
+  "displayName": "Jam (from Codex)",
+  "version": "1.0.0",
+  "description": "Screen record with context",
+  "author": {
+    "url": "https://jam.dev"
+  },
+  "license": "MIT",
+  "homepage": "https://jam.dev",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/jam",
+    "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

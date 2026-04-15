@@ -1,0 +1,23 @@
+{
+  "name": "claude--commit-commands",
+  "displayName": "Commit Commands (from Claude Code)",
+  "version": "1.0.0",
+  "description": "Streamline your git workflow with simple commands for committing, pushing, and creating pull requests",
+  "author": {
+    "name": "Anthropic",
+    "email": "support@anthropic.com"
+  },
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/commit-commands",
+    "commitSha": "207b22de658ee343561159f576fd8c6f0e97c7ae",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

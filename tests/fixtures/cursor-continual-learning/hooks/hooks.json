@@ -1,0 +1,14 @@
+{
+  "hooks": [
+    {
+      "name": "learning-hook",
+      "events": ["onCodeChange", "onFileSave"],
+      "tool": "learning-analyzer"
+    },
+    {
+      "name": "learning-hook-dedupe",
+      "events": ["onFileSave", "onCodeChange"],
+      "tool": "learning-analyzer"
+    }
+  ]
+}

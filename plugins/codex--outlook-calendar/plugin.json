@@ -1,0 +1,45 @@
+{
+  "name": "codex--outlook-calendar",
+  "displayName": "Outlook Calendar (from Codex)",
+  "version": "0.1.0",
+  "description": "Connect Outlook Calendar for scheduling, daily briefs, event prep, and safe meeting changes.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.microsoft.com/en-us/microsoft-365/outlook/calendar-app",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "outlook-calendar",
+    "calendar",
+    "microsoft",
+    "scheduling",
+    "teams",
+    "daily-brief",
+    "meeting-prep"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/outlook-calendar",
+    "commitSha": "dd74c49bdf9bafc07c085dbc45ed7774cd8e6a5c",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

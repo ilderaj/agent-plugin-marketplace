@@ -1,0 +1,33 @@
+{
+  "name": "codex--coderabbit",
+  "displayName": "Coderabbit (from Codex)",
+  "version": "1.1.0",
+  "description": "AI-powered code review in Codex, powered by CodeRabbit.",
+  "author": {
+    "name": "CodeRabbit AI",
+    "email": "support@coderabbit.ai",
+    "url": "https://coderabbit.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://docs.coderabbit.ai/cli/overview",
+  "repository": "https://github.com/coderabbitai/codex-plugin",
+  "keywords": [
+    "code-review",
+    "ai",
+    "coderabbit",
+    "codex"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/coderabbit",
+    "commitSha": "1f87561ac4dae225447336612b9304903921bb85",
+    "version": "1.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

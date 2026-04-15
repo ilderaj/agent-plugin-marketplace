@@ -1,0 +1,8 @@
+{
+  "hooks": [
+    {
+      "events": ["onTest"],
+      "script": "test.sh"
+    }
+  ]
+}

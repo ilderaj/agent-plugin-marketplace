@@ -1,0 +1,246 @@
+{
+  "name": "agent-plugin-marketplace",
+  "owner": {
+    "name": "agent-plugin-marketplace"
+  },
+  "metadata": {
+    "description": "Cross-platform agent plugins converted for VS Code"
+  },
+  "plugins": [
+    {
+      "name": "claude--agent-sdk-dev",
+      "source": "plugins/claude--agent-sdk-dev",
+      "description": "Claude Agent SDK Development Plugin (from Claude Code)"
+    },
+    {
+      "name": "claude--claude-opus-4-5-migration",
+      "source": "plugins/claude--claude-opus-4-5-migration",
+      "description": "Migrate your code and prompts from Sonnet 4.x and Opus 4.1 to Opus 4.5. (from Claude Code)"
+    },
+    {
+      "name": "claude--code-review",
+      "source": "plugins/claude--code-review",
+      "description": "Automated code review for pull requests using multiple specialized agents with confidence-based scoring (from Claude Code)"
+    },
+    {
+      "name": "claude--commit-commands",
+      "source": "plugins/claude--commit-commands",
+      "description": "Streamline your git workflow with simple commands for committing, pushing, and creating pull requests (from Claude Code)"
+    },
+    {
+      "name": "claude--explanatory-output-style",
+      "source": "plugins/claude--explanatory-output-style",
+      "description": "Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style) (from Claude Code)"
+    },
+    {
+      "name": "claude--feature-dev",
+      "source": "plugins/claude--feature-dev",
+      "description": "Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review (from Claude Code)"
+    },
+    {
+      "name": "claude--frontend-design",
+      "source": "plugins/claude--frontend-design",
+      "description": "Frontend design skill for UI/UX implementation (from Claude Code)"
+    },
+    {
+      "name": "claude--hookify",
+      "source": "plugins/claude--hookify",
+      "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns (from Claude Code)"
+    },
+    {
+      "name": "claude--learning-output-style",
+      "source": "plugins/claude--learning-output-style",
+      "description": "Interactive learning mode that requests meaningful code contributions at decision points (mimics the unshipped Learning output style) (from Claude Code)"
+    },
+    {
+      "name": "claude--pr-review-toolkit",
+      "source": "plugins/claude--pr-review-toolkit",
+      "description": "Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification (from Claude Code)"
+    },
+    {
+      "name": "claude--ralph-wiggum",
+      "source": "plugins/claude--ralph-wiggum",
+      "description": "Implementation of the Ralph Wiggum technique - continuous self-referential AI loops for interactive iterative development. Run Claude in a while-true loop with the same prompt until task completion. (from Claude Code)"
+    },
+    {
+      "name": "claude--security-guidance",
+      "source": "plugins/claude--security-guidance",
+      "description": "Security reminder hook that warns about potential security issues when editing files, including command injection, XSS, and unsafe code patterns (from Claude Code)"
+    },
+    {
+      "name": "codex--box",
+      "source": "plugins/codex--box",
+      "description": "Search and reference your documents (from Codex)"
+    },
+    {
+      "name": "codex--build-ios-apps",
+      "source": "plugins/codex--build-ios-apps",
+      "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance audits, and simulator debugging. (from Codex)"
+    },
+    {
+      "name": "codex--build-macos-apps",
+      "source": "plugins/codex--build-macos-apps",
+      "description": "Build, run, test, debug, instrument, and implement local macOS apps using Xcode, SwiftUI, AppKit interop, unified logging, and shell-first desktop workflows. (from Codex)"
+    },
+    {
+      "name": "codex--build-web-apps",
+      "source": "plugins/codex--build-web-apps",
+      "description": "Build web apps with workflows for UI reviews, React improvements, deployment, payments, and database design. (from Codex)"
+    },
+    {
+      "name": "codex--canva",
+      "source": "plugins/codex--canva",
+      "description": "Search, create, edit designs (from Codex)"
+    },
+    {
+      "name": "codex--cloudflare",
+      "source": "plugins/codex--cloudflare",
+      "description": "Cloudflare platform plugin with curated skills for Workers, Wrangler, and Agents SDK plus the official Cloudflare API MCP server. (from Codex)"
+    },
+    {
+      "name": "codex--coderabbit",
+      "source": "plugins/codex--coderabbit",
+      "description": "AI-powered code review in Codex, powered by CodeRabbit. (from Codex)"
+    },
+    {
+      "name": "codex--figma",
+      "source": "plugins/codex--figma",
+      "description": "Figma workflows for design implementation, Code Connect templates, and design system rule generation. (from Codex)"
+    },
+    {
+      "name": "codex--game-studio",
+      "source": "plugins/codex--game-studio",
+      "description": "Design, prototype, and ship browser games with guided 2D and 3D workflows, asset pipelines, and playtesting support. (from Codex)"
+    },
+    {
+      "name": "codex--github",
+      "source": "plugins/codex--github",
+      "description": "Inspect repositories, triage pull requests and issues, debug CI, and publish changes through a hybrid GitHub connector and CLI workflow. (from Codex)"
+    },
+    {
+      "name": "codex--gmail",
+      "source": "plugins/codex--gmail",
+      "description": "Work with Gmail using the configured Gmail app connector. (from Codex)"
+    },
+    {
+      "name": "codex--google-calendar",
+      "source": "plugins/codex--google-calendar",
+      "description": "Connect Google Calendar for scheduling, availability, daily briefs, and event management. (from Codex)"
+    },
+    {
+      "name": "codex--google-drive",
+      "source": "plugins/codex--google-drive",
+      "description": "Use Google Drive as the single entrypoint for Drive, Docs, Sheets, and Slides work. (from Codex)"
+    },
+    {
+      "name": "codex--hugging-face",
+      "source": "plugins/codex--hugging-face",
+      "description": "Inspect models, datasets, Spaces, and research (from Codex)"
+    },
+    {
+      "name": "codex--jam",
+      "source": "plugins/codex--jam",
+      "description": "Screen record with context (from Codex)"
+    },
+    {
+      "name": "codex--life-science-research",
+      "source": "plugins/codex--life-science-research",
+      "description": "General life-sciences research workflows with query routing, evidence synthesis, and optional parallel subagent analysis across genetics, omics, biology, chemistry, structure, clinical evidence, and public dataset discovery. (from Codex)"
+    },
+    {
+      "name": "codex--linear",
+      "source": "plugins/codex--linear",
+      "description": "Find and reference issues and projects. (from Codex)"
+    },
+    {
+      "name": "codex--netlify",
+      "source": "plugins/codex--netlify",
+      "description": "Deploy projects and manage preview or production releases on Netlify. (from Codex)"
+    },
+    {
+      "name": "codex--notion",
+      "source": "plugins/codex--notion",
+      "description": "Notion workflows for implementation planning, research synthesis, meeting preparation, and knowledge capture. (from Codex)"
+    },
+    {
+      "name": "codex--outlook-calendar",
+      "source": "plugins/codex--outlook-calendar",
+      "description": "Connect Outlook Calendar for scheduling, daily briefs, event prep, and safe meeting changes. (from Codex)"
+    },
+    {
+      "name": "codex--outlook-email",
+      "source": "plugins/codex--outlook-email",
+      "description": "Work with Outlook Email using the configured Microsoft Outlook app connector. (from Codex)"
+    },
+    {
+      "name": "codex--sentry",
+      "source": "plugins/codex--sentry",
+      "description": "Inspect recent issues and events in Sentry from Codex. (from Codex)"
+    },
+    {
+      "name": "codex--sharepoint",
+      "source": "plugins/codex--sharepoint",
+      "description": "Work with SharePoint using the configured Microsoft SharePoint app connector. (from Codex)"
+    },
+    {
+      "name": "codex--slack",
+      "source": "plugins/codex--slack",
+      "description": "Work with Slack using the configured Slack integration. (from Codex)"
+    },
+    {
+      "name": "codex--stripe",
+      "source": "plugins/codex--stripe",
+      "description": "Payments and business tools (from Codex)"
+    },
+    {
+      "name": "codex--teams",
+      "source": "plugins/codex--teams",
+      "description": "Work with Teams using the configured Microsoft Teams app connector. (from Codex)"
+    },
+    {
+      "name": "codex--test-android-apps",
+      "source": "plugins/codex--test-android-apps",
+      "description": "Test Android apps with emulator workflows for reproduction, screenshots, UI inspection, and log capture. (from Codex)"
+    },
+    {
+      "name": "codex--vercel",
+      "source": "plugins/codex--vercel",
+      "description": "Build and deploy web apps and agents (from Codex)"
+    },
+    {
+      "name": "cursor--agent-compatibility",
+      "source": "plugins/cursor--agent-compatibility",
+      "description": "CLI-backed repo compatibility scans plus Cursor agents that audit startup, validation, and docs against reality. (from Cursor)"
+    },
+    {
+      "name": "cursor--cli-for-agent",
+      "source": "plugins/cursor--cli-for-agent",
+      "description": "Patterns for designing CLIs that coding agents can run reliably: non-interactive flags, layered help with examples, pipelines, actionable errors, idempotency, and dry-run. (from Cursor)"
+    },
+    {
+      "name": "cursor--continual-learning",
+      "source": "plugins/cursor--continual-learning",
+      "description": "Incrementally learns durable user preferences and workspace facts from transcript changes and keeps AGENTS.md up to date with plain bullet points. (from Cursor)"
+    },
+    {
+      "name": "cursor--create-plugin",
+      "source": "plugins/cursor--create-plugin",
+      "description": "Scaffold and validate new Cursor plugins. Handles directory setup, manifest generation, and pre-submission quality checks for the marketplace. (from Cursor)"
+    },
+    {
+      "name": "cursor--cursor-team-kit",
+      "source": "plugins/cursor--cursor-team-kit",
+      "description": "Internal workflows used by Cursor developers for CI, code review, and shipping. Covers the full dev loop: CI monitoring and fixing, PR creation, merge conflicts, smoke tests, compiler checks, code cleanup, and work summaries. (from Cursor)"
+    },
+    {
+      "name": "cursor--ralph-loop",
+      "source": "plugins/cursor--ralph-loop",
+      "description": "Continuous self-referential AI loops for iterative development, implementing the Ralph Wiggum technique. Run the agent in a while-true loop with the same prompt until task completion. (from Cursor)"
+    },
+    {
+      "name": "cursor--teaching",
+      "source": "plugins/cursor--teaching",
+      "description": "Skill mapping, practice plans, and learning retrospectives. Builds personalized roadmaps with milestones and practice checkpoints, and runs periodic reviews to adjust based on progress. (from Cursor)"
+    }
+  ]
+}

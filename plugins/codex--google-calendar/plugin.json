@@ -1,0 +1,44 @@
+{
+  "name": "codex--google-calendar",
+  "displayName": "Google Calendar (from Codex)",
+  "version": "1.2.0",
+  "description": "Connect Google Calendar for scheduling, availability, daily briefs, and event management.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://workspace.google.com/products/calendar/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "google-calendar",
+    "calendar",
+    "agenda",
+    "daily-brief",
+    "scheduling",
+    "productivity"
+  ],
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/google-calendar",
+    "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
+    "version": "1.2.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "learning-server": {
+      "command": "learning-mcp",
+      "args": ["--mode", "cursor"]
+    }
+  }
+}

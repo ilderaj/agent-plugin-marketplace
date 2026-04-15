@@ -1,0 +1,13 @@
+{
+  "name": "agent-plugin-marketplace",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "test": "bun test",
+    "sync": "bun run src/index.ts sync"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.12",
+    "typescript": "^6.0.2"
+  }
+}

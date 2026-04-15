@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "name": "pre-commit-review",
+      "events": ["onCommit"],
+      "tool": "code-analyzer"
+    }
+  ]
+}

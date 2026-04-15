@@ -1,0 +1,26 @@
+{
+  "name": "claude--agent-sdk-dev",
+  "displayName": "Agent Sdk Dev (from Claude Code)",
+  "version": "1.0.0",
+  "description": "Claude Agent SDK Development Plugin",
+  "author": {
+    "name": "Ashwin Bhat",
+    "email": "ashwin@anthropic.com"
+  },
+  "agents": "./agents/",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/agent-sdk-dev",
+    "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Claude markdown agents may require format conversion for other platforms"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}
