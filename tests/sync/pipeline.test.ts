@@ -371,6 +371,40 @@ describe("SyncPipeline", () => {
     }
   });
 
+  test("removed plugin does not appear in subsequent sync reports after state is cleaned up", async () => {
+    const upstream = await createLocalUpstream();
+    const stateFile = join(workspaceDir, "data", "sync-state.json");
+    const config = createConfig(upstream.bareRepoUrl);
+    const makeInstance = () =>
+      new SyncPipeline({
+        adapters: [new CodexAdapter()],
+        generator: new VsCodePluginGenerator(),
+        marketplaceGen: new MarketplaceGenerator(config.marketplace),
+        stateManager: new SyncStateManager(stateFile),
+        config,
+      });
+
+    // first run: plugin is discovered and added
+    const first = await makeInstance().run();
+    expect(first.added).toEqual([{ name: "codex-github", platform: "codex" }]);
+    expect(first.removed).toEqual([]);
+
+    // remove the plugin from upstream so it is no longer discovered
+    const pluginDir = join(workspaceDir, "upstream", "source", "plugins", "codex-github");
+    const sourceRepo = join(workspaceDir, "upstream", "source");
+    await runGit(["rm", "-r", "plugins/codex-github"], sourceRepo);
+    await runGit(["commit", "-m", "Remove plugin"], sourceRepo);
+    await runGit(["push", "origin", "HEAD"], sourceRepo);
+
+    // second run: plugin is detected as removed
+    const second = await makeInstance().run();
+    expect(second.removed).toEqual([{ name: "codex-github", platform: "codex" }]);
+
+    // third run: plugin is no longer in state, must NOT appear in removed again
+    const third = await makeInstance().run();
+    expect(third.removed).toEqual([]);
+  });
+
   test("main does not write report file when SYNC_REPORT_PATH is not set", async () => {
     delete Bun.env.SYNC_REPORT_PATH;
     const reportPath = join(workspaceDir, "should-not-exist.md");

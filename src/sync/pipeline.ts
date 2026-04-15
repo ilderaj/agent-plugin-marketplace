@@ -109,6 +109,7 @@ export class SyncPipeline {
       // Plugins previously known but no longer discovered are removed
       for (const name of previousPluginNames) {
         if (!discoveredNames.has(name)) {
+          this.options.stateManager.removePlugin(adapter.platform, name);
           removed.push({ name, platform: adapter.platform });
         }
       }
