@@ -244,4 +244,62 @@ describe('VsCodePluginGenerator', () => {
     const manifest = await readJson(join(outDir, 'plugin.json'));
     expect(manifest.tags).toEqual(['github', 'vcs', 'code-review']);
   });
+
+  test('missing upstream version: plugin.json gets version "0.0.0" as fallback', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-no-version'));
+    const outDir = join(OUTPUT_ROOT, 'no-version');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const manifest = await readJson(join(outDir, 'plugin.json'));
+    expect(manifest.version).toBe('0.0.0');
+  });
+
+  test('_meta.json pluginPath is a relative/logical path, not an absolute host path', async () => {
+    const outDir = join(OUTPUT_ROOT, 'meta-relpath');
+    await ensureCleanDir(outDir);
+
+    const ir: PluginIR = {
+      id: 'codex--relpath-test',
+      source: {
+        platform: 'codex',
+        repoUrl: 'https://example.com/upstream',
+        pluginPath: '/absolute/host/path/to/cache/codex/plugins/relpath-test',
+        pluginRelPath: 'plugins/relpath-test',
+        commitSha: 'abc123',
+        version: '1.0.0',
+      },
+      manifest: {
+        name: 'relpath-test',
+        version: '1.0.0',
+        description: 'Relative path test fixture',
+        author: { name: 'Test' },
+        raw: {},
+      },
+      components: {
+        skills: [],
+        hooks: [],
+        agents: [],
+        commands: [],
+        mcpServers: [],
+        rules: [],
+        apps: [],
+      },
+      compatibility: {
+        overall: 'full',
+        details: [],
+        warnings: [],
+        droppedComponents: [],
+      },
+    };
+
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const meta = await readJson(join(outDir, '_meta.json'));
+    // pluginPath must not be an absolute path (no leading slash)
+    expect(meta._source.pluginPath).not.toMatch(/^\//);
+    // must still be traceable (contains the plugin dir name)
+    expect(meta._source.pluginPath).toContain('relpath-test');
+  });
 });

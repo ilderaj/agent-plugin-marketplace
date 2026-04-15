@@ -65,7 +65,7 @@ export class SyncPipeline {
         }
 
         const ir = await adapter.parse(plugin.path);
-        const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha);
+        const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha, relative(repoDir, plugin.path));
 
         const outDir = join(
           this.options.config.outputDir,
@@ -91,13 +91,14 @@ export class SyncPipeline {
     };
   }
 
-  private hydrateIR(ir: PluginIR, repoUrl: string, commitSha: string): PluginIR {
+  private hydrateIR(ir: PluginIR, repoUrl: string, commitSha: string, pluginRelPath: string): PluginIR {
     return {
       ...ir,
       source: {
         ...ir.source,
         repoUrl,
         commitSha,
+        pluginRelPath,
       },
     };
   }

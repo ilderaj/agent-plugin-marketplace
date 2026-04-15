@@ -143,7 +143,7 @@ The pipeline tracks each plugin's latest commit SHA. On re-run, only plugins who
 | Cursor rules (`.mdc`) | Converted to `.instructions.md` | Partial |
 | Codex app connectors (`.app.json`) | Dropped | Unsupported |
 
-Each generated `plugin.json` includes `_compatibility` metadata with per-component details and warnings.
+Each generated `_meta.json` includes `_compatibility` metadata with per-component details and warnings.
 
 ---
 

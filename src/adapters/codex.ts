@@ -112,7 +112,7 @@ export class CodexAdapter implements SourceAdapter {
     return {
       name: pluginJson.name,
       displayName: pluginJson.displayName,
-      version: pluginJson.version,
+      version: pluginJson.version ?? '0.0.0',
       description: pluginJson.description,
       author: pluginJson.author,
       license: pluginJson.license,

@@ -83,7 +83,7 @@ export class VsCodePluginGenerator {
       _source: {
         platform: ir.source.platform,
         upstream: ir.source.repoUrl,
-        pluginPath: ir.source.pluginPath,
+        pluginPath: ir.source.pluginRelPath ?? ir.source.pluginPath,
         commitSha: ir.source.commitSha,
         version: ir.source.version,
       },
