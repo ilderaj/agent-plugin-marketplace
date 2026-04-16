@@ -457,9 +457,10 @@ describe('ClaudeAdapter', () => {
 
   test('overall compatibility is full when plugin has only hooks and agents (no commands)', async () => {
     const { mkdir, writeFile, rm } = await import('fs/promises');
+    const { tmpdir } = await import('os');
     const { randomBytes } = await import('crypto');
 
-    const base = join(import.meta.dir, `../.tmp-hooks-agents-only-${randomBytes(8).toString('hex')}`);
+    const base = join(tmpdir(), `test-hooks-agents-only-${randomBytes(8).toString('hex')}`);
     const pluginDir = join(base, 'hooks-agents-fixture');
 
     await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
