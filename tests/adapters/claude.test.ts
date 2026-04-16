@@ -104,7 +104,7 @@ describe('ClaudeAdapter', () => {
   test('compatibility overall is partial when components have partial compatibility', async () => {
     const ir = await adapter.parse(FIXTURE);
     
-    // Claude has hooks, agents, and commands (all partial), so overall should be partial
+    // Claude fixture has commands (partial), so overall should be partial even though hooks/agents are full
     expect(ir.compatibility.overall).toBe('partial');
     
     // Verify we have some partial components
@@ -125,7 +125,7 @@ describe('ClaudeAdapter', () => {
     // Find agent compatibility detail
     const agentCompat = ir.compatibility.details.find(d => d.type === 'agent');
     expect(agentCompat).toBeDefined();
-    expect(agentCompat?.level).toBe('partial');
+    expect(agentCompat?.level).toBe('full');
     
     // Find command compatibility detail
     const commandCompat = ir.compatibility.details.find(d => d.type === 'command');
@@ -434,6 +434,57 @@ describe('ClaudeAdapter', () => {
       expect(uniqueEvents.size).toBe(4);
     } finally {
       await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test('hooks compatibility is full because VS Code natively reads Claude hook format', async () => {
+    const ir = await adapter.parse(FIXTURE);
+
+    const hookCompat = ir.compatibility.details.find(d => d.type === 'hook');
+    expect(hookCompat).toBeDefined();
+    expect(hookCompat?.level).toBe('full');
+    expect(hookCompat?.notes).toContain('natively');
+  });
+
+  test('agents compatibility is full because VS Code natively reads .claude/agents/*.md', async () => {
+    const ir = await adapter.parse(FIXTURE);
+
+    const agentCompat = ir.compatibility.details.find(d => d.type === 'agent');
+    expect(agentCompat).toBeDefined();
+    expect(agentCompat?.level).toBe('full');
+    expect(agentCompat?.notes).toContain('natively');
+  });
+
+  test('overall compatibility is full when plugin has only hooks and agents (no commands)', async () => {
+    const { mkdir, writeFile, rm } = await import('fs/promises');
+    const { randomBytes } = await import('crypto');
+
+    const base = join(import.meta.dir, `../.tmp-hooks-agents-only-${randomBytes(8).toString('hex')}`);
+    const pluginDir = join(base, 'hooks-agents-fixture');
+
+    await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
+    await mkdir(join(pluginDir, 'hooks'), { recursive: true });
+    await mkdir(join(pluginDir, 'agents'), { recursive: true });
+
+    await writeFile(
+      join(pluginDir, '.claude-plugin', 'plugin.json'),
+      JSON.stringify({ name: 'hooks-agents-only', version: '1.0.0', description: 'test', author: { name: 'test' } })
+    );
+    await writeFile(
+      join(pluginDir, 'hooks/hooks.json'),
+      JSON.stringify({ hooks: [{ name: 'pre-commit', events: ['onCommit'] }] })
+    );
+    await writeFile(join(pluginDir, 'agents/helper.md'), '# Helper Agent');
+
+    try {
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.hooks.length).toBe(1);
+      expect(ir.components.agents.length).toBe(1);
+      expect(ir.components.commands.length).toBe(0);
+      expect(ir.compatibility.overall).toBe('full');
+    } finally {
+      await rm(base, { recursive: true, force: true });
     }
   });
 });

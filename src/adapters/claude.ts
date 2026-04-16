@@ -315,23 +315,23 @@ export class ClaudeAdapter implements SourceAdapter {
       });
     }
     
-    // Hooks need format conversion for other platforms
+    // Hooks are natively supported: VS Code reads Claude hook format from .claude/settings.json
     for (const hook of components.hooks) {
       details.push({
         type: 'hook',
         name: hook.configPath,
-        level: 'partial' as const,
-        notes: 'Claude hooks may require format adaptation for VS Code extension API',
+        level: 'full' as const,
+        notes: 'VS Code natively reads Claude hook format from .claude/settings.json',
       });
     }
     
-    // Agents need format conversion
+    // Agents are natively supported: VS Code reads .claude/agents/*.md directly
     for (const agent of components.agents) {
       details.push({
         type: 'agent',
         name: agent.name,
-        level: 'partial' as const,
-        notes: 'Claude markdown agents may require format conversion for other platforms',
+        level: 'full' as const,
+        notes: 'VS Code natively reads .claude/agents/*.md',
       });
     }
     
