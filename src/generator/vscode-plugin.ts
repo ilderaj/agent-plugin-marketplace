@@ -389,16 +389,36 @@ export class VsCodePluginGenerator {
     const body = frontmatterMatch ? content.slice(frontmatterMatch[0].length).trimStart() : content;
     const descriptionMatch = frontmatterMatch?.[1].match(/^description:\s*(.+)$/m);
     const description = descriptionMatch?.[1]?.trim();
-    const applyTo = rule.alwaysApply ? 'always' : (rule.globs ?? []).join(', ');
+
+    // Determine applyTo and whether to emit an origin comment about semantic mapping.
+    let applyTo: string;
+    let intelligentModeComment: string | undefined;
+
+    if (rule.alwaysApply) {
+      applyTo = 'always';
+    } else if (rule.globs && rule.globs.length > 0) {
+      applyTo = rule.globs.join(', ');
+    } else {
+      // Apply Intelligently mode: alwaysApply false with no globs.
+      // The original Cursor mode lets the AI decide when to apply the rule based on context.
+      // VS Code .instructions.md has no equivalent, so map broadly to applyTo: "**" so the
+      // content is not silently lost. Consumers can narrow the scope manually.
+      applyTo = '"**"';
+      intelligentModeComment =
+        '<!-- Origin: Cursor "Apply Intelligently" mode (alwaysApply: false, no globs). ' +
+        'Mapped broadly to applyTo: "**" because VS Code instructions.md has no AI-context-based mode. ' +
+        'Narrow applyTo manually if a tighter scope is appropriate. -->';
+    }
 
     const header = [
       '---',
       'source: cursor-rule',
       description ? `description: ${description}` : undefined,
-      applyTo ? `applyTo: ${applyTo}` : undefined,
+      `applyTo: ${applyTo}`,
       '---',
       '',
       '<!-- Converted from Cursor .mdc rule to VS Code .instructions.md -->',
+      intelligentModeComment,
       '',
     ]
       .filter(Boolean)

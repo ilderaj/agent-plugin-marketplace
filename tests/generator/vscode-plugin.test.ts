@@ -140,6 +140,29 @@ describe('VsCodePluginGenerator', () => {
     expect(readme).toContain('Compatibility Summary');
   });
 
+  test('converts Apply Intelligently Cursor rule to applyTo: ** with origin comment', async () => {
+    const ir = await new CursorAdapter().parse(join(FIXTURES_DIR, 'cursor-continual-learning'));
+    const outDir = join(OUTPUT_ROOT, 'cursor-intelligent');
+
+    await ensureCleanDir(outDir);
+
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const instruction = await readFile(
+      join(outDir, 'instructions/intelligent-rule.instructions.md'),
+      'utf-8'
+    );
+
+    // Apply Intelligently (alwaysApply: false, no globs) must map to applyTo: **
+    expect(instruction).toContain('applyTo: "**"');
+
+    // Must include origin comment explaining the semantic mapping
+    expect(instruction).toContain('Apply Intelligently');
+
+    // Must preserve the body
+    expect(instruction).toContain('# Intelligent Rule');
+  });
+
   test('preserves worse compatibility levels when generator also has dropped components', async () => {
     const sourceRoot = await mkdtemp(join(tmpdir(), 'generator-source-'));
     const outDir = join(OUTPUT_ROOT, 'degraded');

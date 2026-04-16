@@ -110,7 +110,7 @@ describe('CursorAdapter', () => {
 
   test('parse extracts rules with alwaysApply and globs from frontmatter', async () => {
     const ir = await adapter.parse(FIXTURE);
-    expect(ir.components.rules.length).toBe(2);
+    expect(ir.components.rules.length).toBe(3);
     
     const alwaysRule = ir.components.rules.find(r => r.path.includes('learning-context'));
     expect(alwaysRule).toBeDefined();
@@ -123,6 +123,11 @@ describe('CursorAdapter', () => {
     expect(tsRule?.globs).toBeDefined();
     expect(tsRule?.globs).toContain('**/*.ts');
     expect(tsRule?.globs).toContain('**/*.tsx');
+
+    const intelligentRule = ir.components.rules.find(r => r.path.includes('intelligent-rule'));
+    expect(intelligentRule).toBeDefined();
+    expect(intelligentRule?.alwaysApply).toBe(false);
+    expect(intelligentRule?.globs).toBeUndefined();
   });
 
   test('parse rules accepts description frontmatter without failing', async () => {
@@ -180,15 +185,19 @@ describe('CursorAdapter', () => {
   test('compatibility marks rules as partially compatible via VS Code instructions conversion', async () => {
     const ir = await adapter.parse(FIXTURE);
     const ruleDetails = ir.compatibility.details.filter(c => c.type === 'rule');
-    expect(ruleDetails).toHaveLength(2);
+    expect(ruleDetails).toHaveLength(3);
     expect(ruleDetails.every(detail => detail.level === 'partial')).toBe(true);
     expect(ruleDetails.every(detail => detail.notes.includes('.instructions.md'))).toBe(true);
 
+    // Apply Intelligently rule should mention the broad mapping
+    const intelligentDetail = ruleDetails.find(d => d.name.includes('intelligent-rule'));
+    expect(intelligentDetail?.notes).toContain('Apply Intelligently');
+
     const droppedRules = ir.compatibility.droppedComponents.filter(c => c.type === 'rule');
     expect(droppedRules).toHaveLength(0);
-    expect(ir.compatibility.warnings).toContain(
-      'Cursor .mdc rules require conversion to VS Code .instructions.md files'
-    );
+    expect(ir.compatibility.warnings.some(w => w.includes('.instructions.md'))).toBe(true);
+    expect(ir.compatibility.warnings.some(w => w.includes('Apply Intelligently'))).toBe(true);
+    expect(ir.compatibility.warnings.some(w => w.includes('Apply Manually'))).toBe(true);
   });
 
   test('parse stays manifest-driven when default directories exist but manifest omits them', async () => {

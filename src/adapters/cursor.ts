@@ -484,16 +484,25 @@ export class CursorAdapter implements SourceAdapter {
     }
 
     for (const rule of components.rules) {
+      const isIntelligentMode = !rule.alwaysApply && (!rule.globs || rule.globs.length === 0);
       details.push({
         type: 'rule',
         name: rule.path,
         level: 'partial' as const,
-        notes: 'Cursor .mdc rules require conversion to VS Code .instructions.md files',
+        notes: isIntelligentMode
+          ? 'Cursor .mdc rules require conversion to VS Code .instructions.md files; Apply Intelligently mode (no globs) is mapped broadly to applyTo: "**"'
+          : 'Cursor .mdc rules require conversion to VS Code .instructions.md files',
       });
     }
 
     if (components.rules.length > 0) {
-      warnings.push('Cursor .mdc rules require conversion to VS Code .instructions.md files');
+      warnings.push(
+        'Cursor .mdc rules were converted to VS Code .instructions.md files. ' +
+        'Apply Intelligently rules (alwaysApply: false, no globs) are mapped broadly to applyTo: "**" — ' +
+        'narrow applyTo manually where a tighter scope is appropriate. ' +
+        'Apply Manually rules (alwaysApply: false, no globs, intended for on-demand use) ' +
+        'lose their on-demand semantic entirely in this conversion.'
+      );
     }
 
     for (const mcp of components.mcpServers) {
