@@ -1,0 +1,14 @@
+{
+  "name": "codex--fireflies",
+  "version": "1.0.0",
+  "description": "The Fireflies app brings your meetings and knowledge directly into ChatGPT.",
+  "author": {
+    "url": "https://fireflies.ai",
+    "name": "Fireflies"
+  },
+  "license": "MIT",
+  "homepage": "https://fireflies.ai",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

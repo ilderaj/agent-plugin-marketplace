@@ -1,0 +1,14 @@
+{
+  "name": "codex--hubspot",
+  "version": "2.0.0",
+  "description": "Work with your HubSpot data to analyze patterns, create and update records, and manage your CRM operations.",
+  "author": {
+    "name": "HubSpot",
+    "url": "https://www.hubspot.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.hubspot.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

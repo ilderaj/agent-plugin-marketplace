@@ -1,0 +1,14 @@
+{
+  "name": "codex--finn",
+  "version": "1.0.0",
+  "description": "A FINN car subscription is a flexible way to stay mobile anytime - without long-term commitments like buyin...",
+  "author": {
+    "name": "FINN GmbH",
+    "url": "https://www.finn.com/de-DE"
+  },
+  "license": "MIT",
+  "homepage": "https://www.finn.com/de-DE",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

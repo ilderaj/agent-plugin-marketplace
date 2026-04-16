@@ -1,0 +1,14 @@
+{
+  "name": "codex--circleback",
+  "version": "1.0.0",
+  "description": "Circleback helps teams get the most out of every conversation with AI-powered meeting notes, action items,...",
+  "author": {
+    "name": "Circleback AI, Inc.",
+    "url": "https://circleback.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://circleback.ai",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

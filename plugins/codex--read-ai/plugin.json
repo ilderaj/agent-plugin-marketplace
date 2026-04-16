@@ -1,0 +1,14 @@
+{
+  "name": "codex--read-ai",
+  "version": "1.0.0",
+  "description": "Read AI brings your meeting intelligence directly into your AI workflows.",
+  "author": {
+    "name": "Read AI, Inc",
+    "url": "https://read.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://read.ai",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

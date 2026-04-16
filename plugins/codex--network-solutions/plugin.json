@@ -1,0 +1,14 @@
+{
+  "name": "codex--network-solutions",
+  "version": "1.0.0",
+  "description": "The Network Solutions Domain Search Assistant makes finding an available domain fast, simple, and conversat...",
+  "author": {
+    "name": "Network Solutions",
+    "url": "https://www.networksolutions.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.networksolutions.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

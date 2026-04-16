@@ -1,0 +1,16 @@
+{
+  "name": "codex--atlassian-rovo",
+  "version": "1.0.0",
+  "description": "Manage Jira and Confluence fast",
+  "author": {
+    "url": "https://www.atlassian.com"
+  },
+  "license": "MIT",
+  "homepage": "https://www.atlassian.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "atlassian"
+  ],
+  "agents": "./agents/",
+  "strict": false
+}

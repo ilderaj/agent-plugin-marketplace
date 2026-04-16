@@ -1,0 +1,16 @@
+{
+  "displayName": "Remotion (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/remotion",
+    "commitSha": "459bc0ca9d6c6e21e4385ba20b04bbd4a8c98ae8",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

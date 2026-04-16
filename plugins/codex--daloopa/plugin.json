@@ -1,0 +1,14 @@
+{
+  "name": "codex--daloopa",
+  "version": "1.0.0",
+  "description": "Daloopa supplies high quality fundamental data sourced from SEC Filings, investor presentations and any pub...",
+  "author": {
+    "url": "https://daloopa.com/",
+    "name": "Daloopa, Inc."
+  },
+  "license": "MIT",
+  "homepage": "https://daloopa.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

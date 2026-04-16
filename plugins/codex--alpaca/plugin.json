@@ -1,0 +1,14 @@
+{
+  "name": "codex--alpaca",
+  "version": "1.0.0",
+  "description": "Stop watching the markets.",
+  "author": {
+    "url": "https://alpaca.markets/",
+    "name": "Alpaca"
+  },
+  "license": "MIT",
+  "homepage": "https://alpaca.markets/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}
