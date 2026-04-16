@@ -865,4 +865,101 @@ describe('VsCodePluginGenerator', () => {
       await rm(sourceRoot, { recursive: true, force: true });
     }
   });
+
+  test('YAML reserved words and numeric-like values are quoted in frontmatter', async () => {
+    // Regression: yamlQuoteIfNeeded must quote values that are valid YAML boolean/null
+    // keywords or look like numbers, otherwise they would be parsed as non-strings.
+    const reservedCases: Array<{ name: string; description: string }> = [
+      { name: 'true', description: 'false' },
+      { name: 'null', description: 'yes' },
+      { name: 'on', description: 'off' },
+      { name: 'no', description: 'true' },
+      { name: '1234', description: '3.14' },
+    ];
+
+    for (const { name: agentName, description: agentDesc } of reservedCases) {
+      const sourceRoot = await mkdtemp(join(tmpdir(), 'yaml-reserved-'));
+      const outDir = join(OUTPUT_ROOT, `yaml-reserved-${agentName}`);
+
+      try {
+        await ensureCleanDir(outDir);
+        await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+        // Use a safe file-name slug; the agent name is the reserved value itself
+        await writeFile(
+          join(sourceRoot, 'agents', 'agent.yaml'),
+          [
+            `name: "${agentName}"`,
+            `description: "${agentDesc}"`,
+            'developer_instructions: |',
+            '  Instructions body.',
+          ].join('\n'),
+          'utf-8'
+        );
+
+        const ir: PluginIR = {
+          id: `codex--yaml-reserved-${agentName}`,
+          source: {
+            platform: 'codex',
+            repoUrl: 'https://example.com',
+            pluginPath: sourceRoot,
+            commitSha: 'abc123',
+            version: '1.0.0',
+          },
+          manifest: {
+            name: `yaml-reserved-${agentName}`,
+            version: '1.0.0',
+            description: 'YAML reserved word test',
+            author: { name: 'Test' },
+            raw: {},
+          },
+          components: {
+            skills: [],
+            hooks: [],
+            agents: [{ name: 'agent', path: 'agents/agent.yaml', format: 'codex-yaml' }],
+            commands: [],
+            mcpServers: [],
+            rules: [],
+            apps: [],
+          },
+          compatibility: {
+            overall: 'full',
+            details: [],
+            warnings: [],
+            droppedComponents: [],
+          },
+        };
+
+        await new VsCodePluginGenerator().generate(ir, outDir);
+
+        const agentsDir = join(outDir, 'agents');
+        const files = await readdir(agentsDir);
+        expect(files).toHaveLength(1);
+
+        const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+        const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+        expect(fmMatch).not.toBeNull();
+
+        const fmBody = fmMatch![1];
+        const nameLine = fmBody.split('\n').find((l) => l.startsWith('name:'))!;
+        const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+
+        // Both the reserved-word name and its description must be quoted so a YAML
+        // parser won't coerce them to boolean/null/number types.
+        expect(nameLine).toMatch(
+          /^name:\s*["'].+["']$/,
+          `name line for "${agentName}" must be quoted`
+        );
+        expect(descLine).toMatch(
+          /^description:\s*["'].+["']$/,
+          `description line for "${agentDesc}" must be quoted`
+        );
+
+        // Semantic: the round-tripped value must still equal the original string.
+        expect(nameLine).toBe(`name: "${agentName}"`);
+      } finally {
+        await rm(sourceRoot, { recursive: true, force: true });
+      }
+    }
+  });
 });

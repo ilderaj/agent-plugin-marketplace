@@ -175,10 +175,27 @@ export class VsCodePluginGenerator {
    * indicator characters. Uses double-quote style with minimal escaping.
    */
   private yamlQuoteIfNeeded(value: string): string {
+    // YAML 1.1 / 1.2 reserved words that would be parsed as non-string scalars.
+    const YAML_RESERVED = new Set([
+      'true', 'false', 'null', '~',
+      // YAML 1.1 booleans
+      'yes', 'no', 'on', 'off',
+      'True', 'False', 'Null',
+      'Yes', 'No', 'On', 'Off',
+      'TRUE', 'FALSE', 'NULL',
+      'YES', 'NO', 'ON', 'OFF',
+    ]);
     const needsQuoting =
       /[:#"'\n\r\t[\]{},|>&*!%@`]/.test(value) ||
       /^\s|\s$/.test(value) ||
-      value === '';
+      value === '' ||
+      YAML_RESERVED.has(value) ||
+      // Integer or float scalars: optional sign, digits, optional decimal
+      /^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/.test(value) ||
+      // Octal / hex / infinity / nan literals used by some YAML parsers
+      /^0x[0-9a-fA-F]+$/.test(value) ||
+      /^0o[0-7]+$/.test(value) ||
+      /^[+-]?(\.inf|\.Inf|\.INF|\.nan|\.NaN|\.NAN)$/.test(value);
     if (!needsQuoting) return value;
 
     const escaped = value
