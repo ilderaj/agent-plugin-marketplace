@@ -275,7 +275,7 @@ describe('CodexAdapter', () => {
     expect(ir.source.version).toBe('0.0.0');
   });
 
-  test('hooks compatibility: level is partial and note mentions format conversion and 5 events', async () => {
+  test('hooks compatibility: level is partial and note mentions format conversion, 5 events, and Bash-only tool interception', async () => {
     const ir = await adapter.parse(FIXTURE);
     const hookDetails = ir.compatibility.details.filter(d => d.type === 'hook');
     expect(hookDetails.length).toBeGreaterThan(0);
@@ -283,6 +283,7 @@ describe('CodexAdapter', () => {
       expect(detail.level).toBe('partial');
       expect(detail.notes).toContain('format conversion');
       expect(detail.notes).toContain('5 events');
+      expect(detail.notes).toContain('Bash-only tool interception');
     }
   });
 });
