@@ -302,4 +302,33 @@ describe('VsCodePluginGenerator', () => {
     // must still be traceable (contains the plugin dir name)
     expect(meta._source.pluginPath).toContain('relpath-test');
   });
+
+  test('converts Codex YAML agents to markdown files with frontmatter', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'codex-agent-conversion');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    // Agent output must be a markdown file, not the raw YAML
+    const reviewerMd = await readFile(join(outDir, 'agents/reviewer.md'), 'utf-8');
+
+    // Must have YAML frontmatter with name and description
+    expect(reviewerMd).toContain('---');
+    expect(reviewerMd).toContain('name: reviewer');
+    expect(reviewerMd).toContain('description: Code review agent');
+
+    // Must include developer_instructions in the markdown body
+    expect(reviewerMd).toContain('You are an expert code reviewer.');
+    expect(reviewerMd).toContain('Focus on correctness, security, and maintainability.');
+
+    // Raw YAML file must not exist in output
+    await expect(stat(join(outDir, 'agents/reviewer.yaml'))).rejects.toThrow();
+
+    // tester.yml should also be converted to markdown
+    const testerMd = await readFile(join(outDir, 'agents/tester.md'), 'utf-8');
+    expect(testerMd).toContain('name: tester');
+    expect(testerMd).toContain('description: Test automation agent');
+    await expect(stat(join(outDir, 'agents/tester.yml'))).rejects.toThrow();
+  });
 });

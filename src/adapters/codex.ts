@@ -316,7 +316,7 @@ export class CodexAdapter implements SourceAdapter {
         type: 'agent',
         name: agent.name,
         level: 'partial' as const,
-        notes: 'Agent definitions require format conversion',
+        notes: 'Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.',
       });
     }
     

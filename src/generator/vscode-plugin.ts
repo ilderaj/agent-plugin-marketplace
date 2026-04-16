@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, writeFile } from 'fs/promises';
 import { basename, dirname, join, parse } from 'path';
 import type {
+  AgentRef,
   Compatibility,
   ComponentCompat,
   DroppedComponent,
@@ -99,8 +100,94 @@ export class VsCodePluginGenerator {
 
   private async copyAgents(ir: PluginIR, outDir: string) {
     for (const agent of ir.components.agents) {
-      await this.copyPath(join(ir.source.pluginPath, agent.path), join(outDir, agent.path));
+      if (agent.format === 'codex-yaml') {
+        await this.convertCodexAgent(ir, agent, outDir);
+      } else {
+        await this.copyPath(join(ir.source.pluginPath, agent.path), join(outDir, agent.path));
+      }
     }
+  }
+
+  private async convertCodexAgent(
+    ir: PluginIR,
+    agent: AgentRef,
+    outDir: string
+  ) {
+    const sourcePath = join(ir.source.pluginPath, agent.path);
+    const raw = await readFile(sourcePath, 'utf-8');
+    const parsed = this.parseCodexAgentYaml(raw);
+
+    const name = parsed.name ?? agent.name;
+    const description = parsed.description ?? '';
+    const body = parsed.developer_instructions?.trimEnd() ?? '';
+
+    const frontmatter = [
+      '---',
+      `name: ${name}`,
+      description ? `description: ${description}` : undefined,
+      '---',
+    ]
+      .filter((line) => line !== undefined)
+      .join('\n');
+
+    const content = body
+      ? `${frontmatter}\n\n${body}\n`
+      : `${frontmatter}\n`;
+
+    const outputPath = join(outDir, `agents/${name}.md`);
+    await mkdir(dirname(outputPath), { recursive: true });
+    await writeFile(outputPath, content, 'utf-8');
+  }
+
+  /**
+   * Minimal YAML parser for Codex agent files.
+   * Handles top-level string fields and block scalars (|).
+   * Does not support the full YAML spec — only what Codex agent definitions use.
+   */
+  private parseCodexAgentYaml(raw: string): Record<string, string> {
+    const result: Record<string, string> = {};
+    const lines = raw.split('\n');
+    let i = 0;
+
+    while (i < lines.length) {
+      const line = lines[i];
+      const topLevelMatch = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*):\s*(.*)/);
+
+      if (!topLevelMatch) {
+        i++;
+        continue;
+      }
+
+      const key = topLevelMatch[1];
+      const valueRaw = topLevelMatch[2].trim();
+
+      if (valueRaw === '|') {
+        // Block scalar: collect indented lines until a non-indented line
+        i++;
+        const bodyLines: string[] = [];
+        while (i < lines.length) {
+          const bodyLine = lines[i];
+          if (bodyLine === '' || bodyLine.startsWith(' ') || bodyLine.startsWith('\t')) {
+            bodyLines.push(bodyLine.replace(/^  /, ''));
+            i++;
+          } else {
+            break;
+          }
+        }
+        // Remove trailing empty lines but preserve a single trailing newline
+        while (bodyLines.length > 0 && bodyLines[bodyLines.length - 1].trim() === '') {
+          bodyLines.pop();
+        }
+        result[key] = bodyLines.join('\n');
+      } else if (valueRaw !== '' && !valueRaw.startsWith('-')) {
+        result[key] = valueRaw;
+        i++;
+      } else {
+        i++;
+      }
+    }
+
+    return result;
   }
 
   private async copyCommands(ir: PluginIR, outDir: string) {
