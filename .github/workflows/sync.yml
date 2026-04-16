@@ -93,7 +93,7 @@ jobs:
           echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: Notify Slack
-        if: steps.create_pr.outputs.pr_url != '' && secrets.SLACK_WEBHOOK_URL != ''
+        if: steps.create_pr.outputs.pr_url != ''
         continue-on-error: true
         env:
           PR_URL: ${{ steps.create_pr.outputs.pr_url }}
@@ -110,7 +110,7 @@ jobs:
             || echo "::warning::Slack notification failed (non-fatal)"
 
       - name: Notify Discord
-        if: steps.create_pr.outputs.pr_url != '' && secrets.DISCORD_WEBHOOK_URL != ''
+        if: steps.create_pr.outputs.pr_url != ''
         continue-on-error: true
         env:
           PR_URL: ${{ steps.create_pr.outputs.pr_url }}
