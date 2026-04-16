@@ -100,12 +100,15 @@ export class VsCodePluginGenerator {
 
   private async copyAgents(ir: PluginIR, outDir: string) {
     // Pre-check for filename collisions among YAML agents before writing anything.
+    // Cache parsed results so each file is read and parsed only once.
+    const parsedCache = new Map<string, Record<string, string>>();
     const usedFilenames = new Set<string>();
     for (const agent of ir.components.agents) {
       if (agent.format !== 'codex-yaml') continue;
       const sourcePath = join(ir.source.pluginPath, agent.path);
       const raw = await readFile(sourcePath, 'utf-8');
       const parsed = this.parseCodexAgentYaml(raw);
+      parsedCache.set(agent.path, parsed);
       const name = parsed.name ?? agent.name;
       const filename = this.sanitizeAgentFilename(name);
       if (usedFilenames.has(filename)) {
@@ -119,7 +122,7 @@ export class VsCodePluginGenerator {
 
     for (const agent of ir.components.agents) {
       if (agent.format === 'codex-yaml') {
-        await this.convertCodexAgent(ir, agent, outDir);
+        await this.convertCodexAgent(ir, agent, outDir, parsedCache.get(agent.path));
       } else {
         await this.copyPath(join(ir.source.pluginPath, agent.path), join(outDir, agent.path));
       }
@@ -129,11 +132,12 @@ export class VsCodePluginGenerator {
   private async convertCodexAgent(
     ir: PluginIR,
     agent: AgentRef,
-    outDir: string
+    outDir: string,
+    cachedParsed?: Record<string, string>
   ) {
-    const sourcePath = join(ir.source.pluginPath, agent.path);
-    const raw = await readFile(sourcePath, 'utf-8');
-    const parsed = this.parseCodexAgentYaml(raw);
+    const parsed = cachedParsed ?? this.parseCodexAgentYaml(
+      await readFile(join(ir.source.pluginPath, agent.path), 'utf-8')
+    );
 
     const name = parsed.name ?? agent.name;
     const description = parsed.description ?? '';
@@ -188,9 +192,11 @@ export class VsCodePluginGenerator {
 
   /**
    * Minimal YAML parser for Codex agent files.
-   * Handles top-level string fields and block scalars (| and >), including
-   * chomping variants (|-  |+  >-  >+). Does not support the full YAML spec —
-   * only what Codex agent definitions use.
+   * Handles top-level string fields, quoted scalars (single or double), and
+   * block scalars (| and >). Chomping modifiers `|-` / `>-` (strip) are
+   * recognised syntactically; in practice all trailing blank lines are removed
+   * (strip behaviour). Keep (`|+` / `>+`) is not implemented.
+   * Does not support the full YAML spec — only what Codex agent definitions use.
    */
   private parseCodexAgentYaml(raw: string): Record<string, string> {
     const result: Record<string, string> = {};
@@ -233,11 +239,24 @@ export class VsCodePluginGenerator {
           }
         }
         const bodyLines = rawBodyLines.map((l) => (l.length === 0 ? '' : l.slice(indent)));
-        // Clip chomping: remove trailing empty lines
+        // Strip trailing blank lines (strip-chomping behaviour for all variants)
         while (bodyLines.length > 0 && bodyLines[bodyLines.length - 1].trim() === '') {
           bodyLines.pop();
         }
         result[key] = isFolded ? this.foldBlockScalar(bodyLines) : bodyLines.join('\n');
+      } else if (/^"(.*)"$/.test(valueRaw)) {
+        // Double-quoted scalar: unwrap and unescape standard YAML escapes
+        result[key] = valueRaw.slice(1, -1)
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '\\')
+          .replace(/\\n/g, '\n')
+          .replace(/\\r/g, '\r')
+          .replace(/\\t/g, '\t');
+        i++;
+      } else if (/^'(.*)'$/.test(valueRaw)) {
+        // Single-quoted scalar: unwrap and unescape '' → '
+        result[key] = valueRaw.slice(1, -1).replace(/''/g, "'");
+        i++;
       } else if (valueRaw !== '' && !valueRaw.startsWith('-')) {
         result[key] = valueRaw;
         i++;

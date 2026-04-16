@@ -618,6 +618,21 @@ describe('VsCodePluginGenerator', () => {
       // The value after "description: " must be a quoted string
       expect(descLine).toMatch(/^description:\s*["'].+["']$/);
 
+      // Semantic check: the YAML source had `name: "tricky: agent"` (double-quoted
+      // scalar). The parser must unwrap the outer quotes so the stored value is
+      // `tricky: agent`, not `"tricky: agent"`. The generated frontmatter should
+      // therefore contain `name: "tricky: agent"` (re-quoted because of the colon)
+      // with no extra wrapping layer.
+      expect(nameLine).toBe('name: "tricky: agent"');
+
+      // Semantic check: the description was a plain scalar containing quotes and a
+      // colon. The stored value must not have grown additional outer quote chars.
+      expect(descLine).toBe('description: "He said \\"hello\\" and used: colons"');
+
+      // Filename must not contain literal quote characters from the YAML source.
+      expect(files[0]).not.toContain('"');
+      expect(files[0]).not.toContain("'");
+
       // The body must still contain the instructions
       expect(content).toContain('Do the thing.');
     } finally {
@@ -761,6 +776,91 @@ describe('VsCodePluginGenerator', () => {
       // Must not have any residual leading spaces (4-space indent fully stripped)
       expect(content).not.toMatch(/^ +Four space/m);
       expect(content).not.toMatch(/^ +Second line/m);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('single-quoted YAML scalar names and descriptions are unwrapped, not double-quoted again', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'single-quoted-'));
+    const outDir = join(OUTPUT_ROOT, 'single-quoted');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // Single-quoted YAML scalar: value is `it's simple` (with apostrophe via YAML '' escape)
+      await writeFile(
+        join(sourceRoot, 'agents', 'sq.yaml'),
+        [
+          "name: 'sq-agent'",
+          "description: 'it''s simple'",
+          'developer_instructions: |',
+          '  Body text.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--single-quoted-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'single-quoted-test',
+          version: '1.0.0',
+          description: 'Single-quoted scalar test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'sq', path: 'agents/sq.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const agentsDir = join(outDir, 'agents');
+      const files = await readdir(agentsDir);
+      expect(files).toHaveLength(1);
+
+      const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+      expect(fmMatch).not.toBeNull();
+
+      const fmBody = fmMatch![1];
+      const nameLine = fmBody.split('\n').find((l) => l.startsWith('name:'))!;
+      const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+
+      // Semantic: quotes unwrapped → value is `sq-agent`, no special chars, written bare
+      expect(nameLine).toBe('name: sq-agent');
+
+      // Semantic: `''` in single-quoted YAML is an escaped single-quote → value is `it's simple`
+      // The apostrophe triggers quoting in the output frontmatter
+      expect(descLine).toBe("description: \"it's simple\"");
+
+      // Filename must not carry surrounding quote characters
+      expect(files[0]).not.toContain("'");
+      expect(files[0]).not.toContain('"');
+      expect(files[0]).toBe('sq-agent.md');
+
+      expect(content).toContain('Body text.');
     } finally {
       await rm(sourceRoot, { recursive: true, force: true });
     }
