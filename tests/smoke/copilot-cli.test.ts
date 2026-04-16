@@ -11,6 +11,7 @@ const REPO_ROOT = join(import.meta.dir, '../..');
 const PLUGINS_DIR = join(REPO_ROOT, 'plugins');
 const GITHUB_MARKETPLACE = join(REPO_ROOT, '.github', 'plugin', 'marketplace.json');
 const SMOKE_ROOT = join(import.meta.dir, '../.generated/smoke');
+const SMOKE_TIMEOUT_MS = 15_000;
 
 async function isCopilotAvailable(): Promise<boolean> {
   try {
@@ -35,6 +36,23 @@ async function runCopilot(args: string[], env?: Record<string, string>): Promise
     proc.exited,
   ]);
   return { stdout, stderr, code };
+}
+
+function assertCopilotSuccess(
+  step: string,
+  result: { stdout: string; stderr: string; code: number }
+) {
+  if (result.code === 0) {
+    return;
+  }
+
+  const sections = [
+    `copilot ${step} failed with exit code ${result.code}`,
+    result.stdout ? `stdout:\n${result.stdout.trim()}` : 'stdout: <empty>',
+    result.stderr ? `stderr:\n${result.stderr.trim()}` : 'stderr: <empty>',
+  ];
+
+  throw new Error(sections.join('\n\n'));
 }
 
 const SKIP = process.env.SKIP_SMOKE_TESTS === '1';
@@ -80,19 +98,19 @@ describe('Copilot CLI marketplace smoke tests', () => {
 
     // Add local marketplace
     const addResult = await runCopilot(['plugin', 'marketplace', 'add', localMarketplace], env);
-    expect(addResult.code).toBe(0);
+    assertCopilotSuccess('plugin marketplace add', addResult);
 
     // List should show the marketplace
     const listResult = await runCopilot(['plugin', 'marketplace', 'list'], env);
-    expect(listResult.code).toBe(0);
+    assertCopilotSuccess('plugin marketplace list', listResult);
     expect(listResult.stdout).toContain('agent-plugin-marketplace');
 
     // Browse the marketplace
     const browseResult = await runCopilot(['plugin', 'marketplace', 'browse', 'agent-plugin-marketplace'], env);
-    expect(browseResult.code).toBe(0);
+    assertCopilotSuccess('plugin marketplace browse', browseResult);
 
     // Remove the marketplace
     const removeResult = await runCopilot(['plugin', 'marketplace', 'remove', 'agent-plugin-marketplace'], env);
-    expect(removeResult.code).toBe(0);
-  });
+    assertCopilotSuccess('plugin marketplace remove', removeResult);
+  }, SMOKE_TIMEOUT_MS);
 });
