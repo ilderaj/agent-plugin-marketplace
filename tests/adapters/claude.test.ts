@@ -133,6 +133,15 @@ describe('ClaudeAdapter', () => {
     expect(commandCompat?.level).toBe('partial');
   });
 
+  test('command compatibility notes mention shell scripts and no VS Code equivalent', async () => {
+    const ir = await adapter.parse(FIXTURE);
+    const commandCompat = ir.compatibility.details.find(d => d.type === 'command');
+    expect(commandCompat).toBeDefined();
+    expect(commandCompat?.level).toBe('partial');
+    expect(commandCompat?.notes).toContain('shell scripts');
+    expect(commandCompat?.notes).toContain('no direct VS Code');
+  });
+
   test('discover returns empty array for non-existent directory (expected ENOENT)', async () => {
     const nonExistentPath = '/path/that/does/not/exist/at/all';
     const plugins = await adapter.discover(nonExistentPath);

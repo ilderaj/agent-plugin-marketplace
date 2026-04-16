@@ -479,7 +479,7 @@ export class CursorAdapter implements SourceAdapter {
         type: 'command',
         name: command.name,
         level: 'partial' as const,
-        notes: 'Commands may require adaptation for platform-specific execution contexts',
+        notes: 'Platform-specific shell scripts copied to output; no direct VS Code command equivalent',
       });
     }
 
