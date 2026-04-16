@@ -45,6 +45,9 @@ jobs:
           SYNC_REPORT_PATH: ${{ runner.temp }}/sync-report.md
         run: bun run sync
 
+      - name: Validate (type-check + test)
+        run: bun run build && bun test
+
       - name: Detect sync changes
         id: changes
         shell: bash
