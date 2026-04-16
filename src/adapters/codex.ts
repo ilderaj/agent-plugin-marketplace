@@ -306,7 +306,7 @@ export class CodexAdapter implements SourceAdapter {
         type: 'hook',
         name: hook.configPath,
         level: 'partial' as const,
-        notes: 'Hooks require format conversion for other platforms',
+        notes: 'Codex hooks require format conversion; limited to 5 events with Bash-only tool interception',
       });
     }
     
