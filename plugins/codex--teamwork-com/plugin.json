@@ -1,0 +1,14 @@
+{
+  "name": "codex--teamwork-com",
+  "version": "1.0.0",
+  "description": "Connect to sync Teamwork projects and tasks for use in ChatGPT.",
+  "author": {
+    "name": "OpenAI",
+    "url": "https://www.teamwork.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.teamwork.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

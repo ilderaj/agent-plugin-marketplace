@@ -1,0 +1,14 @@
+{
+  "name": "codex--docket",
+  "version": "1.0.0",
+  "description": "Docket AI makes your sales knowledge your instant superpower.",
+  "author": {
+    "name": "Docket AI",
+    "url": "https://www.docket.io/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.docket.io/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

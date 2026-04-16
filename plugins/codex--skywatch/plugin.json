@@ -1,0 +1,14 @@
+{
+  "name": "codex--skywatch",
+  "version": "1.0.0",
+  "description": "Search and explore satellite imagery from top providers including Vantor, Planet, Airbus, and more, all in...",
+  "author": {
+    "name": "SkyWatch Space Applications Inc.",
+    "url": "https://skywatch.com"
+  },
+  "license": "MIT",
+  "homepage": "https://skywatch.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

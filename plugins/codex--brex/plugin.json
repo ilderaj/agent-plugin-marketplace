@@ -1,0 +1,14 @@
+{
+  "name": "codex--brex",
+  "version": "1.0.0",
+  "description": "Connect Brex to ChatGPT and review your company finances through natural conversation — at ChatGPT speed.",
+  "author": {
+    "name": "Brex Inc.",
+    "url": "https://brex.com"
+  },
+  "license": "MIT",
+  "homepage": "https://brex.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

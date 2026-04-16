@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/google-calendar",
-    "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
+    "commitSha": "b7ebf6296733cddb871d0e914288e8a0c0a3dcfe",
     "version": "1.2.0"
   },
   "_compatibility": {

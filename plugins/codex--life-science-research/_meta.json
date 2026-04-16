@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/life-science-research",
-    "commitSha": "fb0a18376bcd9f2604047fbe7459ec5aed70c64b",
+    "commitSha": "c1c78328dc2775a42267caaf41102b67fc3a9c37",
     "version": "0.1.0"
   },
   "_compatibility": {

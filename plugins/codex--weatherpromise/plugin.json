@@ -1,0 +1,14 @@
+{
+  "name": "codex--weatherpromise",
+  "version": "1.0.0",
+  "description": "Protect your trip with WeatherPromise and get back the full cost if it rains more than promised during your...",
+  "author": {
+    "name": "WeatherPromise, Inc.",
+    "url": "https://www.weatherpromise.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.weatherpromise.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

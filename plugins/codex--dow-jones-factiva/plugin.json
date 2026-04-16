@@ -1,0 +1,14 @@
+{
+  "name": "codex--dow-jones-factiva",
+  "version": "1.0.0",
+  "description": "The Factiva Connector, enables authorized users to search Factiva’s global news archive, including premium...",
+  "author": {
+    "name": "Factiva, Inc.",
+    "url": "https://www.dowjones.com/business-intelligence/factiva/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.dowjones.com/business-intelligence/factiva/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

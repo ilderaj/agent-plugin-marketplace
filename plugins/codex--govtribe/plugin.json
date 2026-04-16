@@ -1,0 +1,14 @@
+{
+  "name": "codex--govtribe",
+  "version": "1.0.0",
+  "description": "Search government contracts, awards, and vendors directly from ChatGPT.",
+  "author": {
+    "name": "Government Executive Media Group LLC",
+    "url": "https://govtribe.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://govtribe.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

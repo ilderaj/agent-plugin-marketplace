@@ -1,0 +1,14 @@
+{
+  "name": "codex--brand24",
+  "version": "1.0.0",
+  "description": "The Brand24 app in ChatGPT lets marketing and PR teams instantly explore brand mentions, sentiment, and med...",
+  "author": {
+    "name": "Brand24 Global Inc.",
+    "url": "https://brand24.com"
+  },
+  "license": "MIT",
+  "homepage": "https://brand24.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

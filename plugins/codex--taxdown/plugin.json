@@ -1,0 +1,14 @@
+{
+  "name": "codex--taxdown",
+  "version": "1.0.0",
+  "description": "TaxDown te ayuda a resolver dudas fiscales en España, tanto para particulares como autónomos: deducciones,...",
+  "author": {
+    "name": "TAXDOWN S.L.",
+    "url": "https://taxdown.es/"
+  },
+  "license": "MIT",
+  "homepage": "https://taxdown.es/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

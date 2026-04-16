@@ -1,0 +1,14 @@
+{
+  "name": "codex--quartr",
+  "version": "1.0.0",
+  "description": "Access structured first-party IR data from over 14,500+ public companies across 65 markets Quartr delivers...",
+  "author": {
+    "name": "Quartr",
+    "url": "https://quartr.com"
+  },
+  "license": "MIT",
+  "homepage": "https://quartr.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

@@ -1,0 +1,14 @@
+{
+  "name": "codex--cb-insights",
+  "version": "1.0.0",
+  "description": "Unleash ChatGPT as your private markets research agent.",
+  "author": {
+    "name": "CB Insights",
+    "url": "https://cbinsights.com"
+  },
+  "license": "MIT",
+  "homepage": "https://cbinsights.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

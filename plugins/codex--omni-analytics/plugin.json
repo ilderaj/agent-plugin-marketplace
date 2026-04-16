@@ -1,0 +1,14 @@
+{
+  "name": "codex--omni-analytics",
+  "version": "1.0.0",
+  "description": "Query Omni using the same semantic model, permissions, and logic defined by your data team directly from Ch...",
+  "author": {
+    "name": "Omni Analytics",
+    "url": "https://www.omni.co"
+  },
+  "license": "MIT",
+  "homepage": "https://www.omni.co",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

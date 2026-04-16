@@ -1,0 +1,14 @@
+{
+  "name": "codex--happenstance",
+  "version": "1.0.0",
+  "description": "Happenstance searches your professional network using natural language to find the right people.",
+  "author": {
+    "name": "Happenstance, Inc.",
+    "url": "https://happenstance.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://happenstance.ai",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}
