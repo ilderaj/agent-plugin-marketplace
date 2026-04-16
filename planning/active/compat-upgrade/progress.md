@@ -17,6 +17,8 @@
 - ✅ 在合并后的 `dev` 上执行 `bunx tsc --noEmit`
 - ✅ 验证 Claude fixture 兼容性结果：hooks=`full`、agents=`full`、commands=`partial`、overall=`partial`
 - ✅ 合并 `compat-upgrade` → 本地 `dev`
+- ✅ 推送 `dev` → `origin/dev`
+- ✅ 创建 PR: `dev` → `main`（#7）
 
 ## 待执行 Tasks
 
