@@ -1,23 +1,10 @@
 {
   "name": "claude--security-guidance",
-  "displayName": "Security Guidance (from Claude Code)",
   "version": "1.0.0",
   "description": "Security reminder hook that warns about potential security issues when editing files, including command injection, XSS, and unsafe code patterns",
   "author": {
     "name": "David Dworken",
     "email": "dworken@anthropic.com"
   },
-  "_source": {
-    "platform": "claude-code",
-    "upstream": "https://github.com/anthropics/claude-code.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/security-guidance",
-    "commitSha": "f876b851167130da1fac34f655a1ae55aa31a068",
-    "version": "1.0.0"
-  },
-  "_compatibility": {
-    "overall": "full",
-    "notes": [],
-    "warnings": [],
-    "droppedComponents": []
-  }
+  "strict": false
 }

@@ -107,14 +107,28 @@ describe("SyncPipeline", () => {
     });
 
     const firstReport = await pipeline.run();
-    expect(firstReport).toEqual({ updated: 1, total: 1 });
+    expect(firstReport).toEqual({
+      updated: 1,
+      total: 1,
+      added: [{ name: "codex-github", platform: "codex" }],
+      removed: [],
+      changed: [],
+    });
 
     const generatedPluginDir = join(workspaceDir, "output", "plugins", "codex--github");
+    // _source now lives in _meta.json
+    const generatedMeta = JSON.parse(
+      await readFile(join(generatedPluginDir, "_meta.json"), "utf-8"),
+    ) as { _source: { upstream: string; commitSha: string } };
+    expect(generatedMeta._source.upstream).toBe(upstream.bareRepoUrl);
+    expect(generatedMeta._source.commitSha).toMatch(/^[0-9a-f]{40}$/);
+
+    // plugin.json must have strict: false and no _source
     const generatedManifest = JSON.parse(
       await readFile(join(generatedPluginDir, "plugin.json"), "utf-8"),
-    ) as { _source: { upstream: string; commitSha: string } };
-    expect(generatedManifest._source.upstream).toBe(upstream.bareRepoUrl);
-    expect(generatedManifest._source.commitSha).toMatch(/^[0-9a-f]{40}$/);
+    ) as { strict: boolean; _source?: unknown };
+    expect(generatedManifest.strict).toBe(false);
+    expect(generatedManifest._source).toBeUndefined();
 
     const stateAfterFirstRun = JSON.parse(await readFile(stateFile, "utf-8")) as {
       sources: Record<string, { repoUrl: string; lastCommit: string; plugins: Record<string, { commitSha: string }> }>;
@@ -122,7 +136,7 @@ describe("SyncPipeline", () => {
     expect(stateAfterFirstRun.sources.codex?.repoUrl).toBe(upstream.bareRepoUrl);
     expect(stateAfterFirstRun.sources.codex?.lastCommit).toMatch(/^[0-9a-f]{40}$/);
     expect(stateAfterFirstRun.sources.codex?.plugins["codex-github"]?.commitSha).toBe(
-      generatedManifest._source.commitSha,
+      generatedMeta._source.commitSha,
     );
 
     await writeFile(join(upstream.pluginDir, "README.md"), "# Updated plugin\n", "utf-8");
@@ -132,23 +146,41 @@ describe("SyncPipeline", () => {
     await runGit(["push", "origin", "HEAD"], upstream.sourceRepo);
 
     const secondReport = await pipeline.run();
-    expect(secondReport).toEqual({ updated: 1, total: 1 });
+    expect(secondReport).toEqual({
+      updated: 1,
+      total: 1,
+      added: [],
+      removed: [],
+      changed: [{ name: "codex-github", platform: "codex" }],
+    });
 
-    const regeneratedManifest = JSON.parse(
-      await readFile(join(generatedPluginDir, "plugin.json"), "utf-8"),
+    const regeneratedMeta = JSON.parse(
+      await readFile(join(generatedPluginDir, "_meta.json"), "utf-8"),
     ) as { _source: { commitSha: string } };
-    expect(regeneratedManifest._source.commitSha).toBe(updatedHead);
+    expect(regeneratedMeta._source.commitSha).toBe(updatedHead);
 
     const marketplace = JSON.parse(
       await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8"),
-    ) as { plugins: Array<{ name: string; source: string }> };
+    ) as { plugins: Array<{ name: string; source: string; strict: boolean }> };
     expect(marketplace.plugins).toEqual([
       {
         name: "codex--github",
         source: "plugins/codex--github",
         description: "GitHub integration plugin for Codex (from Codex)",
+        version: "1.0.0",
+        author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
+        tags: ["github", "vcs", "code-review"],
+        strict: false,
       },
     ]);
+
+    // Dual-write: .github/plugin/marketplace.json must match root marketplace.json
+    const githubMarketplace = JSON.parse(
+      await readFile(join(workspaceDir, "output", ".github", "plugin", "marketplace.json"), "utf-8"),
+    ) as object;
+    expect(githubMarketplace).toEqual(
+      JSON.parse(await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")),
+    );
   });
 
   test("run keeps marketplace complete when nothing changed on the second sync", async () => {
@@ -166,7 +198,7 @@ describe("SyncPipeline", () => {
     await pipeline.run();
     const secondReport = await pipeline.run();
 
-    expect(secondReport).toEqual({ updated: 0, total: 1 });
+    expect(secondReport).toEqual({ updated: 0, total: 1, added: [], removed: [], changed: [] });
     await expect(readFile(join(workspaceDir, "output", "plugins", "codex--github", "plugin.json"), "utf-8")).resolves.toContain(
       '"name": "codex--github"',
     );
@@ -179,6 +211,10 @@ describe("SyncPipeline", () => {
         name: "codex--github",
         source: "plugins/codex--github",
         description: "GitHub integration plugin for Codex (from Codex)",
+        version: "1.0.0",
+        author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
+        tags: ["github", "vcs", "code-review"],
+        strict: false,
       },
     ]);
   });
@@ -217,7 +253,7 @@ describe("SyncPipeline", () => {
       config,
     }).run();
 
-    expect(secondReport).toEqual({ updated: 0, total: 1 });
+    expect(secondReport).toEqual({ updated: 0, total: 1, added: [], removed: [], changed: [] });
     expect(parseCalls).toHaveLength(0);
     await expect(readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")).resolves.toContain(
       '"name": "codex--github"',
@@ -225,7 +261,7 @@ describe("SyncPipeline", () => {
   });
 
   test("main executes the sync command and prints the report", async () => {
-    const run = mock(async () => ({ updated: 2, total: 3 }));
+    const run = mock(async () => ({ updated: 2, total: 3, added: [], removed: [], changed: [] }));
     const log = mock(() => {});
 
     await main(["sync"], {
@@ -263,5 +299,129 @@ describe("SyncPipeline", () => {
     ).rejects.toThrow("boom");
 
     expect(error).toHaveBeenCalledWith("Sync failed: boom");
+  });
+
+  test("enriched report tracks added/changed/removed plugins across runs", async () => {
+    const upstream = await createLocalUpstream();
+    const stateFile = join(workspaceDir, "data", "sync-state.json");
+    const config = createConfig(upstream.bareRepoUrl);
+    const makeInstance = () =>
+      new SyncPipeline({
+        adapters: [new CodexAdapter()],
+        generator: new VsCodePluginGenerator(),
+        marketplaceGen: new MarketplaceGenerator(config.marketplace),
+        stateManager: new SyncStateManager(stateFile),
+        config,
+      });
+
+    // first run: plugin is new → added
+    const first = await makeInstance().run();
+    expect(first.added).toEqual([{ name: "codex-github", platform: "codex" }]);
+    expect(first.changed).toEqual([]);
+    expect(first.removed).toEqual([]);
+
+    // second run: nothing changed → all empty
+    const second = await makeInstance().run();
+    expect(second.added).toEqual([]);
+    expect(second.changed).toEqual([]);
+    expect(second.removed).toEqual([]);
+
+    // push an update so the plugin commitSha changes → changed
+    await writeFile(join(upstream.pluginDir, "NOTES.md"), "notes\n", "utf-8");
+    await runGit(["add", "plugins/codex-github/NOTES.md"], upstream.sourceRepo);
+    await runGit(["commit", "-m", "Update notes"], upstream.sourceRepo);
+    await runGit(["push", "origin", "HEAD"], upstream.sourceRepo);
+
+    const third = await makeInstance().run();
+    expect(third.added).toEqual([]);
+    expect(third.changed).toEqual([{ name: "codex-github", platform: "codex" }]);
+    expect(third.removed).toEqual([]);
+  });
+
+  test("main writes markdown report to SYNC_REPORT_PATH when env var is set", async () => {
+    const reportPath = join(workspaceDir, "sync-report.md");
+    const originalEnv = Bun.env.SYNC_REPORT_PATH;
+    Bun.env.SYNC_REPORT_PATH = reportPath;
+
+    const run = mock(async () => ({
+      updated: 1,
+      total: 2,
+      added: [{ name: "new-plugin", platform: "codex" }],
+      removed: [],
+      changed: [],
+    }));
+
+    try {
+      await main(["sync"], {
+        createPipeline: () => ({ run }) as Pick<SyncPipeline, "run">,
+        logger: { log: mock(() => {}), error: mock(() => {}) },
+      });
+
+      const written = await readFile(reportPath, "utf-8");
+      expect(written).toContain("## Sync Summary");
+      expect(written).toContain("**1 updated** out of 2 total plugins.");
+      expect(written).toContain("### Added (1)");
+      expect(written).toContain("`new-plugin` (codex)");
+    } finally {
+      if (originalEnv === undefined) {
+        delete Bun.env.SYNC_REPORT_PATH;
+      } else {
+        Bun.env.SYNC_REPORT_PATH = originalEnv;
+      }
+    }
+  });
+
+  test("removed plugin does not appear in subsequent sync reports after state is cleaned up", async () => {
+    const upstream = await createLocalUpstream();
+    const stateFile = join(workspaceDir, "data", "sync-state.json");
+    const config = createConfig(upstream.bareRepoUrl);
+    const makeInstance = () =>
+      new SyncPipeline({
+        adapters: [new CodexAdapter()],
+        generator: new VsCodePluginGenerator(),
+        marketplaceGen: new MarketplaceGenerator(config.marketplace),
+        stateManager: new SyncStateManager(stateFile),
+        config,
+      });
+
+    // first run: plugin is discovered and added
+    const first = await makeInstance().run();
+    expect(first.added).toEqual([{ name: "codex-github", platform: "codex" }]);
+    expect(first.removed).toEqual([]);
+
+    // remove the plugin from upstream so it is no longer discovered
+    const pluginDir = join(workspaceDir, "upstream", "source", "plugins", "codex-github");
+    const sourceRepo = join(workspaceDir, "upstream", "source");
+    await runGit(["rm", "-r", "plugins/codex-github"], sourceRepo);
+    await runGit(["commit", "-m", "Remove plugin"], sourceRepo);
+    await runGit(["push", "origin", "HEAD"], sourceRepo);
+
+    // second run: plugin is detected as removed
+    const second = await makeInstance().run();
+    expect(second.removed).toEqual([{ name: "codex-github", platform: "codex" }]);
+
+    // third run: plugin is no longer in state, must NOT appear in removed again
+    const third = await makeInstance().run();
+    expect(third.removed).toEqual([]);
+  });
+
+  test("main does not write report file when SYNC_REPORT_PATH is not set", async () => {
+    delete Bun.env.SYNC_REPORT_PATH;
+    const reportPath = join(workspaceDir, "should-not-exist.md");
+
+    const run = mock(async () => ({
+      updated: 0,
+      total: 1,
+      added: [],
+      removed: [],
+      changed: [],
+    }));
+
+    await main(["sync"], {
+      createPipeline: () => ({ run }) as Pick<SyncPipeline, "run">,
+      logger: { log: mock(() => {}), error: mock(() => {}) },
+    });
+
+    await expect(readFile(reportPath, "utf-8")).rejects.toMatchObject({ code: "ENOENT" });
   });
 });

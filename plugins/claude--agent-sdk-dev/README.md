@@ -4,7 +4,7 @@
 - Platform: claude-code
 - Plugin ID: claude-code--agent-sdk-dev
 - Upstream: https://github.com/anthropics/claude-code.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/claude-code/plugins/agent-sdk-dev
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/agent-sdk-dev
 - Version: 1.0.0
 
 ## Compatibility Summary

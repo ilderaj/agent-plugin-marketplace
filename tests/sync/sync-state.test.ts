@@ -131,6 +131,33 @@ describe("SyncStateManager", () => {
     expect(state.lastSyncAt).toBe("");
   });
 
+  test("removePlugin deletes the plugin entry from state and persists correctly", async () => {
+    const manager = new SyncStateManager(stateFilePath);
+
+    await manager.load();
+    manager.markSynced("codex", "github", "plugin-sha-1");
+    expect(manager.hasPlugin("codex", "github")).toBe(true);
+
+    manager.removePlugin("codex", "github");
+    expect(manager.hasPlugin("codex", "github")).toBe(false);
+    expect(manager.getKnownPluginNames("codex")).not.toContain("github");
+
+    await manager.save();
+
+    const reloaded = new SyncStateManager(stateFilePath);
+    await reloaded.load();
+    expect(reloaded.hasPlugin("codex", "github")).toBe(false);
+  });
+
+  test("removePlugin is a no-op when platform or plugin does not exist", async () => {
+    const manager = new SyncStateManager(stateFilePath);
+    await manager.load();
+
+    // neither platform nor plugin exists — must not throw
+    expect(() => manager.removePlugin("codex", "nonexistent")).not.toThrow();
+    expect(() => manager.removePlugin("nonexistent-platform", "anything")).not.toThrow();
+  });
+
   test("load throws when the state file contains invalid JSON", async () => {
     await mkdir(join(workspaceDir, "data"), { recursive: true });
     await writeFile(stateFilePath, "{ invalid json", "utf-8");

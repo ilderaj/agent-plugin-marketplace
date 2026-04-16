@@ -1,0 +1,25 @@
+{
+  "displayName": "Linear (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/linear",
+    "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
+    "version": "0.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "displayName": "Box (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/box",
+    "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
+    "version": "0.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

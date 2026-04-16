@@ -267,4 +267,11 @@ describe('CodexAdapter', () => {
       await rm(tempDir, { recursive: true, force: true });
     }
   });
+
+  test('fallback version: missing upstream version produces "0.0.0" in IR manifest and source', async () => {
+    const noVersionFixture = join(import.meta.dir, '../fixtures/codex-no-version');
+    const ir = await adapter.parse(noVersionFixture);
+    expect(ir.manifest.version).toBe('0.0.0');
+    expect(ir.source.version).toBe('0.0.0');
+  });
 });

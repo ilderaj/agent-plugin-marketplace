@@ -41,6 +41,8 @@ export interface SourceInfo {
   platform: Platform;
   repoUrl: string;
   pluginPath: string;
+  /** Relative path within the upstream repository (used for _meta.json traceability). Set by the pipeline; undefined when the generator is invoked directly in tests. */
+  pluginRelPath?: string;
   commitSha: string;
   version: string;
 }
@@ -63,6 +65,7 @@ export interface ManifestInfo {
   homepage?: string;
   repository?: string;
   keywords?: string[];
+  tags?: string[];
   category?: string;
   logo?: string;
   raw: unknown;

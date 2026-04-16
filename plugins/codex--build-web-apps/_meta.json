@@ -1,0 +1,18 @@
+{
+  "displayName": "Build Web Apps (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/build-web-apps",
+    "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Agent definitions require format conversion"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "no-version",
+  "description": "A plugin whose upstream manifest omits the version field",
+  "author": {
+    "name": "Test"
+  },
+  "license": "MIT"
+}

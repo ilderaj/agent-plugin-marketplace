@@ -1,6 +1,5 @@
 {
   "name": "cursor--cursor-team-kit",
-  "displayName": "Cursor Team Kit (from Cursor)",
   "version": "1.0.0",
   "description": "Internal workflows used by Cursor developers for CI, code review, and shipping. Covers the full dev loop: CI monitoring and fixing, PR creation, merge conflicts, smoke tests, compiler checks, code cleanup, and work summaries.",
   "author": {
@@ -17,26 +16,13 @@
     "shipping",
     "testing"
   ],
+  "tags": [
+    "internal-workflows",
+    "quality",
+    "delivery"
+  ],
+  "category": "developer-tools",
   "skills": "./skills/",
   "agents": "./agents/",
-  "instructions": "./instructions/",
-  "_source": {
-    "platform": "cursor",
-    "upstream": "https://github.com/cursor/plugins.git",
-    "pluginPath": "/Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/cursor/cursor-team-kit",
-    "commitSha": "469d9f7d7885e0f6dcaa46ad66228b8a150380c0",
-    "version": "1.0.0"
-  },
-  "_compatibility": {
-    "overall": "partial",
-    "notes": [
-      "Skill: full — Skills are cross-platform compatible",
-      "Agent: partial — Agent definitions require format conversion",
-      "Rules: partial — converted to VS Code `.instructions.md` files"
-    ],
-    "warnings": [
-      "Cursor .mdc rules require conversion to VS Code .instructions.md files"
-    ],
-    "droppedComponents": []
-  }
+  "strict": false
 }

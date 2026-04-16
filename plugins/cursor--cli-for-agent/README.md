@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--cli-for-agent
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/cursor/cli-for-agent
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/cli-for-agent
 - Version: 1.0.0
 
 ## Compatibility Summary

@@ -1,0 +1,18 @@
+{
+  "displayName": "Frontend Design (from Claude Code)",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "plugins/frontend-design",
+    "commitSha": "c91a6b660de1b1a607f8d7ec3eea53ec567d710a",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "displayName": "Explanatory Output Style (from Claude Code)",
+  "_source": {
+    "platform": "claude-code",
+    "upstream": "https://github.com/anthropics/claude-code.git",
+    "pluginPath": "plugins/explanatory-output-style",
+    "commitSha": "3af8ef29be10d2f0dc98ee5db4ae7e9558ff48e5",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

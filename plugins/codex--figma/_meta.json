@@ -1,0 +1,26 @@
+{
+  "displayName": "Figma (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/figma",
+    "commitSha": "78e4d982f8f0610d8d0f83140b90ea41acb8bd66",
+    "version": "2.0.7"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Agent definitions require format conversion",
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

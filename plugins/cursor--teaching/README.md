@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--teaching
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/cursor/teaching
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/teaching
 - Version: 1.0.0
 
 ## Compatibility Summary

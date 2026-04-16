@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--coderabbit
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/mvp-sdd/.cache/sync/codex/plugins/coderabbit
+- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/coderabbit
 - Version: 1.1.0
 
 ## Compatibility Summary

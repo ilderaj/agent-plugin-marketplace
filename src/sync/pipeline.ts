@@ -2,12 +2,13 @@ import { mkdir, readdir, readFile, stat, writeFile } from "fs/promises";
 import { join, relative } from "path";
 import type { Platform, PluginIR, SourceAdapter } from "../adapters/types";
 import type {
-  GeneratedPluginMarketplaceManifest,
   MarketplaceConfig,
   MarketplacePluginEntry,
+  MetaPluginManifest,
+  OfficialPluginManifest,
 } from "../generator/marketplace";
 import {
-  createMarketplaceEntryFromGeneratedManifest,
+  createMarketplaceEntryFromManifests,
   MarketplaceGenerator,
 } from "../generator/marketplace";
 import { normalizeGeneratedPluginName, VsCodePluginGenerator } from "../generator/vscode-plugin";
@@ -21,9 +22,17 @@ export interface SyncConfig {
   marketplace: MarketplaceConfig;
 }
 
+export interface SyncReportEntry {
+  name: string;
+  platform: string;
+}
+
 export interface SyncReport {
   updated: number;
   total: number;
+  added: SyncReportEntry[];
+  removed: SyncReportEntry[];
+  changed: SyncReportEntry[];
 }
 
 export interface SyncPipelineOptions {
@@ -41,6 +50,9 @@ export class SyncPipeline {
     await this.options.stateManager.load();
 
     let updated = 0;
+    const added: SyncReportEntry[] = [];
+    const changed: SyncReportEntry[] = [];
+    const removed: SyncReportEntry[] = [];
 
     for (const adapter of this.options.adapters) {
       const repoUrl = this.options.config.repoUrls[adapter.platform];
@@ -53,9 +65,15 @@ export class SyncPipeline {
       const headSha = await getHeadSha(repoDir);
       this.options.stateManager.updateSource(adapter.platform, repoUrl, headSha);
 
+      const previousPluginNames = new Set(
+        this.options.stateManager.getKnownPluginNames(adapter.platform),
+      );
+
       const discoveredPlugins = (await this.discoverPlugins(adapter, repoDir)).sort((left, right) =>
         left.name.localeCompare(right.name),
       );
+
+      const discoveredNames = new Set(discoveredPlugins.map((p) => p.name));
 
       for (const plugin of discoveredPlugins) {
         const pluginCommitSha = await getFileCommitSha(repoDir, relative(repoDir, plugin.path));
@@ -63,8 +81,10 @@ export class SyncPipeline {
           continue;
         }
 
+        const isNew = !this.options.stateManager.hasPlugin(adapter.platform, plugin.name);
+
         const ir = await adapter.parse(plugin.path);
-        const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha);
+        const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha, relative(repoDir, plugin.path));
 
         const outDir = join(
           this.options.config.outputDir,
@@ -77,6 +97,21 @@ export class SyncPipeline {
           lastCommit: headSha,
         });
         updated += 1;
+
+        const entry: SyncReportEntry = { name: plugin.name, platform: adapter.platform };
+        if (isNew) {
+          added.push(entry);
+        } else {
+          changed.push(entry);
+        }
+      }
+
+      // Plugins previously known but no longer discovered are removed
+      for (const name of previousPluginNames) {
+        if (!discoveredNames.has(name)) {
+          this.options.stateManager.removePlugin(adapter.platform, name);
+          removed.push({ name, platform: adapter.platform });
+        }
       }
     }
 
@@ -87,16 +122,20 @@ export class SyncPipeline {
     return {
       updated,
       total: marketplaceEntries.length,
+      added,
+      removed,
+      changed,
     };
   }
 
-  private hydrateIR(ir: PluginIR, repoUrl: string, commitSha: string): PluginIR {
+  private hydrateIR(ir: PluginIR, repoUrl: string, commitSha: string, pluginRelPath: string): PluginIR {
     return {
       ...ir,
       source: {
         ...ir.source,
         repoUrl,
         commitSha,
+        pluginRelPath,
       },
     };
   }
@@ -133,11 +172,13 @@ export class SyncPipeline {
           continue;
         }
 
-        const manifestPath = join(pluginsDir, entry.name, "plugin.json");
-        const manifest = JSON.parse(
-          await readFile(manifestPath, "utf-8"),
-        ) as GeneratedPluginMarketplaceManifest;
-        marketplaceEntries.push(createMarketplaceEntryFromGeneratedManifest(manifest));
+        const official = JSON.parse(
+          await readFile(join(pluginsDir, entry.name, "plugin.json"), "utf-8"),
+        ) as OfficialPluginManifest;
+        const meta = JSON.parse(
+          await readFile(join(pluginsDir, entry.name, "_meta.json"), "utf-8"),
+        ) as MetaPluginManifest;
+        marketplaceEntries.push(createMarketplaceEntryFromManifests(official, meta));
       }
 
       return marketplaceEntries;
@@ -151,9 +192,17 @@ export class SyncPipeline {
   }
 
   private async writeMarketplace(entries: MarketplacePluginEntry[]): Promise<void> {
-    const marketplacePath = join(this.options.config.outputDir, "marketplace.json");
     const marketplace = this.options.marketplaceGen.generateFromEntries(entries);
+    const content = `${JSON.stringify(marketplace, null, 2)}\n`;
+
+    // Write root marketplace.json
+    const rootPath = join(this.options.config.outputDir, "marketplace.json");
     await mkdir(this.options.config.outputDir, { recursive: true });
-    await writeFile(marketplacePath, `${JSON.stringify(marketplace, null, 2)}\n`, "utf-8");
+    await writeFile(rootPath, content, "utf-8");
+
+    // Write .github/plugin/marketplace.json (Copilot CLI discovery path)
+    const githubPath = join(this.options.config.outputDir, ".github", "plugin", "marketplace.json");
+    await mkdir(join(this.options.config.outputDir, ".github", "plugin"), { recursive: true });
+    await writeFile(githubPath, content, "utf-8");
   }
 }
