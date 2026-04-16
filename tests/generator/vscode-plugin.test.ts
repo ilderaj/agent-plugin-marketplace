@@ -475,6 +475,230 @@ describe('VsCodePluginGenerator', () => {
     }
   });
 
+  test('two agents whose names sanitize to the same filename throw a collision error', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'collision-test-'));
+    const outDir = join(OUTPUT_ROOT, 'collision-test');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // "foo" and "../../foo" both sanitize to "foo"
+      await writeFile(
+        join(sourceRoot, 'agents', 'foo.yaml'),
+        ['name: foo', 'description: First agent', 'developer_instructions: |', '  Body one.'].join('\n'),
+        'utf-8'
+      );
+      await writeFile(
+        join(sourceRoot, 'agents', 'traversal.yaml'),
+        [
+          'name: ../../foo',
+          'description: Collision agent',
+          'developer_instructions: |',
+          '  Body two.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--collision-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'collision-test',
+          version: '1.0.0',
+          description: 'Collision test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [
+            { name: 'foo', path: 'agents/foo.yaml', format: 'codex-yaml' },
+            { name: 'traversal', path: 'agents/traversal.yaml', format: 'codex-yaml' },
+          ],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await expect(new VsCodePluginGenerator().generate(ir, outDir)).rejects.toThrow(/collision/i);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('agent name and description with tricky YAML characters produce valid frontmatter', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'frontmatter-safety-'));
+    const outDir = join(OUTPUT_ROOT, 'frontmatter-safety');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // name contains a colon; description contains quotes and a newline embedded via YAML block scalar
+      await writeFile(
+        join(sourceRoot, 'agents', 'tricky.yaml'),
+        [
+          'name: "tricky: agent"',
+          'description: He said "hello" and used: colons',
+          'developer_instructions: |',
+          '  Do the thing.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--frontmatter-safety',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'frontmatter-safety',
+          version: '1.0.0',
+          description: 'Frontmatter safety test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'tricky', path: 'agents/tricky.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const agentsDir = join(outDir, 'agents');
+      const files = await readdir(agentsDir);
+      expect(files).toHaveLength(1);
+
+      const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+
+      // Frontmatter block must be present and closed
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+      expect(fmMatch).not.toBeNull();
+
+      // The frontmatter lines for name and description must not break YAML:
+      // values with colons or quotes must be quoted
+      const fmBody = fmMatch![1];
+      const nameLine = fmBody.split('\n').find((l) => l.startsWith('name:'))!;
+      const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+
+      // The value after "name: " must be a quoted string (starts with " or ')
+      expect(nameLine).toMatch(/^name:\s*["'].+["']$/);
+      // The value after "description: " must be a quoted string
+      expect(descLine).toMatch(/^description:\s*["'].+["']$/);
+
+      // The body must still contain the instructions
+      expect(content).toContain('Do the thing.');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('agent description containing a newline is represented safely in frontmatter', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'newline-desc-'));
+    const outDir = join(OUTPUT_ROOT, 'newline-desc');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // Simulate a description that, after YAML parsing, would contain a newline
+      // We embed it via a YAML block scalar so the parser produces an actual \n
+      await writeFile(
+        join(sourceRoot, 'agents', 'multiline.yaml'),
+        // Use a plain name with no specials; only description is tricky
+        [
+          'name: multiline-agent',
+          'description: "first line\\nsecond line"',
+          'developer_instructions: |',
+          '  Body text.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--newline-desc',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'newline-desc',
+          version: '1.0.0',
+          description: 'Newline in description test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'multiline', path: 'agents/multiline.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const content = await readFile(join(outDir, 'agents/multiline-agent.md'), 'utf-8');
+
+      // The frontmatter block must be fully enclosed (closed with ---)
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+      expect(fmMatch).not.toBeNull();
+
+      // No raw newline in a bare frontmatter value
+      const fmBody = fmMatch![1];
+      const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+      // Must be on a single line (no embedded newline leaking into next frontmatter line)
+      expect(descLine).toBeDefined();
+      expect(descLine).not.toContain('\n');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
   test('block scalar with non-2-space indentation is correctly de-indented', async () => {
     const sourceRoot = await mkdtemp(join(tmpdir(), 'indent-test-'));
     const outDir = join(OUTPUT_ROOT, 'indent-test');

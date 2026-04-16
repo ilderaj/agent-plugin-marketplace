@@ -99,6 +99,24 @@ export class VsCodePluginGenerator {
   }
 
   private async copyAgents(ir: PluginIR, outDir: string) {
+    // Pre-check for filename collisions among YAML agents before writing anything.
+    const usedFilenames = new Set<string>();
+    for (const agent of ir.components.agents) {
+      if (agent.format !== 'codex-yaml') continue;
+      const sourcePath = join(ir.source.pluginPath, agent.path);
+      const raw = await readFile(sourcePath, 'utf-8');
+      const parsed = this.parseCodexAgentYaml(raw);
+      const name = parsed.name ?? agent.name;
+      const filename = this.sanitizeAgentFilename(name);
+      if (usedFilenames.has(filename)) {
+        throw new Error(
+          `Agent filename collision: two agents both sanitize to "${filename}.md". ` +
+            `Rename one of the agents to avoid the conflict.`
+        );
+      }
+      usedFilenames.add(filename);
+    }
+
     for (const agent of ir.components.agents) {
       if (agent.format === 'codex-yaml') {
         await this.convertCodexAgent(ir, agent, outDir);
@@ -123,8 +141,8 @@ export class VsCodePluginGenerator {
 
     const frontmatter = [
       '---',
-      `name: ${name}`,
-      description ? `description: ${description}` : undefined,
+      `name: ${this.yamlQuoteIfNeeded(name)}`,
+      description ? `description: ${this.yamlQuoteIfNeeded(description)}` : undefined,
       '---',
     ]
       .filter((line) => line !== undefined)
@@ -145,6 +163,27 @@ export class VsCodePluginGenerator {
   private sanitizeAgentFilename(name: string): string {
     const base = basename(name.replace(/\\/g, '/'));
     return base.replace(/^\.+/, '') || 'agent';
+  }
+
+  /**
+   * Quotes a YAML scalar value if it contains characters that would produce invalid
+   * or ambiguous YAML when written bare: colons, quotes, newlines, and other
+   * indicator characters. Uses double-quote style with minimal escaping.
+   */
+  private yamlQuoteIfNeeded(value: string): string {
+    const needsQuoting =
+      /[:#"'\n\r\t[\]{},|>&*!%@`]/.test(value) ||
+      /^\s|\s$/.test(value) ||
+      value === '';
+    if (!needsQuoting) return value;
+
+    const escaped = value
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\t/g, '\\t');
+    return `"${escaped}"`;
   }
 
   /**
