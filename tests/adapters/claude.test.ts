@@ -138,7 +138,7 @@ describe('ClaudeAdapter', () => {
     const commandCompat = ir.compatibility.details.find(d => d.type === 'command');
     expect(commandCompat).toBeDefined();
     expect(commandCompat?.level).toBe('partial');
-    expect(commandCompat?.notes).toContain('shell scripts');
+    expect(commandCompat?.notes).toContain('scripts (.sh/.js/.ts)');
     expect(commandCompat?.notes).toContain('no direct VS Code');
   });
 
