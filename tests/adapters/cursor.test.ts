@@ -198,6 +198,8 @@ describe('CursorAdapter', () => {
     expect(ir.compatibility.warnings.some(w => w.includes('.instructions.md'))).toBe(true);
     expect(ir.compatibility.warnings.some(w => w.includes('indistinguishable in frontmatter'))).toBe(true);
     expect(ir.compatibility.warnings.some(w => w.includes('on-demand (Apply Manually)'))).toBe(true);
+    // Conversion warning and broad-mapping warning must be separate entries
+    expect(ir.compatibility.warnings.length).toBeGreaterThanOrEqual(2);
   });
 
   test('parse stays manifest-driven when default directories exist but manifest omits them', async () => {
@@ -337,6 +339,43 @@ describe('CursorAdapter', () => {
     // Should gracefully return empty array for expected errors
     expect(Array.isArray(plugins)).toBe(true);
     expect(plugins.length).toBe(0);
+  });
+
+  test('broad-mapping warning is omitted when no rule has alwaysApply:false with no globs', async () => {
+    await withTempPlugin(
+      'no-intelligent-rules',
+      async (pluginRoot) => {
+        await mkdir(join(pluginRoot, '.cursor-plugin'), { recursive: true });
+        await mkdir(join(pluginRoot, 'rules'), { recursive: true });
+
+        await writeFile(
+          join(pluginRoot, '.cursor-plugin', 'plugin.json'),
+          JSON.stringify({
+            name: 'no-intelligent-rules',
+            version: '1.0.0',
+            description: 'only always-apply and glob rules',
+            author: { name: 'Test' },
+            rules: ['rules/always.mdc', 'rules/glob-rule.mdc'],
+          })
+        );
+        await writeFile(
+          join(pluginRoot, 'rules/always.mdc'),
+          '---\nalwaysApply: true\ndescription: always rule\n---\n# Always\n'
+        );
+        await writeFile(
+          join(pluginRoot, 'rules/glob-rule.mdc'),
+          '---\nalwaysApply: false\nglobs:\n- **/*.ts\n---\n# Glob Rule\n'
+        );
+      },
+      async (pluginRoot) => {
+        const ir = await adapter.parse(pluginRoot);
+        // General conversion warning must be present
+        expect(ir.compatibility.warnings.some(w => w.includes('.instructions.md'))).toBe(true);
+        // Broad-mapping warning must NOT be present when no intelligent-mode rules exist
+        expect(ir.compatibility.warnings.some(w => w.includes('indistinguishable in frontmatter'))).toBe(false);
+        expect(ir.compatibility.warnings.some(w => w.includes('on-demand (Apply Manually)'))).toBe(false);
+      }
+    );
   });
 
   test('parse throws on invalid JSON in plugin.json', async () => {

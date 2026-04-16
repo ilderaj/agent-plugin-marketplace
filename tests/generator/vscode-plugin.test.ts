@@ -157,7 +157,7 @@ describe('VsCodePluginGenerator', () => {
     expect(instruction).toContain('applyTo: "**"');
 
     // Must include origin comment explaining the semantic mapping
-    expect(instruction).toContain('Apply Intelligently');
+    expect(instruction).toContain('Origin: Cursor "Apply Intelligently" mode (alwaysApply: false, no globs)');
 
     // Must preserve the body
     expect(instruction).toContain('# Intelligent Rule');
