@@ -243,35 +243,41 @@ bun run sync             # full sync pipeline
 
 ## Roadmap
 
-### ~~v0.2 — Automated Upstream Sync (CI)~~ ✅
+Delivered milestones are kept here for historical context. `1.0.0` shipped the v0.2 and v0.3 work below.
 
-- ~~Rich PR descriptions with diff summary (added/removed/changed plugin counts)~~
-- ~~Configurable sync frequency (daily / weekly / on-demand) via workflow inputs~~
-- ~~Slack / Discord webhook notification on sync PR creation~~
-- ~~CI validation: type-check + test gate before PR merge~~
+### Delivered
 
-### v0.3 — Copilot-Native Integration ✓
+#### v0.2 — Automated Upstream Sync (CI) ✓
+
+- Rich PR descriptions with diff summary (added/removed/changed plugin counts)
+- Configurable sync frequency (daily / weekly / on-demand) via workflow inputs
+- Slack / Discord webhook notification on sync PR creation
+- CI validation: type-check + test gate before PR merge
+
+#### v0.3 — Copilot-Native Integration ✓
 
 - Standard `.github/plugin/marketplace.json` written on every sync (complete)
 - `plugin.json` now contains only official Copilot CLI manifest fields with `strict: false`
 - Per-plugin `_meta.json` sidecar preserves source platform, compatibility, and display metadata
 - Support Copilot custom instructions (`.instructions.md`) as a first-class conversion target
 
-### v0.4 — Plugin Quality and Curation
+### Planned
+
+#### v0.4 — Plugin Quality and Curation
 
 - Add automated compatibility testing: install each plugin in a headless VS Code instance and verify activation
 - Implement plugin scoring based on upstream activity, compatibility level, and component coverage
 - Add a `curated` tag to manually reviewed plugins, with an allowlist/blocklist mechanism
 - Generate a browsable static site (GitHub Pages) from `marketplace.json` for human discovery
 
-### v0.5 — Multi-Target Generation
+#### v0.5 — Multi-Target Generation
 
 - Support Cursor as an output target (reverse adapter: IR → Cursor `.mdc` rules)
 - Support Claude Code as an output target (IR → Claude Code plugin format)
 - Enable cross-pollination: install a Codex plugin in Cursor, or a Cursor plugin in Claude Code
 - Add `bun run generate --target=copilot|cursor|claude` CLI flag
 
-### v0.6 — Cloud-Native Automation
+#### v0.6 — Cloud-Native Automation
 
 - Move sync pipeline to a cloud-native runtime (Cloudflare Workers / AWS Lambda) for serverless execution
 - Support event-driven sync: trigger on upstream repo webhook push events instead of polling
