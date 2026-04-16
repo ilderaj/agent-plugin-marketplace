@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from 'bun:test';
-import { mkdir, mkdtemp, readFile, rm, stat } from 'fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { CodexAdapter } from '../../src/adapters/codex';
@@ -330,5 +330,215 @@ describe('VsCodePluginGenerator', () => {
     expect(testerMd).toContain('name: tester');
     expect(testerMd).toContain('description: Test automation agent');
     await expect(stat(join(outDir, 'agents/tester.yml'))).rejects.toThrow();
+  });
+
+  test('agent YAML with path-traversal name does not escape the agents output directory', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'agent-escape-'));
+    const outDir = join(OUTPUT_ROOT, 'agent-path-escape');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'agents', 'malicious.yaml'),
+        [
+          'name: ../../escape',
+          'description: Path traversal attempt',
+          'developer_instructions: |',
+          '  Should not escape.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--escape-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'escape-test',
+          version: '1.0.0',
+          description: 'Test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'malicious', path: 'agents/malicious.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'partial',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      // Output must be confined to agents/ inside outDir
+      const agentsDir = join(outDir, 'agents');
+      const files = await readdir(agentsDir);
+      expect(files).toHaveLength(1);
+      // Filename must be sanitized — no path segments
+      expect(files[0]).not.toContain('/');
+      expect(files[0]).not.toContain('..');
+      expect(files[0]).toMatch(/\.md$/);
+
+      // The parsed name must still appear in frontmatter
+      const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+      expect(content).toContain('name: ../../escape');
+
+      // Must NOT have created a file outside outDir
+      await expect(stat(join(outDir, 'escape.md'))).rejects.toThrow();
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('developer_instructions using folded scalar (>) still appears in generated markdown body', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'folded-scalar-'));
+    const outDir = join(OUTPUT_ROOT, 'folded-scalar');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'agents', 'folded.yaml'),
+        [
+          'name: folded-agent',
+          'description: Folded scalar test',
+          'developer_instructions: >',
+          '  This is a folded',
+          '  block scalar.',
+          '  It joins lines with spaces.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--folded-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'folded-test',
+          version: '1.0.0',
+          description: 'Folded scalar test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'folded', path: 'agents/folded.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const content = await readFile(join(outDir, 'agents/folded-agent.md'), 'utf-8');
+      // Frontmatter must be present
+      expect(content).toContain('name: folded-agent');
+      expect(content).toContain('description: Folded scalar test');
+      // developer_instructions content must appear in the markdown body
+      expect(content).toContain('This is a folded');
+      expect(content).toContain('block scalar');
+      expect(content).toContain('joins lines with spaces');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('block scalar with non-2-space indentation is correctly de-indented', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'indent-test-'));
+    const outDir = join(OUTPUT_ROOT, 'indent-test');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'agents', 'indented.yaml'),
+        [
+          'name: indent-agent',
+          'description: Indentation test',
+          'developer_instructions: |',
+          '    Four space indented.',
+          '    Second line here.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--indent-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'indent-test',
+          version: '1.0.0',
+          description: 'Indentation test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'indented', path: 'agents/indented.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const content = await readFile(join(outDir, 'agents/indent-agent.md'), 'utf-8');
+      // Content must appear without extra leading spaces
+      expect(content).toContain('Four space indented.');
+      expect(content).toContain('Second line here.');
+      // Must not have any residual leading spaces (4-space indent fully stripped)
+      expect(content).not.toMatch(/^ +Four space/m);
+      expect(content).not.toMatch(/^ +Second line/m);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
   });
 });

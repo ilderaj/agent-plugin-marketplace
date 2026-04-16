@@ -134,15 +134,24 @@ export class VsCodePluginGenerator {
       ? `${frontmatter}\n\n${body}\n`
       : `${frontmatter}\n`;
 
-    const outputPath = join(outDir, `agents/${name}.md`);
+    // Sanitize to prevent path traversal: take only the last segment and strip leading dots
+    const safeFilename = this.sanitizeAgentFilename(name);
+    const outputPath = join(outDir, `agents/${safeFilename}.md`);
     await mkdir(dirname(outputPath), { recursive: true });
     await writeFile(outputPath, content, 'utf-8');
   }
 
+  /** Strips path separators and leading dots so the filename always stays in the agents directory. */
+  private sanitizeAgentFilename(name: string): string {
+    const base = basename(name.replace(/\\/g, '/'));
+    return base.replace(/^\.+/, '') || 'agent';
+  }
+
   /**
    * Minimal YAML parser for Codex agent files.
-   * Handles top-level string fields and block scalars (|).
-   * Does not support the full YAML spec — only what Codex agent definitions use.
+   * Handles top-level string fields and block scalars (| and >), including
+   * chomping variants (|-  |+  >-  >+). Does not support the full YAML spec —
+   * only what Codex agent definitions use.
    */
   private parseCodexAgentYaml(raw: string): Record<string, string> {
     const result: Record<string, string> = {};
@@ -161,24 +170,35 @@ export class VsCodePluginGenerator {
       const key = topLevelMatch[1];
       const valueRaw = topLevelMatch[2].trim();
 
-      if (valueRaw === '|') {
-        // Block scalar: collect indented lines until a non-indented line
+      if (/^[|>][+-]?$/.test(valueRaw)) {
+        const isFolded = valueRaw.startsWith('>');
+        // Collect raw indented lines (empty lines are part of block content)
         i++;
-        const bodyLines: string[] = [];
+        const rawBodyLines: string[] = [];
         while (i < lines.length) {
           const bodyLine = lines[i];
           if (bodyLine === '' || bodyLine.startsWith(' ') || bodyLine.startsWith('\t')) {
-            bodyLines.push(bodyLine.replace(/^  /, ''));
+            rawBodyLines.push(bodyLine);
             i++;
           } else {
             break;
           }
         }
-        // Remove trailing empty lines but preserve a single trailing newline
+        // Detect indentation level from the first non-empty line
+        let indent = 0;
+        for (const rawLine of rawBodyLines) {
+          if (rawLine.trim() !== '') {
+            const m = rawLine.match(/^(\s+)/);
+            indent = m ? m[1].length : 0;
+            break;
+          }
+        }
+        const bodyLines = rawBodyLines.map((l) => (l.length === 0 ? '' : l.slice(indent)));
+        // Clip chomping: remove trailing empty lines
         while (bodyLines.length > 0 && bodyLines[bodyLines.length - 1].trim() === '') {
           bodyLines.pop();
         }
-        result[key] = bodyLines.join('\n');
+        result[key] = isFolded ? this.foldBlockScalar(bodyLines) : bodyLines.join('\n');
       } else if (valueRaw !== '' && !valueRaw.startsWith('-')) {
         result[key] = valueRaw;
         i++;
@@ -188,6 +208,28 @@ export class VsCodePluginGenerator {
     }
 
     return result;
+  }
+
+  /**
+   * Folds a YAML folded block scalar: consecutive non-empty lines are joined
+   * with a single space; blank lines become literal newlines.
+   */
+  private foldBlockScalar(lines: string[]): string {
+    const parts: string[] = [];
+    const buf: string[] = [];
+    for (const line of lines) {
+      if (line.trim() === '') {
+        if (buf.length > 0) {
+          parts.push(buf.join(' '));
+          buf.length = 0;
+        }
+        parts.push('');
+      } else {
+        buf.push(line);
+      }
+    }
+    if (buf.length > 0) parts.push(buf.join(' '));
+    return parts.join('\n');
   }
 
   private async copyCommands(ir: PluginIR, outDir: string) {
