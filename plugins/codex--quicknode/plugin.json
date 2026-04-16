@@ -1,0 +1,14 @@
+{
+  "name": "codex--quicknode",
+  "version": "1.0.0",
+  "description": "Manage your Quicknode infrastructure directly in OpenAI.",
+  "author": {
+    "name": "Quicknode",
+    "url": "https://www.quicknode.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.quicknode.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

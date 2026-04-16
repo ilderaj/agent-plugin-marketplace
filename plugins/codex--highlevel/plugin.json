@@ -1,0 +1,14 @@
+{
+  "name": "codex--highlevel",
+  "version": "v1.0.0",
+  "description": "HighLevel gives agencies a unified CRM, automation, and client communication platform.",
+  "author": {
+    "url": "https://www.gohighlevel.com",
+    "name": "HighLevel"
+  },
+  "license": "MIT",
+  "homepage": "https://www.gohighlevel.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

@@ -1,0 +1,14 @@
+{
+  "name": "codex--dovetail",
+  "version": "1.0.0",
+  "description": "Connect Dovetail inside ChatGPT to turn customer feedback into decisions without leaving your conversation.",
+  "author": {
+    "name": "Dovetail",
+    "url": "https://dovetail.com"
+  },
+  "license": "MIT",
+  "homepage": "https://dovetail.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

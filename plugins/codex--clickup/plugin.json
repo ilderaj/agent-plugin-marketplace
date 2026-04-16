@@ -1,0 +1,12 @@
+{
+  "name": "codex--clickup",
+  "version": "1.0.0",
+  "description": "Turn ChatGPT into your ClickUp command center.",
+  "author": {
+    "name": "ClickUp"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

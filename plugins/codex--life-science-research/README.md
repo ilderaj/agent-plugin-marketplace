@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--life-science-research
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/life-science-research
+- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/life-science-research
 - Version: 0.1.0
 
 ## Compatibility Summary

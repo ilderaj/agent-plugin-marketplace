@@ -1,0 +1,18 @@
+{
+  "displayName": "Docs Canvas (from Cursor)",
+  "_source": {
+    "platform": "cursor",
+    "upstream": "https://github.com/cursor/plugins.git",
+    "pluginPath": "docs-canvas",
+    "commitSha": "442ab7d08f4d629b39a6a6d9726e51442b93db4d",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

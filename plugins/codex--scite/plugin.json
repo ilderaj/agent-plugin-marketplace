@@ -1,0 +1,14 @@
+{
+  "name": "codex--scite",
+  "version": "1.0.0",
+  "description": "Scite delivers answers grounded in peer-reviewed research you can verify.",
+  "author": {
+    "name": "Scite",
+    "url": "https://www.scite.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://www.scite.ai",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

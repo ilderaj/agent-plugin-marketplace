@@ -4,15 +4,23 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/build-web-apps",
-    "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
+    "commitSha": "2a8be46b96f3c5ac7d989adccb483d3a6f52ab6b",
     "version": "0.1.0"
   },
   "_compatibility": {
     "overall": "partial",
     "notes": [
-      "Agent: partial — Agent definitions require format conversion"
+      "Agent: partial — Agent definitions require format conversion",
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
     ],
-    "warnings": [],
-    "droppedComponents": []
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
   }
 }

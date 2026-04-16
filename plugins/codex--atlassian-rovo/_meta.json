@@ -1,0 +1,26 @@
+{
+  "displayName": "Atlassian Rovo (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/atlassian-rovo",
+    "commitSha": "5914cdcc090816b63d570f1b1e38eb182b28d8f5",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Agent definitions require format conversion",
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

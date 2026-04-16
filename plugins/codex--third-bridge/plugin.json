@@ -1,0 +1,14 @@
+{
+  "name": "codex--third-bridge",
+  "version": "1.0.0",
+  "description": "Seamlessly incorporate critical context and trusted insights from industry experts as part of your financia...",
+  "author": {
+    "name": "Third Bridge Group",
+    "url": "https://www.thirdbridge.com"
+  },
+  "license": "MIT",
+  "homepage": "https://www.thirdbridge.com",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

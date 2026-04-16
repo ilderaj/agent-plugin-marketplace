@@ -1,0 +1,16 @@
+{
+  "displayName": "Superpowers (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/superpowers",
+    "commitSha": "6c24048e447572232e2198745a4f82ba86912fe7",
+    "version": "5.0.7"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "codex--windsor-ai",
+  "version": "1.0.0",
+  "description": "Windsor.ai connects your marketing and business data sources to ChatGPT so you can ask questions in natural...",
+  "author": {
+    "name": "Windsor.ai",
+    "url": "https://windsor.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://windsor.ai",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

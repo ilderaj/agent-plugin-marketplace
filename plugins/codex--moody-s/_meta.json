@@ -1,0 +1,25 @@
+{
+  "displayName": "Moody S (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/moody-s",
+    "commitSha": "99f0215239c31991c58e10efef7e9a4e50481445",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

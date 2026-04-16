@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--hugging-face
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/hugging-face
+- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/hugging-face
 - Version: 1.0.0
 
 ## Compatibility Summary

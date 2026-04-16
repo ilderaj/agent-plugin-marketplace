@@ -1,0 +1,14 @@
+{
+  "name": "codex--semrush",
+  "version": "1.0.0",
+  "description": "The Semrush MCP provides structured, quantitative SEO and traffic data for domains, keywords, backlinks, an...",
+  "author": {
+    "name": "Semrush Holdings, Inc.",
+    "url": "https://www.semrush.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.semrush.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

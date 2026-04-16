@@ -1,0 +1,14 @@
+{
+  "name": "codex--cloudinary",
+  "version": "1.0.0",
+  "description": "Manage, search, and transform your Cloudinary media library — directly from ChatGPT.",
+  "author": {
+    "url": "https://cloudinary.com/",
+    "name": "Cloudinary"
+  },
+  "license": "MIT",
+  "homepage": "https://cloudinary.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

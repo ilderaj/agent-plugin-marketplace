@@ -1,0 +1,14 @@
+{
+  "name": "codex--zoominfo",
+  "version": "1.0.0",
+  "description": "Access ZoomInfo’s data and AI context within ChatGPT.",
+  "author": {
+    "name": "ZoomInfo Technologies LLC",
+    "url": "https://www.zoominfo.com/"
+  },
+  "license": "MIT",
+  "homepage": "https://www.zoominfo.com/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [],
+  "strict": false
+}

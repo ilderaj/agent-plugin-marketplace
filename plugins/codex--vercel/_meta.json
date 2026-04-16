@@ -4,13 +4,22 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/vercel",
-    "commitSha": "3198496a136f13e3bd56b913d537080906c525a0",
+    "commitSha": "2a8be46b96f3c5ac7d989adccb483d3a6f52ab6b",
     "version": "0.21.0"
   },
   "_compatibility": {
-    "overall": "full",
-    "notes": [],
-    "warnings": [],
-    "droppedComponents": []
+    "overall": "partial",
+    "notes": [
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
   }
 }
