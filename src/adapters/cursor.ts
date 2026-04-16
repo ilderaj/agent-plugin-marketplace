@@ -479,21 +479,38 @@ export class CursorAdapter implements SourceAdapter {
         type: 'command',
         name: command.name,
         level: 'partial' as const,
-        notes: 'Commands may require adaptation for platform-specific execution contexts',
+        notes: 'Platform-specific scripts (.sh/.js/.ts) copied to output; no direct VS Code command equivalent',
       });
     }
 
     for (const rule of components.rules) {
+      const isIntelligentMode = !rule.alwaysApply && (!rule.globs || rule.globs.length === 0);
       details.push({
         type: 'rule',
         name: rule.path,
         level: 'partial' as const,
-        notes: 'Cursor .mdc rules require conversion to VS Code .instructions.md files',
+        notes: isIntelligentMode
+          ? 'Cursor .mdc rules require conversion to VS Code .instructions.md files; rules with alwaysApply: false and no globs (covers both Apply Intelligently and Apply Manually — indistinguishable in frontmatter) are mapped broadly to applyTo: "**"'
+          : 'Cursor .mdc rules require conversion to VS Code .instructions.md files',
       });
     }
 
     if (components.rules.length > 0) {
-      warnings.push('Cursor .mdc rules require conversion to VS Code .instructions.md files');
+      warnings.push(
+        'Cursor .mdc rules were converted to VS Code .instructions.md files.'
+      );
+
+      const hasBroadMappingRules = components.rules.some(
+        (rule) => !rule.alwaysApply && (!rule.globs || rule.globs.length === 0)
+      );
+      if (hasBroadMappingRules) {
+        warnings.push(
+          'Rules with alwaysApply: false and no globs cover both Apply Intelligently and Apply Manually modes, ' +
+          'which are indistinguishable in frontmatter; all such rules are mapped broadly to applyTo: "**" — ' +
+          'narrow applyTo manually where a tighter scope is appropriate, and note that ' +
+          'any on-demand (Apply Manually) semantics are lost in this conversion.'
+        );
+      }
     }
 
     for (const mcp of components.mcpServers) {
