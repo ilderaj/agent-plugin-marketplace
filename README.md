@@ -243,6 +243,8 @@ bun run sync             # full sync pipeline
 
 ## Roadmap
 
+Completed milestones are retained here for historical context. v0.3 shipped in `1.0.0`.
+
 ### ~~v0.2 — Automated Upstream Sync (CI)~~ ✅
 
 - ~~Rich PR descriptions with diff summary (added/removed/changed plugin counts)~~
@@ -250,7 +252,7 @@ bun run sync             # full sync pipeline
 - ~~Slack / Discord webhook notification on sync PR creation~~
 - ~~CI validation: type-check + test gate before PR merge~~
 
-### v0.3 — Copilot-Native Integration ✓
+### v0.3 — Copilot-Native Integration (shipped in 1.0.0) ✓
 
 - Standard `.github/plugin/marketplace.json` written on every sync (complete)
 - `plugin.json` now contains only official Copilot CLI manifest fields with `strict: false`
