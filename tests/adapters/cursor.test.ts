@@ -189,15 +189,15 @@ describe('CursorAdapter', () => {
     expect(ruleDetails.every(detail => detail.level === 'partial')).toBe(true);
     expect(ruleDetails.every(detail => detail.notes.includes('.instructions.md'))).toBe(true);
 
-    // Apply Intelligently rule should mention the broad mapping
+    // Apply Intelligently rule should mention the broad mapping and indistinguishable modes
     const intelligentDetail = ruleDetails.find(d => d.name.includes('intelligent-rule'));
-    expect(intelligentDetail?.notes).toContain('Apply Intelligently');
+    expect(intelligentDetail?.notes).toContain('indistinguishable in frontmatter');
 
     const droppedRules = ir.compatibility.droppedComponents.filter(c => c.type === 'rule');
     expect(droppedRules).toHaveLength(0);
     expect(ir.compatibility.warnings.some(w => w.includes('.instructions.md'))).toBe(true);
-    expect(ir.compatibility.warnings.some(w => w.includes('Apply Intelligently'))).toBe(true);
-    expect(ir.compatibility.warnings.some(w => w.includes('Apply Manually'))).toBe(true);
+    expect(ir.compatibility.warnings.some(w => w.includes('indistinguishable in frontmatter'))).toBe(true);
+    expect(ir.compatibility.warnings.some(w => w.includes('on-demand (Apply Manually)'))).toBe(true);
   });
 
   test('parse stays manifest-driven when default directories exist but manifest omits them', async () => {

@@ -490,7 +490,7 @@ export class CursorAdapter implements SourceAdapter {
         name: rule.path,
         level: 'partial' as const,
         notes: isIntelligentMode
-          ? 'Cursor .mdc rules require conversion to VS Code .instructions.md files; Apply Intelligently mode (no globs) is mapped broadly to applyTo: "**"'
+          ? 'Cursor .mdc rules require conversion to VS Code .instructions.md files; rules with alwaysApply: false and no globs (covers both Apply Intelligently and Apply Manually — indistinguishable in frontmatter) are mapped broadly to applyTo: "**"'
           : 'Cursor .mdc rules require conversion to VS Code .instructions.md files',
       });
     }
@@ -498,10 +498,10 @@ export class CursorAdapter implements SourceAdapter {
     if (components.rules.length > 0) {
       warnings.push(
         'Cursor .mdc rules were converted to VS Code .instructions.md files. ' +
-        'Apply Intelligently rules (alwaysApply: false, no globs) are mapped broadly to applyTo: "**" — ' +
-        'narrow applyTo manually where a tighter scope is appropriate. ' +
-        'Apply Manually rules (alwaysApply: false, no globs, intended for on-demand use) ' +
-        'lose their on-demand semantic entirely in this conversion.'
+        'Rules with alwaysApply: false and no globs cover both Apply Intelligently and Apply Manually modes, ' +
+        'which are indistinguishable in frontmatter; all such rules are mapped broadly to applyTo: "**" — ' +
+        'narrow applyTo manually where a tighter scope is appropriate, and note that ' +
+        'any on-demand (Apply Manually) semantics are lost in this conversion.'
       );
     }
 
