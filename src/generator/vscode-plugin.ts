@@ -399,13 +399,14 @@ export class VsCodePluginGenerator {
     } else if (rule.globs && rule.globs.length > 0) {
       applyTo = rule.globs.join(', ');
     } else {
-      // Apply Intelligently mode: alwaysApply false with no globs.
-      // The original Cursor mode lets the AI decide when to apply the rule based on context.
-      // VS Code .instructions.md has no equivalent, so map broadly to applyTo: "**" so the
-      // content is not silently lost. Consumers can narrow the scope manually.
+      // Ambiguous mode: alwaysApply: false with no globs covers both Cursor "Apply Intelligently"
+      // and "Apply Manually" — the frontmatter alone cannot distinguish them.
+      // VS Code .instructions.md has no equivalent for either, so map broadly to applyTo: "**"
+      // so the content is not silently lost. Consumers can narrow the scope manually.
       applyTo = '"**"';
       intelligentModeComment =
-        '<!-- Origin: Cursor "Apply Intelligently" mode (alwaysApply: false, no globs). ' +
+        '<!-- Origin: Cursor ambiguous mode (alwaysApply: false, no globs) — ' +
+        'indistinguishable between "Apply Intelligently" and "Apply Manually" from frontmatter alone. ' +
         'Mapped broadly to applyTo: "**" because VS Code instructions.md has no AI-context-based mode. ' +
         'Narrow applyTo manually if a tighter scope is appropriate. -->';
     }

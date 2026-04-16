@@ -140,7 +140,7 @@ describe('VsCodePluginGenerator', () => {
     expect(readme).toContain('Compatibility Summary');
   });
 
-  test('converts Apply Intelligently Cursor rule to applyTo: ** with origin comment', async () => {
+  test('converts ambiguous Cursor rule (alwaysApply: false, no globs) to applyTo: ** with origin comment', async () => {
     const ir = await new CursorAdapter().parse(join(FIXTURES_DIR, 'cursor-continual-learning'));
     const outDir = join(OUTPUT_ROOT, 'cursor-intelligent');
 
@@ -153,11 +153,11 @@ describe('VsCodePluginGenerator', () => {
       'utf-8'
     );
 
-    // Apply Intelligently (alwaysApply: false, no globs) must map to applyTo: **
+    // Ambiguous (alwaysApply: false, no globs) must map to applyTo: **
     expect(instruction).toContain('applyTo: "**"');
 
-    // Must include origin comment explaining the semantic mapping
-    expect(instruction).toContain('Origin: Cursor "Apply Intelligently" mode (alwaysApply: false, no globs)');
+    // Must include origin comment explaining the ambiguity and semantic mapping
+    expect(instruction).toContain('Origin: Cursor ambiguous mode (alwaysApply: false, no globs)');
 
     // Must preserve the body
     expect(instruction).toContain('# Intelligent Rule');
