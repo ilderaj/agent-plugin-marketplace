@@ -5,7 +5,7 @@ on:
   # Switching frequency is done by editing the cron lines here, NOT by changing the
   # `schedule` input at dispatch time (that input is informational only).
   schedule:
-    - cron: "0 3 * * 1"   # weekly: every Monday at 03:00 UTC
+    - cron: "0 3 * * 5"   # weekly: every Friday at 03:00 UTC
     # - cron: "0 3 * * *" # daily: every day at 03:00 UTC (uncomment to enable)
   workflow_dispatch:
     inputs:

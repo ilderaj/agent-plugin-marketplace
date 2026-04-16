@@ -159,12 +159,32 @@ Each generated `_meta.json` includes `_compatibility` metadata with per-componen
 
 ## CI / Automated Sync
 
-A GitHub Actions workflow (`.github/workflows/sync.yml`) runs weekly (Monday 03:00 UTC) and on manual dispatch:
+Two GitHub Actions workflows automate the full lifecycle:
+
+### Sync Workflow (`.github/workflows/sync.yml`)
+
+Runs weekly (Friday 03:00 UTC) and on manual dispatch:
 
 1. Checks out the repo, installs Bun, runs `bun run sync`
-2. If `plugins/`, `marketplace.json`, `.github/plugin/marketplace.json`, or `data/sync-state.json` changed, creates a PR automatically
+2. If `plugins/`, `marketplace.json`, `.github/plugin/marketplace.json`, or `data/sync-state.json` changed, creates a PR with a rich diff summary (added/removed/changed plugins)
+3. Optionally sends Slack and/or Discord notifications
 
-To enable: push this repo to GitHub and ensure Actions are enabled. The workflow uses `GITHUB_TOKEN` — no extra secrets required.
+**Schedule configuration:** Edit the `cron` lines in `sync.yml` to switch between weekly and daily. The `workflow_dispatch` input is informational only.
+
+**Webhook notifications:** Add `SLACK_WEBHOOK_URL` and/or `DISCORD_WEBHOOK_URL` as repository secrets. Both are optional — the workflow silently skips notifications when secrets are not configured.
+
+### CI Workflow (`.github/workflows/ci.yml`)
+
+Runs on every pull request to `main`:
+
+1. Type-checks with `bun run build`
+2. Runs the full test suite with `bun test`
+
+Set the `validate` job as a required status check in branch protection to gate PR merges.
+
+### Setup
+
+Push this repo to GitHub and ensure Actions are enabled. The sync workflow uses `GITHUB_TOKEN` — no extra secrets required for the core sync. Webhook secrets are optional.
 
 ---
 
@@ -200,6 +220,7 @@ src/
 | `MARKETPLACE_OWNER_EMAIL` | — | Marketplace owner email |
 | `MARKETPLACE_OWNER_URL` | — | Marketplace owner URL |
 | `MARKETPLACE_DESCRIPTION` | `Cross-platform agent plugins converted for VS Code` | Marketplace description |
+| `SYNC_REPORT_PATH` | — | Write Markdown sync report to this path (used by CI) |
 
 ---
 
@@ -222,12 +243,12 @@ bun run sync             # full sync pipeline
 
 ## Roadmap
 
-### v0.2 — Automated Upstream Sync (CI)
+### ~~v0.2 — Automated Upstream Sync (CI)~~ ✅
 
-- Improve the existing GitHub Actions workflow with richer PR descriptions (diff summary, new/removed plugin counts, compatibility changes)
-- Add configurable sync frequency (daily / weekly / on-demand) via workflow inputs
-- Add Slack / Discord webhook notification on sync PR creation
-- Add CI validation: type-check + test gate before PR merge
+- ~~Rich PR descriptions with diff summary (added/removed/changed plugin counts)~~
+- ~~Configurable sync frequency (daily / weekly / on-demand) via workflow inputs~~
+- ~~Slack / Discord webhook notification on sync PR creation~~
+- ~~CI validation: type-check + test gate before PR merge~~
 
 ### v0.3 — Copilot-Native Integration ✓
 
