@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from 'bun:test';
-import { mkdir, mkdtemp, readFile, rm, stat } from 'fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { CodexAdapter } from '../../src/adapters/codex';
@@ -138,6 +138,29 @@ describe('VsCodePluginGenerator', () => {
     expect(readme).toContain('converted to VS Code `.instructions.md` files');
     expect(readme).toContain('manual verification');
     expect(readme).toContain('Compatibility Summary');
+  });
+
+  test('converts ambiguous Cursor rule (alwaysApply: false, no globs) to applyTo: ** with origin comment', async () => {
+    const ir = await new CursorAdapter().parse(join(FIXTURES_DIR, 'cursor-continual-learning'));
+    const outDir = join(OUTPUT_ROOT, 'cursor-intelligent');
+
+    await ensureCleanDir(outDir);
+
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const instruction = await readFile(
+      join(outDir, 'instructions/intelligent-rule.instructions.md'),
+      'utf-8'
+    );
+
+    // Ambiguous (alwaysApply: false, no globs) must map to applyTo: **
+    expect(instruction).toContain('applyTo: "**"');
+
+    // Must include origin comment explaining the ambiguity and semantic mapping
+    expect(instruction).toContain('Origin: Cursor ambiguous mode (alwaysApply: false, no globs)');
+
+    // Must preserve the body
+    expect(instruction).toContain('# Intelligent Rule');
   });
 
   test('preserves worse compatibility levels when generator also has dropped components', async () => {
@@ -301,5 +324,665 @@ describe('VsCodePluginGenerator', () => {
     expect(meta._source.pluginPath).not.toMatch(/^\//);
     // must still be traceable (contains the plugin dir name)
     expect(meta._source.pluginPath).toContain('relpath-test');
+  });
+
+  test('converts Codex YAML agents to markdown files with frontmatter', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'codex-agent-conversion');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    // Agent output must be a markdown file, not the raw YAML
+    const reviewerMd = await readFile(join(outDir, 'agents/reviewer.md'), 'utf-8');
+
+    // Must have YAML frontmatter with name and description
+    expect(reviewerMd).toContain('---');
+    expect(reviewerMd).toContain('name: reviewer');
+    expect(reviewerMd).toContain('description: Code review agent');
+
+    // Must include developer_instructions in the markdown body
+    expect(reviewerMd).toContain('You are an expert code reviewer.');
+    expect(reviewerMd).toContain('Focus on correctness, security, and maintainability.');
+
+    // Raw YAML file must not exist in output
+    await expect(stat(join(outDir, 'agents/reviewer.yaml'))).rejects.toThrow();
+
+    // tester.yml should also be converted to markdown
+    const testerMd = await readFile(join(outDir, 'agents/tester.md'), 'utf-8');
+    expect(testerMd).toContain('name: tester');
+    expect(testerMd).toContain('description: Test automation agent');
+    await expect(stat(join(outDir, 'agents/tester.yml'))).rejects.toThrow();
+  });
+
+  test('agent YAML with path-traversal name does not escape the agents output directory', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'agent-escape-'));
+    const outDir = join(OUTPUT_ROOT, 'agent-path-escape');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'agents', 'malicious.yaml'),
+        [
+          'name: ../../escape',
+          'description: Path traversal attempt',
+          'developer_instructions: |',
+          '  Should not escape.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--escape-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'escape-test',
+          version: '1.0.0',
+          description: 'Test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'malicious', path: 'agents/malicious.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'partial',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      // Output must be confined to agents/ inside outDir
+      const agentsDir = join(outDir, 'agents');
+      const files = await readdir(agentsDir);
+      expect(files).toHaveLength(1);
+      // Filename must be sanitized — no path segments
+      expect(files[0]).not.toContain('/');
+      expect(files[0]).not.toContain('..');
+      expect(files[0]).toMatch(/\.md$/);
+
+      // The parsed name must still appear in frontmatter
+      const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+      expect(content).toContain('name: ../../escape');
+
+      // Must NOT have created a file outside outDir
+      await expect(stat(join(outDir, 'escape.md'))).rejects.toThrow();
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('developer_instructions using folded scalar (>) still appears in generated markdown body', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'folded-scalar-'));
+    const outDir = join(OUTPUT_ROOT, 'folded-scalar');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'agents', 'folded.yaml'),
+        [
+          'name: folded-agent',
+          'description: Folded scalar test',
+          'developer_instructions: >',
+          '  This is a folded',
+          '  block scalar.',
+          '  It joins lines with spaces.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--folded-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'folded-test',
+          version: '1.0.0',
+          description: 'Folded scalar test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'folded', path: 'agents/folded.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const content = await readFile(join(outDir, 'agents/folded-agent.md'), 'utf-8');
+      // Frontmatter must be present
+      expect(content).toContain('name: folded-agent');
+      expect(content).toContain('description: Folded scalar test');
+      // developer_instructions content must appear in the markdown body
+      expect(content).toContain('This is a folded');
+      expect(content).toContain('block scalar');
+      expect(content).toContain('joins lines with spaces');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('two agents whose names sanitize to the same filename throw a collision error', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'collision-test-'));
+    const outDir = join(OUTPUT_ROOT, 'collision-test');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // "foo" and "../../foo" both sanitize to "foo"
+      await writeFile(
+        join(sourceRoot, 'agents', 'foo.yaml'),
+        ['name: foo', 'description: First agent', 'developer_instructions: |', '  Body one.'].join('\n'),
+        'utf-8'
+      );
+      await writeFile(
+        join(sourceRoot, 'agents', 'traversal.yaml'),
+        [
+          'name: ../../foo',
+          'description: Collision agent',
+          'developer_instructions: |',
+          '  Body two.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--collision-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'collision-test',
+          version: '1.0.0',
+          description: 'Collision test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [
+            { name: 'foo', path: 'agents/foo.yaml', format: 'codex-yaml' },
+            { name: 'traversal', path: 'agents/traversal.yaml', format: 'codex-yaml' },
+          ],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await expect(new VsCodePluginGenerator().generate(ir, outDir)).rejects.toThrow(/collision/i);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('agent name and description with tricky YAML characters produce valid frontmatter', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'frontmatter-safety-'));
+    const outDir = join(OUTPUT_ROOT, 'frontmatter-safety');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // name contains a colon; description contains quotes and a newline embedded via YAML block scalar
+      await writeFile(
+        join(sourceRoot, 'agents', 'tricky.yaml'),
+        [
+          'name: "tricky: agent"',
+          'description: He said "hello" and used: colons',
+          'developer_instructions: |',
+          '  Do the thing.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--frontmatter-safety',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'frontmatter-safety',
+          version: '1.0.0',
+          description: 'Frontmatter safety test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'tricky', path: 'agents/tricky.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const agentsDir = join(outDir, 'agents');
+      const files = await readdir(agentsDir);
+      expect(files).toHaveLength(1);
+
+      const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+
+      // Frontmatter block must be present and closed
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+      expect(fmMatch).not.toBeNull();
+
+      // The frontmatter lines for name and description must not break YAML:
+      // values with colons or quotes must be quoted
+      const fmBody = fmMatch![1];
+      const nameLine = fmBody.split('\n').find((l) => l.startsWith('name:'))!;
+      const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+
+      // The value after "name: " must be a quoted string (starts with " or ')
+      expect(nameLine).toMatch(/^name:\s*["'].+["']$/);
+      // The value after "description: " must be a quoted string
+      expect(descLine).toMatch(/^description:\s*["'].+["']$/);
+
+      // Semantic check: the YAML source had `name: "tricky: agent"` (double-quoted
+      // scalar). The parser must unwrap the outer quotes so the stored value is
+      // `tricky: agent`, not `"tricky: agent"`. The generated frontmatter should
+      // therefore contain `name: "tricky: agent"` (re-quoted because of the colon)
+      // with no extra wrapping layer.
+      expect(nameLine).toBe('name: "tricky: agent"');
+
+      // Semantic check: the description was a plain scalar containing quotes and a
+      // colon. The stored value must not have grown additional outer quote chars.
+      expect(descLine).toBe('description: "He said \\"hello\\" and used: colons"');
+
+      // Filename must not contain literal quote characters from the YAML source.
+      expect(files[0]).not.toContain('"');
+      expect(files[0]).not.toContain("'");
+
+      // The body must still contain the instructions
+      expect(content).toContain('Do the thing.');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('agent description containing a newline is represented safely in frontmatter', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'newline-desc-'));
+    const outDir = join(OUTPUT_ROOT, 'newline-desc');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // Simulate a description that, after YAML parsing, would contain a newline
+      // We embed it via a YAML block scalar so the parser produces an actual \n
+      await writeFile(
+        join(sourceRoot, 'agents', 'multiline.yaml'),
+        // Use a plain name with no specials; only description is tricky
+        [
+          'name: multiline-agent',
+          'description: "first line\\nsecond line"',
+          'developer_instructions: |',
+          '  Body text.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--newline-desc',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'newline-desc',
+          version: '1.0.0',
+          description: 'Newline in description test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'multiline', path: 'agents/multiline.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const content = await readFile(join(outDir, 'agents/multiline-agent.md'), 'utf-8');
+
+      // The frontmatter block must be fully enclosed (closed with ---)
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+      expect(fmMatch).not.toBeNull();
+
+      // No raw newline in a bare frontmatter value
+      const fmBody = fmMatch![1];
+      const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+      // Must be on a single line (no embedded newline leaking into next frontmatter line)
+      expect(descLine).toBeDefined();
+      expect(descLine).not.toContain('\n');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('block scalar with non-2-space indentation is correctly de-indented', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'indent-test-'));
+    const outDir = join(OUTPUT_ROOT, 'indent-test');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'agents', 'indented.yaml'),
+        [
+          'name: indent-agent',
+          'description: Indentation test',
+          'developer_instructions: |',
+          '    Four space indented.',
+          '    Second line here.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--indent-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'indent-test',
+          version: '1.0.0',
+          description: 'Indentation test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'indented', path: 'agents/indented.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const content = await readFile(join(outDir, 'agents/indent-agent.md'), 'utf-8');
+      // Content must appear without extra leading spaces
+      expect(content).toContain('Four space indented.');
+      expect(content).toContain('Second line here.');
+      // Must not have any residual leading spaces (4-space indent fully stripped)
+      expect(content).not.toMatch(/^ +Four space/m);
+      expect(content).not.toMatch(/^ +Second line/m);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('single-quoted YAML scalar names and descriptions are unwrapped, not double-quoted again', async () => {
+    const sourceRoot = await mkdtemp(join(tmpdir(), 'single-quoted-'));
+    const outDir = join(OUTPUT_ROOT, 'single-quoted');
+
+    try {
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+      // Single-quoted YAML scalar: value is `it's simple` (with apostrophe via YAML '' escape)
+      await writeFile(
+        join(sourceRoot, 'agents', 'sq.yaml'),
+        [
+          "name: 'sq-agent'",
+          "description: 'it''s simple'",
+          'developer_instructions: |',
+          '  Body text.',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      const ir: PluginIR = {
+        id: 'codex--single-quoted-test',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'single-quoted-test',
+          version: '1.0.0',
+          description: 'Single-quoted scalar test',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [],
+          hooks: [],
+          agents: [{ name: 'sq', path: 'agents/sq.yaml', format: 'codex-yaml' }],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const agentsDir = join(outDir, 'agents');
+      const files = await readdir(agentsDir);
+      expect(files).toHaveLength(1);
+
+      const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+      expect(fmMatch).not.toBeNull();
+
+      const fmBody = fmMatch![1];
+      const nameLine = fmBody.split('\n').find((l) => l.startsWith('name:'))!;
+      const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+
+      // Semantic: quotes unwrapped → value is `sq-agent`, no special chars, written bare
+      expect(nameLine).toBe('name: sq-agent');
+
+      // Semantic: `''` in single-quoted YAML is an escaped single-quote → value is `it's simple`
+      // The apostrophe triggers quoting in the output frontmatter
+      expect(descLine).toBe("description: \"it's simple\"");
+
+      // Filename must not carry surrounding quote characters
+      expect(files[0]).not.toContain("'");
+      expect(files[0]).not.toContain('"');
+      expect(files[0]).toBe('sq-agent.md');
+
+      expect(content).toContain('Body text.');
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('YAML reserved words and numeric-like values are quoted in frontmatter', async () => {
+    // Regression: yamlQuoteIfNeeded must quote values that are valid YAML boolean/null
+    // keywords or look like numbers, otherwise they would be parsed as non-strings.
+    const reservedCases: Array<{ name: string; description: string }> = [
+      { name: 'true', description: 'false' },
+      { name: 'null', description: 'yes' },
+      { name: 'on', description: 'off' },
+      { name: 'no', description: 'true' },
+      { name: '1234', description: '3.14' },
+    ];
+
+    for (const { name: agentName, description: agentDesc } of reservedCases) {
+      const sourceRoot = await mkdtemp(join(tmpdir(), 'yaml-reserved-'));
+      const outDir = join(OUTPUT_ROOT, `yaml-reserved-${agentName}`);
+
+      try {
+        await ensureCleanDir(outDir);
+        await mkdir(join(sourceRoot, 'agents'), { recursive: true });
+
+        // Use a safe file-name slug; the agent name is the reserved value itself
+        await writeFile(
+          join(sourceRoot, 'agents', 'agent.yaml'),
+          [
+            `name: "${agentName}"`,
+            `description: "${agentDesc}"`,
+            'developer_instructions: |',
+            '  Instructions body.',
+          ].join('\n'),
+          'utf-8'
+        );
+
+        const ir: PluginIR = {
+          id: `codex--yaml-reserved-${agentName}`,
+          source: {
+            platform: 'codex',
+            repoUrl: 'https://example.com',
+            pluginPath: sourceRoot,
+            commitSha: 'abc123',
+            version: '1.0.0',
+          },
+          manifest: {
+            name: `yaml-reserved-${agentName}`,
+            version: '1.0.0',
+            description: 'YAML reserved word test',
+            author: { name: 'Test' },
+            raw: {},
+          },
+          components: {
+            skills: [],
+            hooks: [],
+            agents: [{ name: 'agent', path: 'agents/agent.yaml', format: 'codex-yaml' }],
+            commands: [],
+            mcpServers: [],
+            rules: [],
+            apps: [],
+          },
+          compatibility: {
+            overall: 'full',
+            details: [],
+            warnings: [],
+            droppedComponents: [],
+          },
+        };
+
+        await new VsCodePluginGenerator().generate(ir, outDir);
+
+        const agentsDir = join(outDir, 'agents');
+        const files = await readdir(agentsDir);
+        expect(files).toHaveLength(1);
+
+        const content = await readFile(join(agentsDir, files[0]), 'utf-8');
+        const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
+        expect(fmMatch).not.toBeNull();
+
+        const fmBody = fmMatch![1];
+        const nameLine = fmBody.split('\n').find((l) => l.startsWith('name:'))!;
+        const descLine = fmBody.split('\n').find((l) => l.startsWith('description:'))!;
+
+        // Both the reserved-word name and its description must be quoted so a YAML
+        // parser won't coerce them to boolean/null/number types.
+        expect(nameLine).toMatch(
+          /^name:\s*["'].+["']$/,
+          `name line for "${agentName}" must be quoted`
+        );
+        expect(descLine).toMatch(
+          /^description:\s*["'].+["']$/,
+          `description line for "${agentDesc}" must be quoted`
+        );
+
+        // Semantic: the round-tripped value must still equal the original string.
+        expect(nameLine).toBe(`name: "${agentName}"`);
+      } finally {
+        await rm(sourceRoot, { recursive: true, force: true });
+      }
+    }
   });
 });

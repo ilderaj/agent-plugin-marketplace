@@ -11,6 +11,6 @@
   "agents": ["agents/learner.md"],
   "hooks": "hooks/hooks.json",
   "mcp": "mcp.json",
-  "rules": ["rules/learning-context.mdc", "rules/typescript-rules.mdc"],
+  "rules": ["rules/learning-context.mdc", "rules/typescript-rules.mdc", "rules/intelligent-rule.mdc"],
   "commands": ["commands/analyze.sh"]
 }

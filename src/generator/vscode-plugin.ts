@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, writeFile } from 'fs/promises';
 import { basename, dirname, join, parse } from 'path';
 import type {
+  AgentRef,
   Compatibility,
   ComponentCompat,
   DroppedComponent,
@@ -98,9 +99,212 @@ export class VsCodePluginGenerator {
   }
 
   private async copyAgents(ir: PluginIR, outDir: string) {
+    // Pre-check for filename collisions among YAML agents before writing anything.
+    // Cache parsed results so each file is read and parsed only once.
+    const parsedCache = new Map<string, Record<string, string>>();
+    const usedFilenames = new Set<string>();
     for (const agent of ir.components.agents) {
-      await this.copyPath(join(ir.source.pluginPath, agent.path), join(outDir, agent.path));
+      if (agent.format !== 'codex-yaml') continue;
+      const sourcePath = join(ir.source.pluginPath, agent.path);
+      const raw = await readFile(sourcePath, 'utf-8');
+      const parsed = this.parseCodexAgentYaml(raw);
+      parsedCache.set(agent.path, parsed);
+      const name = parsed.name ?? agent.name;
+      const filename = this.sanitizeAgentFilename(name);
+      if (usedFilenames.has(filename)) {
+        throw new Error(
+          `Agent filename collision: two agents both sanitize to "${filename}.md". ` +
+            `Rename one of the agents to avoid the conflict.`
+        );
+      }
+      usedFilenames.add(filename);
     }
+
+    for (const agent of ir.components.agents) {
+      if (agent.format === 'codex-yaml') {
+        await this.convertCodexAgent(ir, agent, outDir, parsedCache.get(agent.path));
+      } else {
+        await this.copyPath(join(ir.source.pluginPath, agent.path), join(outDir, agent.path));
+      }
+    }
+  }
+
+  private async convertCodexAgent(
+    ir: PluginIR,
+    agent: AgentRef,
+    outDir: string,
+    cachedParsed?: Record<string, string>
+  ) {
+    const parsed = cachedParsed ?? this.parseCodexAgentYaml(
+      await readFile(join(ir.source.pluginPath, agent.path), 'utf-8')
+    );
+
+    const name = parsed.name ?? agent.name;
+    const description = parsed.description ?? '';
+    const body = parsed.developer_instructions?.trimEnd() ?? '';
+
+    const frontmatter = [
+      '---',
+      `name: ${this.yamlQuoteIfNeeded(name)}`,
+      description ? `description: ${this.yamlQuoteIfNeeded(description)}` : undefined,
+      '---',
+    ]
+      .filter((line) => line !== undefined)
+      .join('\n');
+
+    const content = body
+      ? `${frontmatter}\n\n${body}\n`
+      : `${frontmatter}\n`;
+
+    // Sanitize to prevent path traversal: take only the last segment and strip leading dots
+    const safeFilename = this.sanitizeAgentFilename(name);
+    const outputPath = join(outDir, `agents/${safeFilename}.md`);
+    await mkdir(dirname(outputPath), { recursive: true });
+    await writeFile(outputPath, content, 'utf-8');
+  }
+
+  /** Strips path separators and leading dots so the filename always stays in the agents directory. */
+  private sanitizeAgentFilename(name: string): string {
+    const base = basename(name.replace(/\\/g, '/'));
+    return base.replace(/^\.+/, '') || 'agent';
+  }
+
+  /**
+   * Quotes a YAML scalar value if it contains characters that would produce invalid
+   * or ambiguous YAML when written bare: colons, quotes, newlines, and other
+   * indicator characters. Uses double-quote style with minimal escaping.
+   */
+  private yamlQuoteIfNeeded(value: string): string {
+    // YAML 1.1 / 1.2 reserved words that would be parsed as non-string scalars.
+    const YAML_RESERVED = new Set([
+      'true', 'false', 'null', '~',
+      // YAML 1.1 booleans
+      'yes', 'no', 'on', 'off',
+      'True', 'False', 'Null',
+      'Yes', 'No', 'On', 'Off',
+      'TRUE', 'FALSE', 'NULL',
+      'YES', 'NO', 'ON', 'OFF',
+    ]);
+    const needsQuoting =
+      /[:#"'\n\r\t[\]{},|>&*!%@`]/.test(value) ||
+      /^\s|\s$/.test(value) ||
+      value === '' ||
+      YAML_RESERVED.has(value) ||
+      // Integer or float scalars: optional sign, digits, optional decimal
+      /^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/.test(value) ||
+      // Octal / hex / infinity / nan literals used by some YAML parsers
+      /^0x[0-9a-fA-F]+$/.test(value) ||
+      /^0o[0-7]+$/.test(value) ||
+      /^[+-]?(\.inf|\.Inf|\.INF|\.nan|\.NaN|\.NAN)$/.test(value);
+    if (!needsQuoting) return value;
+
+    const escaped = value
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\t/g, '\\t');
+    return `"${escaped}"`;
+  }
+
+  /**
+   * Minimal YAML parser for Codex agent files.
+   * Handles top-level string fields, quoted scalars (single or double), and
+   * block scalars (| and >). Chomping modifiers `|-` / `>-` (strip) are
+   * recognised syntactically; in practice all trailing blank lines are removed
+   * (strip behaviour). Keep (`|+` / `>+`) is not implemented.
+   * Does not support the full YAML spec — only what Codex agent definitions use.
+   */
+  private parseCodexAgentYaml(raw: string): Record<string, string> {
+    const result: Record<string, string> = {};
+    const lines = raw.split('\n');
+    let i = 0;
+
+    while (i < lines.length) {
+      const line = lines[i];
+      const topLevelMatch = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*):\s*(.*)/);
+
+      if (!topLevelMatch) {
+        i++;
+        continue;
+      }
+
+      const key = topLevelMatch[1];
+      const valueRaw = topLevelMatch[2].trim();
+
+      if (/^[|>][+-]?$/.test(valueRaw)) {
+        const isFolded = valueRaw.startsWith('>');
+        // Collect raw indented lines (empty lines are part of block content)
+        i++;
+        const rawBodyLines: string[] = [];
+        while (i < lines.length) {
+          const bodyLine = lines[i];
+          if (bodyLine === '' || bodyLine.startsWith(' ') || bodyLine.startsWith('\t')) {
+            rawBodyLines.push(bodyLine);
+            i++;
+          } else {
+            break;
+          }
+        }
+        // Detect indentation level from the first non-empty line
+        let indent = 0;
+        for (const rawLine of rawBodyLines) {
+          if (rawLine.trim() !== '') {
+            const m = rawLine.match(/^(\s+)/);
+            indent = m ? m[1].length : 0;
+            break;
+          }
+        }
+        const bodyLines = rawBodyLines.map((l) => (l.length === 0 ? '' : l.slice(indent)));
+        // Strip trailing blank lines (strip-chomping behaviour for all variants)
+        while (bodyLines.length > 0 && bodyLines[bodyLines.length - 1].trim() === '') {
+          bodyLines.pop();
+        }
+        result[key] = isFolded ? this.foldBlockScalar(bodyLines) : bodyLines.join('\n');
+      } else if (/^"(.*)"$/.test(valueRaw)) {
+        // Double-quoted scalar: unwrap and unescape standard YAML escapes
+        result[key] = valueRaw.slice(1, -1)
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '\\')
+          .replace(/\\n/g, '\n')
+          .replace(/\\r/g, '\r')
+          .replace(/\\t/g, '\t');
+        i++;
+      } else if (/^'(.*)'$/.test(valueRaw)) {
+        // Single-quoted scalar: unwrap and unescape '' → '
+        result[key] = valueRaw.slice(1, -1).replace(/''/g, "'");
+        i++;
+      } else if (valueRaw !== '' && !valueRaw.startsWith('-')) {
+        result[key] = valueRaw;
+        i++;
+      } else {
+        i++;
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Folds a YAML folded block scalar: consecutive non-empty lines are joined
+   * with a single space; blank lines become literal newlines.
+   */
+  private foldBlockScalar(lines: string[]): string {
+    const parts: string[] = [];
+    const buf: string[] = [];
+    for (const line of lines) {
+      if (line.trim() === '') {
+        if (buf.length > 0) {
+          parts.push(buf.join(' '));
+          buf.length = 0;
+        }
+        parts.push('');
+      } else {
+        buf.push(line);
+      }
+    }
+    if (buf.length > 0) parts.push(buf.join(' '));
+    return parts.join('\n');
   }
 
   private async copyCommands(ir: PluginIR, outDir: string) {
@@ -185,16 +389,37 @@ export class VsCodePluginGenerator {
     const body = frontmatterMatch ? content.slice(frontmatterMatch[0].length).trimStart() : content;
     const descriptionMatch = frontmatterMatch?.[1].match(/^description:\s*(.+)$/m);
     const description = descriptionMatch?.[1]?.trim();
-    const applyTo = rule.alwaysApply ? 'always' : (rule.globs ?? []).join(', ');
+
+    // Determine applyTo and whether to emit an origin comment about semantic mapping.
+    let applyTo: string;
+    let intelligentModeComment: string | undefined;
+
+    if (rule.alwaysApply) {
+      applyTo = 'always';
+    } else if (rule.globs && rule.globs.length > 0) {
+      applyTo = rule.globs.join(', ');
+    } else {
+      // Ambiguous mode: alwaysApply: false with no globs covers both Cursor "Apply Intelligently"
+      // and "Apply Manually" — the frontmatter alone cannot distinguish them.
+      // VS Code .instructions.md has no equivalent for either, so map broadly to applyTo: "**"
+      // so the content is not silently lost. Consumers can narrow the scope manually.
+      applyTo = '"**"';
+      intelligentModeComment =
+        '<!-- Origin: Cursor ambiguous mode (alwaysApply: false, no globs) — ' +
+        'indistinguishable between "Apply Intelligently" and "Apply Manually" from frontmatter alone. ' +
+        'Mapped broadly to applyTo: "**" because VS Code instructions.md has no AI-context-based mode. ' +
+        'Narrow applyTo manually if a tighter scope is appropriate. -->';
+    }
 
     const header = [
       '---',
       'source: cursor-rule',
       description ? `description: ${description}` : undefined,
-      applyTo ? `applyTo: ${applyTo}` : undefined,
+      `applyTo: ${applyTo}`,
       '---',
       '',
       '<!-- Converted from Cursor .mdc rule to VS Code .instructions.md -->',
+      intelligentModeComment,
       '',
     ]
       .filter(Boolean)

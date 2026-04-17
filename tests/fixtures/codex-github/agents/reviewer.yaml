@@ -1,6 +1,14 @@
 name: reviewer
 description: Code review agent
 version: 1.0.0
+developer_instructions: |
+  You are an expert code reviewer.
+  Focus on correctness, security, and maintainability.
+  Always explain your reasoning.
 capabilities:
   - code-review
   - suggestions
+sandbox_mode: false
+nickname_candidates:
+  - reviewer-bot
+  - review-agent

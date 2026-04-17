@@ -306,7 +306,7 @@ export class CodexAdapter implements SourceAdapter {
         type: 'hook',
         name: hook.configPath,
         level: 'partial' as const,
-        notes: 'Hooks require format conversion for other platforms',
+        notes: 'Codex hooks require format conversion; limited to 5 events with Bash-only tool interception',
       });
     }
     
@@ -316,7 +316,7 @@ export class CodexAdapter implements SourceAdapter {
         type: 'agent',
         name: agent.name,
         level: 'partial' as const,
-        notes: 'Agent definitions require format conversion',
+        notes: 'Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.',
       });
     }
     
