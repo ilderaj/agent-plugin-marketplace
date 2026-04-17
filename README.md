@@ -133,17 +133,19 @@ The pipeline tracks each plugin's latest commit SHA. On re-run, only plugins who
 
 ## Upstream Adapter Conversion
 
-| Upstream Feature | VS Code Output | Compatibility |
-|-----------------|----------------|---------------|
-| Skills (`.md`) | Copied as-is | Full |
-| MCP servers | Copied as-is | Full |
-| Agents (`.md` / `.yaml`) | Copied with format note | Partial |
-| Hooks (`hooks.json`) | Copied with adaptation warning | Partial |
-| Commands (`.sh` / `.ts`) | Copied, needs manual verification | Partial |
-| Cursor rules (`.mdc`) | Converted to `.instructions.md` | Partial |
-| Codex app connectors (`.app.json`) | Dropped | Unsupported |
+| Source Platform | Feature | VS Code Output | Compatibility | Notes |
+|----------------|---------|----------------|---------------|-------|
+| Any | Skills (`.md`) | Copied as-is | Full | No format conversion needed |
+| Any | MCP servers | Copied as-is | Full | Transport and server metadata are preserved |
+| Claude Code | Hooks | Copied as Claude-compatible config | Full | VS Code natively reads Claude hook format |
+| Claude Code | Agents (`.md`) | Copied as-is | Full | VS Code natively reads `.claude/agents/*.md` |
+| Claude Code / Cursor | Commands (`.sh` / `.js` / `.ts`) | Copied as scripts | Partial | No direct VS Code command equivalent |
+| Codex | Agents (`.yaml` / `.yml`) | Converted to Markdown agent files | Partial | `name`, `description`, and `developer_instructions` are preserved; unsupported fields are dropped |
+| Codex | Hooks (`hooks.json`) | Copied with compatibility warning | Partial | Requires format conversion; limited to 5 events with Bash-only interception |
+| Cursor | Rules (`.mdc`) | Converted to `.instructions.md` | Partial | Rules with `alwaysApply: false` and no globs are mapped broadly to `applyTo: "**"` |
+| Codex | App connectors (`.app.json`) | Dropped | Unsupported | No VS Code equivalent |
 
-Each generated `_meta.json` includes `_compatibility` metadata with per-component details and warnings.
+Each generated `_meta.json` includes `_compatibility` metadata with per-component details and warnings, including platform-specific notes for converted or downgraded components.
 
 ---
 
