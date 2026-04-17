@@ -1,0 +1,18 @@
+{
+  "displayName": "Render (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/render",
+    "commitSha": "314574a046f21938025ae443f9c6dbbd0c2c9b7a",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted."
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

@@ -643,6 +643,32 @@
       "keywords": []
     },
     {
+      "name": "codex--expo",
+      "source": "plugins/codex--expo",
+      "description": "Official Expo skills for building, deploying, upgrading, and debugging Expo and React Native apps. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Expo Team",
+        "email": "support@expo.dev",
+        "url": "https://expo.dev"
+      },
+      "repository": "https://github.com/expo/skills/tree/main/plugins/expo",
+      "keywords": [
+        "expo",
+        "react-native",
+        "expo-router",
+        "codex-run-actions",
+        "eas",
+        "mobile",
+        "ios",
+        "android",
+        "deployment",
+        "upgrades",
+        "native-modules"
+      ]
+    },
+    {
       "name": "codex--figma",
       "source": "plugins/codex--figma",
       "description": "Figma workflows for design implementation, Code Connect templates, and design system rule generation. (from Codex)",
@@ -1095,6 +1121,27 @@
       "keywords": []
     },
     {
+      "name": "codex--neon-postgres",
+      "source": "plugins/codex--neon-postgres",
+      "description": "Manage Neon Serverless Postgres projects and databases with the neon-postgres agent skill and the Neon MCP Server (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Neon",
+        "email": "andre@neon.tech",
+        "url": "https://neon.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "neon",
+        "postgres",
+        "serverless",
+        "database",
+        "mcp",
+        "sql"
+      ]
+    },
+    {
       "name": "codex--netlify",
       "source": "plugins/codex--netlify",
       "description": "Deploy projects and manage preview or production releases on Netlify. (from Codex)",
@@ -1253,6 +1300,27 @@
       "keywords": []
     },
     {
+      "name": "codex--plugin-eval",
+      "source": "plugins/codex--plugin-eval",
+      "description": "Evaluate Codex skills and plugins from chat with a beginner-friendly start command, local-first reports, token budget explanations, and guided benchmarking. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI Codex",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "codex",
+        "plugin",
+        "skill",
+        "evaluation",
+        "quality",
+        "budget"
+      ]
+    },
+    {
       "name": "codex--policynote",
       "source": "plugins/codex--policynote",
       "description": "Use the PolicyNote app to access structured policy and regulatory intelligence from around the world. (from Codex)",
@@ -1378,6 +1446,27 @@
         "ffmpeg",
         "captions",
         "audio"
+      ]
+    },
+    {
+      "name": "codex--render",
+      "source": "plugins/codex--render",
+      "description": "Skills for deploying, debugging, monitoring, and migrating apps on Render. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "Render",
+        "email": "support@render.com",
+        "url": "https://render.com"
+      },
+      "repository": "https://github.com/renderinc/render-codex-plugin",
+      "keywords": [
+        "render",
+        "deploy",
+        "cloud",
+        "blueprint",
+        "monitoring",
+        "debugging"
       ]
     },
     {

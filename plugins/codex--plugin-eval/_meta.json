@@ -1,10 +1,10 @@
 {
-  "displayName": "Life Science Research (from Codex)",
+  "displayName": "Plugin Eval (from Codex)",
   "_source": {
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "plugins/life-science-research",
-    "commitSha": "2032fd0291961d866feca472adc8ed6a8cddafc6",
+    "pluginPath": "plugins/plugin-eval",
+    "commitSha": "610a632ae9a27eca49f7d937fbe60379fd04257b",
     "version": "0.1.0"
   },
   "_compatibility": {
