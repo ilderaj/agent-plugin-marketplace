@@ -1,0 +1,18 @@
+{
+  "displayName": "Expo (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/expo",
+    "commitSha": "b2f3314f8f385fd55f2485cea68e8002729c870f",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted."
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

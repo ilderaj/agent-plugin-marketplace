@@ -1,11 +1,11 @@
 {
-  "displayName": "Google Calendar (from Codex)",
+  "displayName": "Neon Postgres (from Codex)",
   "_source": {
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
-    "pluginPath": "plugins/google-calendar",
-    "commitSha": "2d5bc7897516f0802a6b8778fc71c74ad8042473",
-    "version": "1.2.0"
+    "pluginPath": "plugins/neon-postgres",
+    "commitSha": "bb07d439ba5f23713f3c34c2f9f4b1ecd8deab2e",
+    "version": "1.0.0"
   },
   "_compatibility": {
     "overall": "partial",
