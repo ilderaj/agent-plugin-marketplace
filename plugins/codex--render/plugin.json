@@ -1,0 +1,23 @@
+{
+  "name": "codex--render",
+  "version": "0.1.0",
+  "description": "Skills for deploying, debugging, monitoring, and migrating apps on Render.",
+  "author": {
+    "name": "Render",
+    "email": "support@render.com",
+    "url": "https://render.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/renderinc/render-codex-plugin",
+  "repository": "https://github.com/renderinc/render-codex-plugin",
+  "keywords": [
+    "render",
+    "deploy",
+    "cloud",
+    "blueprint",
+    "monitoring",
+    "debugging"
+  ],
+  "agents": "./agents/",
+  "strict": false
+}

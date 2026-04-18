@@ -1,9 +1,9 @@
 {
-  "lastSyncAt": "2026-04-16T02:40:07.880Z",
+  "lastSyncAt": "2026-04-17T05:22:42.721Z",
   "sources": {
     "codex": {
       "repoUrl": "https://github.com/openai/plugins.git",
-      "lastCommit": "99f0215239c31991c58e10efef7e9a4e50481445",
+      "lastCommit": "314574a046f21938025ae443f9c6dbbd0c2c9b7a",
       "plugins": {
         "box": {
           "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
@@ -50,8 +50,8 @@
           "syncedAt": "2026-04-15T16:06:22.819Z"
         },
         "google-calendar": {
-          "commitSha": "b7ebf6296733cddb871d0e914288e8a0c0a3dcfe",
-          "syncedAt": "2026-04-16T02:40:05.971Z"
+          "commitSha": "2d5bc7897516f0802a6b8778fc71c74ad8042473",
+          "syncedAt": "2026-04-17T05:22:42.612Z"
         },
         "google-drive": {
           "commitSha": "b7ebf6296733cddb871d0e914288e8a0c0a3dcfe",
@@ -66,8 +66,8 @@
           "syncedAt": "2026-04-15T16:06:22.926Z"
         },
         "life-science-research": {
-          "commitSha": "c1c78328dc2775a42267caaf41102b67fc3a9c37",
-          "syncedAt": "2026-04-16T02:40:05.995Z"
+          "commitSha": "2032fd0291961d866feca472adc8ed6a8cddafc6",
+          "syncedAt": "2026-04-17T05:22:42.643Z"
         },
         "linear": {
           "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
@@ -241,10 +241,6 @@
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
           "syncedAt": "2026-04-16T02:40:05.960Z"
         },
-        "gitlab-issues": {
-          "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-16T02:40:05.967Z"
-        },
         "govtribe": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
           "syncedAt": "2026-04-16T02:40:05.975Z"
@@ -373,10 +369,6 @@
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
           "syncedAt": "2026-04-16T02:40:06.051Z"
         },
-        "s-p-global": {
-          "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-16T02:40:06.053Z"
-        },
         "scite": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
           "syncedAt": "2026-04-16T02:40:06.055Z"
@@ -453,15 +445,27 @@
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
           "syncedAt": "2026-04-16T02:40:06.106Z"
         },
-        "zoominfo": {
-          "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-16T02:40:06.108Z"
+        "expo": {
+          "commitSha": "b2f3314f8f385fd55f2485cea68e8002729c870f",
+          "syncedAt": "2026-04-17T05:22:42.586Z"
+        },
+        "neon-postgres": {
+          "commitSha": "bb07d439ba5f23713f3c34c2f9f4b1ecd8deab2e",
+          "syncedAt": "2026-04-17T05:22:42.667Z"
+        },
+        "plugin-eval": {
+          "commitSha": "610a632ae9a27eca49f7d937fbe60379fd04257b",
+          "syncedAt": "2026-04-17T05:22:42.697Z"
+        },
+        "render": {
+          "commitSha": "314574a046f21938025ae443f9c6dbbd0c2c9b7a",
+          "syncedAt": "2026-04-17T05:22:42.721Z"
         }
       }
     },
     "claude-code": {
       "repoUrl": "https://github.com/anthropics/claude-code.git",
-      "lastCommit": "5a7bf281bab3a1bf37245ea84000b4936322eefa",
+      "lastCommit": "2b53fac3b2dd381bfb29f456f43c0b3eb9b3ebff",
       "plugins": {
         "agent-sdk-dev": {
           "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
