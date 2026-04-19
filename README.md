@@ -90,6 +90,20 @@ ln -s "$(pwd)/plugins/claude--code-review" .github/copilot/plugins/code-review
 
 Skills (`.md` files), agents, and instructions are immediately available to Copilot after reload.
 
+### Option D: VS Code Marketplace Source (Git URL)
+
+Add this repository as a VS Code Agent Plugins marketplace source via `chat.plugins.marketplaces`:
+
+```json
+{
+    "chat.plugins.marketplaces": [
+        "https://github.com/ilderaj/agent-plugin-marketplace.git"
+    ]
+}
+```
+
+This repository already includes the same value in workspace defaults at `.vscode/settings.json`.
+
 ---
 
 ## How the Sync Pipeline Works
