@@ -1,0 +1,10 @@
+{
+  "extraKnownMarketplaces": {
+    "ilderaj-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "ilderaj/agent-plugin-marketplace"
+      }
+    }
+  }
+}
