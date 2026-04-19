@@ -1,0 +1,11 @@
+{
+  "name": "hooks-object",
+  "version": "1.0.0",
+  "description": "Codex fixture for object-form hooks",
+  "author": {
+    "name": "Test Fixture"
+  },
+  "license": "MIT",
+  "skills": ["skills/test"],
+  "hooks": "hooks.json"
+}

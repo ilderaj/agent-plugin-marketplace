@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "command": "node scripts/post-tool-use.js",
+        "matcher": "Bash"
+      }
+    ],
+    "Stop": [
+      {
+        "command": "node scripts/stop.js"
+      }
+    ]
+  }
+}

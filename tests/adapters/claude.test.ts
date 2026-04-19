@@ -1,8 +1,27 @@
 import { describe, test, expect } from 'bun:test';
 import { ClaudeAdapter } from '../../src/adapters/claude';
 import { join } from 'path';
+import { mkdir, rm } from 'fs/promises';
+import { randomBytes } from 'crypto';
 
 const FIXTURE = join(import.meta.dir, '../fixtures/claude-code-review');
+const MD_COMMANDS_FIXTURE = join(import.meta.dir, '../fixtures/claude-with-md-commands');
+const SCRATCH_ROOT = join(import.meta.dir, '../fixtures/.scratch/claude');
+
+async function withScratchPlugin(
+  name: string,
+  run: (pluginDir: string) => Promise<void>,
+) {
+  const scratchDir = join(SCRATCH_ROOT, `${name}-${randomBytes(8).toString('hex')}`);
+  const pluginDir = join(scratchDir, name);
+  await mkdir(pluginDir, { recursive: true });
+
+  try {
+    await run(pluginDir);
+  } finally {
+    await rm(scratchDir, { recursive: true, force: true });
+  }
+}
 
 describe('ClaudeAdapter', () => {
   const adapter = new ClaudeAdapter();
@@ -71,9 +90,23 @@ describe('ClaudeAdapter', () => {
   test('parse extracts commands', async () => {
     const ir = await adapter.parse(FIXTURE);
     expect(ir.components.commands.length).toBeGreaterThanOrEqual(1);
-    const command = ir.components.commands.find(c => c.name === 'format');
+    const command = ir.components.commands.find(c => c.name === 'code-review');
     expect(command).toBeDefined();
-    expect(command?.path).toBe('commands/format.sh');
+    expect(command?.path).toBe('commands/code-review.md');
+  });
+
+  test('parse includes markdown command files', async () => {
+    const ir = await adapter.parse(MD_COMMANDS_FIXTURE);
+
+    expect(ir.components.commands.length).toBe(2);
+
+    const summarize = ir.components.commands.find((command) => command.name === 'summarize');
+    expect(summarize).toBeDefined();
+    expect(summarize?.path).toBe('commands/summarize.md');
+
+    const releaseNotes = ir.components.commands.find((command) => command.name === 'release-notes');
+    expect(releaseNotes).toBeDefined();
+    expect(releaseNotes?.path).toBe('commands/release-notes.md');
   });
 
   test('parse extracts MCP servers with correct transport', async () => {
@@ -91,6 +124,89 @@ describe('ClaudeAdapter', () => {
     const linterServer = mcpRef.servers.find(s => s.name === 'linter');
     expect(linterServer).toBeDefined();
     expect(linterServer?.transport).toBe('sse');
+  });
+
+  test('parse prefers mcpServers key in .mcp.json', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('preferred-mcp-servers', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.claude-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'preferred-mcp-servers',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+        }),
+      );
+      await writeFile(
+        join(pluginDir, '.mcp.json'),
+        JSON.stringify({
+          mcpServers: {
+            preferred: {
+              command: 'npx',
+              args: ['preferred'],
+              transport: 'stdio',
+            },
+          },
+          servers: {
+            legacy: {
+              command: 'npx',
+              args: ['legacy'],
+              transport: 'sse',
+            },
+          },
+        }),
+      );
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.mcpServers).toHaveLength(1);
+      expect(ir.components.mcpServers[0]).toEqual({
+        configPath: '.mcp.json',
+        servers: [{ name: 'preferred', transport: 'stdio' }],
+      });
+    });
+  });
+
+  test('parse reads legacy top-level servers from .mcp.json', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('legacy-mcp-servers', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.claude-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'legacy-mcp-servers',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+        }),
+      );
+      await writeFile(
+        join(pluginDir, '.mcp.json'),
+        JSON.stringify({
+          servers: {
+            legacyAnalyzer: {
+              command: 'npx',
+              args: ['legacy-analyzer'],
+              transport: 'sse',
+            },
+          },
+        }),
+      );
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.mcpServers).toHaveLength(1);
+      expect(ir.components.mcpServers[0]).toEqual({
+        configPath: '.mcp.json',
+        servers: [{ name: 'legacyAnalyzer', transport: 'sse' }],
+      });
+    });
   });
 
   test('parse includes compatibility information', async () => {
@@ -138,7 +254,7 @@ describe('ClaudeAdapter', () => {
     const commandCompat = ir.compatibility.details.find(d => d.type === 'command');
     expect(commandCompat).toBeDefined();
     expect(commandCompat?.level).toBe('partial');
-    expect(commandCompat?.notes).toContain('scripts (.sh/.js/.ts)');
+    expect(commandCompat?.notes).toContain('scripts/docs (.sh/.js/.ts/.md)');
     expect(commandCompat?.notes).toContain('no direct VS Code');
   });
 
@@ -152,127 +268,99 @@ describe('ClaudeAdapter', () => {
   });
 
   test('parse throws on invalid JSON in plugin.json', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-bad-json-${randomBytes(8).toString('hex')}`);
-    const badJsonFixture = join(tempDir, 'bad-json-fixture');
-    
-    // Create a temporary fixture with invalid JSON
-    await mkdir(join(badJsonFixture, '.claude-plugin'), { recursive: true });
-    await writeFile(join(badJsonFixture, '.claude-plugin', 'plugin.json'), '{invalid json}');
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('bad-json-fixture', async (badJsonFixture) => {
+      await mkdir(join(badJsonFixture, '.claude-plugin'), { recursive: true });
+      await writeFile(join(badJsonFixture, '.claude-plugin', 'plugin.json'), '{invalid json}');
+
       // Should throw, not silently return empty/default
       await expect(adapter.parse(badJsonFixture)).rejects.toThrow();
-    } finally {
-      // Clean up
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('parseHooks throws on invalid JSON in hooks file', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-bad-hooks-${randomBytes(8).toString('hex')}`);
-    const badHooksFixture = join(tempDir, 'bad-hooks-fixture');
-    
-    await mkdir(join(badHooksFixture, '.claude-plugin'), { recursive: true });
-    await mkdir(join(badHooksFixture, 'skills/test'), { recursive: true });
-    await mkdir(join(badHooksFixture, 'hooks'), { recursive: true });
-    
-    const validPluginJson = {
-      name: "test",
-      version: "1.0.0",
-      description: "test",
-      author: { name: "test" },
-      license: "MIT"
-    };
-    
-    await writeFile(
-      join(badHooksFixture, '.claude-plugin', 'plugin.json'),
-      JSON.stringify(validPluginJson)
-    );
-    await writeFile(join(badHooksFixture, 'hooks/hooks.json'), '{invalid json}');
-    await writeFile(
-      join(badHooksFixture, 'skills/test/SKILL.md'),
-      '---\nname: test\ndescription: test\n---\n# Test'
-    );
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('bad-hooks-fixture', async (badHooksFixture) => {
+      await mkdir(join(badHooksFixture, '.claude-plugin'), { recursive: true });
+      await mkdir(join(badHooksFixture, 'skills/test'), { recursive: true });
+      await mkdir(join(badHooksFixture, 'hooks'), { recursive: true });
+
+      const validPluginJson = {
+        name: "test",
+        version: "1.0.0",
+        description: "test",
+        author: { name: "test" },
+        license: "MIT"
+      };
+
+      await writeFile(
+        join(badHooksFixture, '.claude-plugin', 'plugin.json'),
+        JSON.stringify(validPluginJson)
+      );
+      await writeFile(join(badHooksFixture, 'hooks/hooks.json'), '{invalid json}');
+      await writeFile(
+        join(badHooksFixture, 'skills/test/SKILL.md'),
+        '---\nname: test\ndescription: test\n---\n# Test'
+      );
+
       // Should throw on invalid hooks JSON, not silently ignore
       await expect(adapter.parse(badHooksFixture)).rejects.toThrow();
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('parseMcpServers throws on invalid JSON in .mcp.json', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-bad-mcp-${randomBytes(8).toString('hex')}`);
-    const badMcpFixture = join(tempDir, 'bad-mcp-fixture');
-    
-    await mkdir(join(badMcpFixture, '.claude-plugin'), { recursive: true });
-    await mkdir(join(badMcpFixture, 'skills/test'), { recursive: true });
-    
-    const validPluginJson = {
-      name: "test",
-      version: "1.0.0",
-      description: "test",
-      author: { name: "test" },
-      license: "MIT"
-    };
-    
-    await writeFile(
-      join(badMcpFixture, '.claude-plugin', 'plugin.json'),
-      JSON.stringify(validPluginJson)
-    );
-    await writeFile(join(badMcpFixture, '.mcp.json'), '{invalid json}');
-    await writeFile(
-      join(badMcpFixture, 'skills/test/SKILL.md'),
-      '---\nname: test\ndescription: test\n---\n# Test'
-    );
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('bad-mcp-fixture', async (badMcpFixture) => {
+      await mkdir(join(badMcpFixture, '.claude-plugin'), { recursive: true });
+      await mkdir(join(badMcpFixture, 'skills/test'), { recursive: true });
+
+      const validPluginJson = {
+        name: "test",
+        version: "1.0.0",
+        description: "test",
+        author: { name: "test" },
+        license: "MIT"
+      };
+
+      await writeFile(
+        join(badMcpFixture, '.claude-plugin', 'plugin.json'),
+        JSON.stringify(validPluginJson)
+      );
+      await writeFile(join(badMcpFixture, '.mcp.json'), '{invalid json}');
+      await writeFile(
+        join(badMcpFixture, 'skills/test/SKILL.md'),
+        '---\nname: test\ndescription: test\n---\n# Test'
+      );
+
       // Should throw on invalid .mcp.json, not silently ignore
       await expect(adapter.parse(badMcpFixture)).rejects.toThrow();
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('parse correctly handles missing optional components', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-minimal-${randomBytes(8).toString('hex')}`);
-    const minimalFixture = join(tempDir, 'minimal-fixture');
-    
-    await mkdir(join(minimalFixture, '.claude-plugin'), { recursive: true });
-    
-    const minimalPluginJson = {
-      name: "minimal",
-      version: "1.0.0",
-      description: "Minimal plugin",
-      author: { name: "test" },
-      license: "MIT"
-    };
-    
-    await writeFile(
-      join(minimalFixture, '.claude-plugin', 'plugin.json'),
-      JSON.stringify(minimalPluginJson)
-    );
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('minimal-fixture', async (minimalFixture) => {
+      await mkdir(join(minimalFixture, '.claude-plugin'), { recursive: true });
+
+      const minimalPluginJson = {
+        name: "minimal",
+        version: "1.0.0",
+        description: "Minimal plugin",
+        author: { name: "test" },
+        license: "MIT"
+      };
+
+      await writeFile(
+        join(minimalFixture, '.claude-plugin', 'plugin.json'),
+        JSON.stringify(minimalPluginJson)
+      );
+
       const ir = await adapter.parse(minimalFixture);
-      
+
       // Should successfully parse with empty arrays for optional components
       expect(ir.components.skills.length).toBe(0);
       expect(ir.components.hooks.length).toBe(0);
@@ -282,9 +370,7 @@ describe('ClaudeAdapter', () => {
       
       // Overall compatibility should be 'full' when no partial components exist
       expect(ir.compatibility.overall).toBe('full');
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('parse correctly sets hasScripts to false when no scripts directory exists', async () => {
@@ -295,81 +381,70 @@ describe('ClaudeAdapter', () => {
   });
 
   test('parseAgents only includes .md files', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-agents-${randomBytes(8).toString('hex')}`);
-    const agentsFixture = join(tempDir, 'agents-fixture');
-    
-    await mkdir(join(agentsFixture, '.claude-plugin'), { recursive: true });
-    await mkdir(join(agentsFixture, 'agents'), { recursive: true });
-    
-    const pluginJson = {
-      name: "test",
-      version: "1.0.0",
-      description: "test",
-      author: { name: "test" }
-    };
-    
-    await writeFile(
-      join(agentsFixture, '.claude-plugin', 'plugin.json'),
-      JSON.stringify(pluginJson)
-    );
-    
-    // Create .md file (should be included)
-    await writeFile(join(agentsFixture, 'agents/agent1.md'), '# Agent 1');
-    // Create non-.md files (should be ignored)
-    await writeFile(join(agentsFixture, 'agents/config.json'), '{}');
-    await writeFile(join(agentsFixture, 'agents/script.sh'), '#!/bin/bash');
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('agents-fixture', async (agentsFixture) => {
+      await mkdir(join(agentsFixture, '.claude-plugin'), { recursive: true });
+      await mkdir(join(agentsFixture, 'agents'), { recursive: true });
+
+      const pluginJson = {
+        name: "test",
+        version: "1.0.0",
+        description: "test",
+        author: { name: "test" }
+      };
+
+      await writeFile(
+        join(agentsFixture, '.claude-plugin', 'plugin.json'),
+        JSON.stringify(pluginJson)
+      );
+
+      // Create .md file (should be included)
+      await writeFile(join(agentsFixture, 'agents/agent1.md'), '# Agent 1');
+      // Create non-.md files (should be ignored)
+      await writeFile(join(agentsFixture, 'agents/config.json'), '{}');
+      await writeFile(join(agentsFixture, 'agents/script.sh'), '#!/bin/bash');
+
       const ir = await adapter.parse(agentsFixture);
-      
+
       // Should only have 1 agent (.md file)
       expect(ir.components.agents.length).toBe(1);
       expect(ir.components.agents[0].name).toBe('agent1');
       expect(ir.components.agents[0].format).toBe('claude-md');
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
-  test('parseCommands supports .sh, .js, and .ts extensions', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-commands-${randomBytes(8).toString('hex')}`);
-    const commandsFixture = join(tempDir, 'commands-fixture');
-    
-    await mkdir(join(commandsFixture, '.claude-plugin'), { recursive: true });
-    await mkdir(join(commandsFixture, 'commands'), { recursive: true });
-    
-    const pluginJson = {
-      name: "test",
-      version: "1.0.0",
-      description: "test",
-      author: { name: "test" }
-    };
-    
-    await writeFile(
-      join(commandsFixture, '.claude-plugin', 'plugin.json'),
-      JSON.stringify(pluginJson)
-    );
-    
-    // Create command files with different extensions
-    await writeFile(join(commandsFixture, 'commands/build.sh'), '#!/bin/bash');
-    await writeFile(join(commandsFixture, 'commands/deploy.js'), 'console.log("deploy");');
-    await writeFile(join(commandsFixture, 'commands/test.ts'), 'console.log("test");');
-    // Non-command file (should be ignored)
-    await writeFile(join(commandsFixture, 'commands/README.md'), '# Commands');
-    
-    try {
+  test('parseCommands supports .sh, .js, .ts, and .md extensions', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('commands-fixture', async (commandsFixture) => {
+      await mkdir(join(commandsFixture, '.claude-plugin'), { recursive: true });
+      await mkdir(join(commandsFixture, 'commands'), { recursive: true });
+
+      const pluginJson = {
+        name: "test",
+        version: "1.0.0",
+        description: "test",
+        author: { name: "test" }
+      };
+
+      await writeFile(
+        join(commandsFixture, '.claude-plugin', 'plugin.json'),
+        JSON.stringify(pluginJson)
+      );
+
+      // Create command files with different extensions
+      await writeFile(join(commandsFixture, 'commands/build.sh'), '#!/bin/bash');
+      await writeFile(join(commandsFixture, 'commands/deploy.js'), 'console.log("deploy");');
+      await writeFile(join(commandsFixture, 'commands/test.ts'), 'console.log("test");');
+      await writeFile(join(commandsFixture, 'commands/review.md'), '---\ndescription: Review changes\nallowed-tools: Bash\n---\nReview code.');
+      // Non-command file (should be ignored)
+      await writeFile(join(commandsFixture, 'commands/README.txt'), 'Commands');
+
       const ir = await adapter.parse(commandsFixture);
-      
-      // Should have 3 commands
-      expect(ir.components.commands.length).toBe(3);
+
+      // Should have 4 commands
+      expect(ir.components.commands.length).toBe(4);
       
       const buildCmd = ir.components.commands.find(c => c.name === 'build');
       expect(buildCmd).toBeDefined();
@@ -382,49 +457,46 @@ describe('ClaudeAdapter', () => {
       const testCmd = ir.components.commands.find(c => c.name === 'test');
       expect(testCmd).toBeDefined();
       expect(testCmd?.path).toBe('commands/test.ts');
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+
+      const reviewCmd = ir.components.commands.find(c => c.name === 'review');
+      expect(reviewCmd).toBeDefined();
+      expect(reviewCmd?.path).toBe('commands/review.md');
+    });
   });
 
   test('parseHooks aggregates multiple hooks from same config file into single HookRef', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-multi-hooks-${randomBytes(8).toString('hex')}`);
-    const multiHooksFixture = join(tempDir, 'multi-hooks-fixture');
-    
-    await mkdir(join(multiHooksFixture, '.claude-plugin'), { recursive: true });
-    await mkdir(join(multiHooksFixture, 'hooks'), { recursive: true });
-    
-    const pluginJson = {
-      name: "test",
-      version: "1.0.0",
-      description: "test",
-      author: { name: "test" }
-    };
-    
-    const hooksJson = {
-      hooks: [
-        { name: "hook1", events: ["onCommit", "onPush"] },
-        { name: "hook2", events: ["onPullRequest", "onCommit"] },
-        { name: "hook3", events: ["onDeploy"] }
-      ]
-    };
-    
-    await writeFile(
-      join(multiHooksFixture, '.claude-plugin', 'plugin.json'),
-      JSON.stringify(pluginJson)
-    );
-    await writeFile(
-      join(multiHooksFixture, 'hooks/hooks.json'),
-      JSON.stringify(hooksJson)
-    );
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('multi-hooks-fixture', async (multiHooksFixture) => {
+      await mkdir(join(multiHooksFixture, '.claude-plugin'), { recursive: true });
+      await mkdir(join(multiHooksFixture, 'hooks'), { recursive: true });
+
+      const pluginJson = {
+        name: "test",
+        version: "1.0.0",
+        description: "test",
+        author: { name: "test" }
+      };
+
+      const hooksJson = {
+        hooks: [
+          { name: "hook1", events: ["onCommit", "onPush"] },
+          { name: "hook2", events: ["onPullRequest", "onCommit"] },
+          { name: "hook3", events: ["onDeploy"] }
+        ]
+      };
+
+      await writeFile(
+        join(multiHooksFixture, '.claude-plugin', 'plugin.json'),
+        JSON.stringify(pluginJson)
+      );
+      await writeFile(
+        join(multiHooksFixture, 'hooks/hooks.json'),
+        JSON.stringify(hooksJson)
+      );
+
       const ir = await adapter.parse(multiHooksFixture);
-      
+
       // Should produce exactly ONE HookRef for the config file
       expect(ir.components.hooks.length).toBe(1);
       
@@ -441,9 +513,7 @@ describe('ClaudeAdapter', () => {
       // Should have exactly 4 unique events
       const uniqueEvents = new Set(hookRef.events);
       expect(uniqueEvents.size).toBe(4);
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('hooks compatibility is full because VS Code natively reads Claude hook format', async () => {
@@ -465,36 +535,29 @@ describe('ClaudeAdapter', () => {
   });
 
   test('overall compatibility is full when plugin has only hooks and agents (no commands)', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
+    const { mkdir, writeFile } = await import('fs/promises');
 
-    const base = join(tmpdir(), `test-hooks-agents-only-${randomBytes(8).toString('hex')}`);
-    const pluginDir = join(base, 'hooks-agents-fixture');
+    await withScratchPlugin('hooks-agents-fixture', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
+      await mkdir(join(pluginDir, 'hooks'), { recursive: true });
+      await mkdir(join(pluginDir, 'agents'), { recursive: true });
 
-    await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
-    await mkdir(join(pluginDir, 'hooks'), { recursive: true });
-    await mkdir(join(pluginDir, 'agents'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.claude-plugin', 'plugin.json'),
+        JSON.stringify({ name: 'hooks-agents-only', version: '1.0.0', description: 'test', author: { name: 'test' } })
+      );
+      await writeFile(
+        join(pluginDir, 'hooks/hooks.json'),
+        JSON.stringify({ hooks: [{ name: 'pre-commit', events: ['onCommit'] }] })
+      );
+      await writeFile(join(pluginDir, 'agents/helper.md'), '# Helper Agent');
 
-    await writeFile(
-      join(pluginDir, '.claude-plugin', 'plugin.json'),
-      JSON.stringify({ name: 'hooks-agents-only', version: '1.0.0', description: 'test', author: { name: 'test' } })
-    );
-    await writeFile(
-      join(pluginDir, 'hooks/hooks.json'),
-      JSON.stringify({ hooks: [{ name: 'pre-commit', events: ['onCommit'] }] })
-    );
-    await writeFile(join(pluginDir, 'agents/helper.md'), '# Helper Agent');
-
-    try {
       const ir = await adapter.parse(pluginDir);
 
       expect(ir.components.hooks.length).toBe(1);
       expect(ir.components.agents.length).toBe(1);
       expect(ir.components.commands.length).toBe(0);
       expect(ir.compatibility.overall).toBe('full');
-    } finally {
-      await rm(base, { recursive: true, force: true });
-    }
+    });
   });
 });

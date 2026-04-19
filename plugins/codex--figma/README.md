@@ -4,19 +4,21 @@
 - Platform: codex
 - Plugin ID: codex--figma
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/figma
+- Source Path: plugins/figma
 - Version: 2.0.7
 
 ## Compatibility Summary
 - Overall: partial
-- Agent: partial — Agent definitions require format conversion
+- Skill: full — Skills are cross-platform compatible
+- Hook: partial — Codex hooks require format conversion; limited to 5 events with Bash-only tool interception
+- Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: figma-generate-design, figma-create-new-file, figma-implement-design, figma-generate-library, figma-use, figma-code-connect-components, figma-create-design-system-rules
 - Agents: openai.yaml
-- Hooks: none
+- Hooks: hooks/hooks.json (PostToolUse)
 - MCP: none
 - Commands: none
 - Instructions: none

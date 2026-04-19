@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--fireflies
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/fireflies
+- Source Path: plugins/fireflies
 - Version: 1.0.0
 
 ## Compatibility Summary

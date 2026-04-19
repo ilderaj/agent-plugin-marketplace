@@ -14,5 +14,6 @@
     "ci/cd",
     "ci"
   ],
+  "skills": "./skills/",
   "strict": false
 }

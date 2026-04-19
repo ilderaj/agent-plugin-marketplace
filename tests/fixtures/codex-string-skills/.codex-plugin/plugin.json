@@ -1,0 +1,10 @@
+{
+  "name": "string-skills",
+  "version": "1.0.0",
+  "description": "Codex fixture for string-based skills paths",
+  "author": {
+    "name": "Test Fixture"
+  },
+  "license": "MIT",
+  "skills": "./skills/"
+}

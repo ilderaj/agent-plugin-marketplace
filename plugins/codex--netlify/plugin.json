@@ -16,5 +16,6 @@
     "preview",
     "static-sites"
   ],
+  "skills": "./skills/",
   "strict": false
 }

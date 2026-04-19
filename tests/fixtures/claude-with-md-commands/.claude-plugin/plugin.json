@@ -1,0 +1,9 @@
+{
+  "name": "md-commands",
+  "version": "1.0.0",
+  "description": "Claude fixture for markdown commands",
+  "author": {
+    "name": "Test Fixture"
+  },
+  "license": "MIT"
+}

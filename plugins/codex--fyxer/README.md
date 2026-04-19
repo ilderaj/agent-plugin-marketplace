@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--fyxer
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/fyxer
+- Source Path: plugins/fyxer
 - Version: 1.0.0
 
 ## Compatibility Summary

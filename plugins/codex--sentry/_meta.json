@@ -9,7 +9,9 @@
   },
   "_compatibility": {
     "overall": "full",
-    "notes": [],
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
     "warnings": [],
     "droppedComponents": []
   }

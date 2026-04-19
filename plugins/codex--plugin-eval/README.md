@@ -4,14 +4,15 @@
 - Platform: codex
 - Plugin ID: codex--plugin-eval
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/plugin-eval
+- Source Path: plugins/plugin-eval
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: metric-pack-designer, improve-skill, plugin-eval, evaluate-plugin, evaluate-skill
 - Agents: none
 - Hooks: none
 - MCP: none

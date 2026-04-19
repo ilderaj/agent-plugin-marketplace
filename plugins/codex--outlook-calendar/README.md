@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--outlook-calendar
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/outlook-calendar
+- Source Path: plugins/outlook-calendar
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: outlook-calendar-daily-brief, outlook-calendar-free-up-time, outlook-calendar, outlook-calendar-group-scheduler, outlook-calendar-meeting-prep, outlook-calendar-shared-calendars
 - Agents: none
 - Hooks: none
 - MCP: none

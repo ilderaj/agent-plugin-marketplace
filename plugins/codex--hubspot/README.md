@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--hubspot
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/hubspot
+- Source Path: plugins/hubspot
 - Version: 2.0.0
 
 ## Compatibility Summary

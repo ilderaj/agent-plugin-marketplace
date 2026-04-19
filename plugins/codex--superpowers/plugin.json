@@ -20,5 +20,6 @@
     "code-review",
     "workflow"
   ],
+  "skills": "./skills/",
   "strict": false
 }

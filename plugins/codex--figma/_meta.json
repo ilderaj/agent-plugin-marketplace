@@ -10,7 +10,9 @@
   "_compatibility": {
     "overall": "partial",
     "notes": [
-      "Agent: partial — Agent definitions require format conversion",
+      "Skill: full — Skills are cross-platform compatible",
+      "Hook: partial — Codex hooks require format conversion; limited to 5 events with Bash-only tool interception",
+      "Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.",
       ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
     ],
     "warnings": [

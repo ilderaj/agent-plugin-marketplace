@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--sharepoint
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/sharepoint
+- Source Path: plugins/sharepoint
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: sharepoint-spreadsheets, sharepoint-word-docs, sharepoint-site-discovery, sharepoint-spreadsheet-formula-builder, sharepoint-shared-doc-maintenance, sharepoint-powerpoint, sharepoint
 - Agents: none
 - Hooks: none
 - MCP: none

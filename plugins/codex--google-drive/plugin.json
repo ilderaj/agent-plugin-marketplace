@@ -17,5 +17,6 @@
     "google-slides",
     "productivity"
   ],
+  "skills": "./skills/",
   "strict": false
 }

@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--linear
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/linear
+- Source Path: plugins/linear
 - Version: 0.0.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: linear
 - Agents: none
 - Hooks: none
 - MCP: none

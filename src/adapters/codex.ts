@@ -1,5 +1,5 @@
 import { readdir, readFile, stat } from 'fs/promises';
-import { join } from 'path';
+import { join, relative } from 'path';
 import type {
   SourceAdapter,
   DiscoveredPlugin,
@@ -128,33 +128,31 @@ export class CodexAdapter implements SourceAdapter {
 
   private async parseSkills(pluginDir: string, pluginJson: any): Promise<SkillRef[]> {
     const skills: SkillRef[] = [];
-    
-    if (pluginJson.skills && Array.isArray(pluginJson.skills)) {
-      for (const skillPath of pluginJson.skills) {
-        const fullPath = join(pluginDir, skillPath);
-        const scriptsPath = join(fullPath, 'scripts');
-        
-        let hasScripts = false;
-        try {
-          const scriptsStat = await stat(scriptsPath);
-          hasScripts = scriptsStat.isDirectory();
-        } catch (err: any) {
-          // Only ignore if scripts directory doesn't exist (optional)
-          if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
-            throw err;
-          }
+
+    for (const skillPath of await this.resolveSkillPaths(pluginDir, pluginJson.skills)) {
+      const fullPath = join(pluginDir, skillPath);
+      const scriptsPath = join(fullPath, 'scripts');
+
+      let hasScripts = false;
+      try {
+        const scriptsStat = await stat(scriptsPath);
+        hasScripts = scriptsStat.isDirectory();
+      } catch (err: any) {
+        // Only ignore if scripts directory doesn't exist (optional)
+        if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+          throw err;
         }
-        
-        const name = skillPath.split('/').pop() || skillPath;
-        
-        skills.push({
-          name,
-          path: skillPath,
-          hasScripts,
-        });
       }
+
+      const name = skillPath.split('/').pop() || skillPath;
+
+      skills.push({
+        name,
+        path: skillPath,
+        hasScripts,
+      });
     }
-    
+
     return skills;
   }
 
@@ -168,24 +166,9 @@ export class CodexAdapter implements SourceAdapter {
         const hooksContent = await readFile(hooksPath, 'utf-8');
         const hooksJson = JSON.parse(hooksContent);
         
-        if (hooksJson.hooks && Array.isArray(hooksJson.hooks)) {
-          // Aggregate all events from all hooks in this config file
-          const allEvents = new Set<string>();
-          
-          for (const hook of hooksJson.hooks) {
-            if (hook.events && Array.isArray(hook.events)) {
-              for (const event of hook.events) {
-                allEvents.add(event);
-              }
-            }
-          }
-          
-          // Generate a single HookRef for this config file
-          hooks.push({
-            configPath: pluginJson.hooks,
-            events: Array.from(allEvents),
-            format: 'codex',
-          });
+        const hookRef = this.buildHookRef(pluginJson.hooks, hooksJson);
+        if (hookRef) {
+          hooks.push(hookRef);
         }
       } catch (err: any) {
         // Only ignore if hooks file doesn't exist (optional component)
@@ -258,9 +241,13 @@ export class CodexAdapter implements SourceAdapter {
       const mcpJsonContent = await readFile(mcpJsonPath, 'utf-8');
       const mcpJson = JSON.parse(mcpJsonContent);
       
+      const serverMap = mcpJson.mcpServers && typeof mcpJson.mcpServers === 'object'
+        ? mcpJson.mcpServers
+        : mcpJson.servers;
+
       const servers = [];
-      if (mcpJson.servers && typeof mcpJson.servers === 'object') {
-        for (const [name, config] of Object.entries(mcpJson.servers)) {
+      if (serverMap && typeof serverMap === 'object') {
+        for (const [name, config] of Object.entries(serverMap)) {
           const serverConfig = config as any;
           servers.push({
             name,
@@ -351,6 +338,97 @@ export class CodexAdapter implements SourceAdapter {
       details,
       warnings,
       droppedComponents,
+    };
+  }
+
+  private asPathList(value: unknown): string[] {
+    if (typeof value === 'string') {
+      return [value];
+    }
+    if (Array.isArray(value)) {
+      return value.filter((entry): entry is string => typeof entry === 'string');
+    }
+    return [];
+  }
+
+  private async resolveSkillPaths(pluginDir: string, value: unknown): Promise<string[]> {
+    const resolved: string[] = [];
+
+    for (const pathSpec of this.asPathList(value)) {
+      const fullPath = join(pluginDir, pathSpec);
+      let pathStat;
+      try {
+        pathStat = await stat(fullPath);
+      } catch (err: any) {
+        if (err.code === 'ENOENT' || err.code === 'ENOTDIR') {
+          continue;
+        }
+        throw err;
+      }
+
+      if (!pathStat.isDirectory()) {
+        continue;
+      }
+
+      try {
+        const manifestPath = join(fullPath, 'SKILL.md');
+        const manifestStat = await stat(manifestPath);
+        if (manifestStat.isFile()) {
+          resolved.push(this.toRelativePluginPath(pluginDir, fullPath));
+          continue;
+        }
+      } catch (err: any) {
+        if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+          throw err;
+        }
+      }
+
+      const entries = await readdir(fullPath, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory()) {
+          resolved.push(this.toRelativePluginPath(pluginDir, join(fullPath, entry.name)));
+        }
+      }
+    }
+
+    return resolved;
+  }
+
+  private toRelativePluginPath(pluginDir: string, fullPath: string): string {
+    return relative(pluginDir, fullPath).replace(/\\/g, '/');
+  }
+
+  private buildHookRef(configPath: string, hooksJson: any): HookRef | null {
+    if (!hooksJson?.hooks || typeof hooksJson.hooks !== 'object') {
+      return null;
+    }
+
+    const allEvents = new Set<string>();
+
+    if (Array.isArray(hooksJson.hooks)) {
+      for (const hook of hooksJson.hooks) {
+        if (hook.events && Array.isArray(hook.events)) {
+          for (const event of hook.events) {
+            if (typeof event === 'string') {
+              allEvents.add(event);
+            }
+          }
+        }
+      }
+    } else {
+      for (const event of Object.keys(hooksJson.hooks)) {
+        allEvents.add(event);
+      }
+    }
+
+    if (allEvents.size === 0) {
+      return null;
+    }
+
+    return {
+      configPath,
+      events: Array.from(allEvents),
+      format: 'codex',
     };
   }
 }

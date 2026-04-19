@@ -15,5 +15,6 @@
     "email",
     "google"
   ],
+  "skills": "./skills/",
   "strict": false
 }

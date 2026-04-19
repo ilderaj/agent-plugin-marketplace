@@ -4,17 +4,18 @@
 - Platform: codex
 - Plugin ID: codex--notion
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/notion
+- Source Path: plugins/notion
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
-- Agent: partial — Agent definitions require format conversion
+- Skill: full — Skills are cross-platform compatible
+- Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: notion-meeting-intelligence, notion-research-documentation, notion-knowledge-capture, notion-spec-to-implementation
 - Agents: openai.yaml
 - Hooks: none
 - MCP: none

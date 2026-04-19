@@ -14,6 +14,7 @@ export interface SyncSourceState {
 
 export interface SyncState {
   lastSyncAt: string;
+  toolchainFingerprint?: string;
   sources: Record<string, SyncSourceState>;
 }
 
@@ -25,7 +26,7 @@ function createDefaultState(): SyncState {
 }
 
 function cloneState(state: SyncState): SyncState {
-  return {
+  const cloned: SyncState = {
     lastSyncAt: state.lastSyncAt,
     sources: Object.fromEntries(
       Object.entries(state.sources).map(([platform, source]) => [
@@ -46,24 +47,58 @@ function cloneState(state: SyncState): SyncState {
       ]),
     ),
   };
+
+  if (state.toolchainFingerprint !== undefined) {
+    cloned.toolchainFingerprint = state.toolchainFingerprint;
+  }
+
+  return cloned;
+}
+
+function getPluginKey(platform: string, pluginName: string): string {
+  return `${platform}:${pluginName}`;
+}
+
+function getLoadedPluginKeys(state: SyncState): Set<string> {
+  return new Set(
+    Object.entries(state.sources).flatMap(([platform, source]) =>
+      Object.keys(source.plugins).map((pluginName) => getPluginKey(platform, pluginName)),
+    ),
+  );
 }
 
 export class SyncStateManager {
   private state: SyncState = createDefaultState();
+  private loadedPluginKeys = new Set<string>();
+  private loadedToolchainFingerprint?: string;
+  private syncedPluginKeys = new Set<string>();
   private hasLoaded = false;
 
-  constructor(private readonly filePath: string) {}
+  constructor(
+    private readonly filePath: string,
+    private currentToolchainFingerprint?: string,
+  ) {}
+
+  setToolchainFingerprint(toolchainFingerprint: string): void {
+    this.currentToolchainFingerprint = toolchainFingerprint;
+  }
 
   async load(): Promise<SyncState> {
     try {
       const content = await readFile(this.filePath, "utf-8");
       const parsed = JSON.parse(content) as SyncState;
       this.state = parsed;
+      this.loadedPluginKeys = getLoadedPluginKeys(parsed);
+      this.loadedToolchainFingerprint = parsed.toolchainFingerprint;
+      this.syncedPluginKeys.clear();
       this.hasLoaded = true;
       return cloneState(this.state);
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === "ENOENT") {
         this.state = createDefaultState();
+        this.loadedPluginKeys = getLoadedPluginKeys(this.state);
+        this.loadedToolchainFingerprint = this.state.toolchainFingerprint;
+        this.syncedPluginKeys.clear();
         this.hasLoaded = true;
         return cloneState(this.state);
       }
@@ -75,12 +110,19 @@ export class SyncStateManager {
   async save(state?: SyncState): Promise<void> {
     if (state) {
       this.state = cloneState(state);
+      this.loadedPluginKeys = getLoadedPluginKeys(this.state);
+      this.loadedToolchainFingerprint = this.state.toolchainFingerprint;
+      this.syncedPluginKeys.clear();
       this.hasLoaded = true;
     } else if (!this.hasLoaded) {
       this.state = createDefaultState();
+      this.loadedPluginKeys = getLoadedPluginKeys(this.state);
+      this.loadedToolchainFingerprint = this.state.toolchainFingerprint;
+      this.syncedPluginKeys.clear();
       this.hasLoaded = true;
     }
 
+    this.persistCurrentToolchainFingerprint();
     await mkdir(dirname(this.filePath), { recursive: true });
     await writeFile(this.filePath, `${JSON.stringify(this.state, null, 2)}\n`, "utf-8");
   }
@@ -93,6 +135,17 @@ export class SyncStateManager {
 
     const plugin = source.plugins[pluginName];
     if (!plugin) {
+      return true;
+    }
+
+    const pluginKey = getPluginKey(platform, pluginName);
+
+    if (
+      this.currentToolchainFingerprint !== undefined &&
+      this.loadedPluginKeys.has(pluginKey) &&
+      !this.syncedPluginKeys.has(pluginKey) &&
+      this.loadedToolchainFingerprint !== this.currentToolchainFingerprint
+    ) {
       return true;
     }
 
@@ -113,6 +166,7 @@ export class SyncStateManager {
       return;
     }
     delete source.plugins[pluginName];
+    this.syncedPluginKeys.delete(getPluginKey(platform, pluginName));
   }
 
   updateSource(platform: string, repoUrl: string, lastCommit: string): void {
@@ -148,11 +202,19 @@ export class SyncStateManager {
       source.lastCommit = sourceMetadata.lastCommit;
     }
 
+    this.persistCurrentToolchainFingerprint();
     source.plugins[pluginName] = {
       commitSha: sha,
       syncedAt,
     };
+    this.syncedPluginKeys.add(getPluginKey(platform, pluginName));
     this.state.lastSyncAt = syncedAt;
     this.hasLoaded = true;
+  }
+
+  private persistCurrentToolchainFingerprint(): void {
+    if (this.currentToolchainFingerprint !== undefined) {
+      this.state.toolchainFingerprint = this.currentToolchainFingerprint;
+    }
   }
 }

@@ -10,5 +10,6 @@
   "homepage": "https://www.box.com/home",
   "repository": "https://github.com/openai/plugins",
   "keywords": [],
+  "skills": "./skills/",
   "strict": false
 }

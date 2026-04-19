@@ -10,6 +10,7 @@
   "_compatibility": {
     "overall": "partial",
     "notes": [
+      "Skill: full — Skills are cross-platform compatible",
       ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
     ],
     "warnings": [

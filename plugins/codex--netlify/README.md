@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--netlify
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/netlify
+- Source Path: plugins/netlify
 - Version: 1.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: netlify-caching, netlify-frameworks, netlify-cli-and-deploy, netlify-config, netlify-deploy, netlify-blobs, netlify-identity, netlify-functions, netlify-edge-functions, netlify-forms, netlify-ai-gateway, netlify-image-cdn
 - Agents: none
 - Hooks: none
 - MCP: none

@@ -1,7 +1,7 @@
 {
   "name": "codex--egnyte",
   "version": "1.0.0",
-  "description": "Work with documents and files stored in Egnyte directly from ChatGPT.",
+  "description": "Work with documents and files stored in Egnyte directly from Codex.",
   "author": {
     "url": "https://www.egnyte.com",
     "name": "Egnyte Inc"

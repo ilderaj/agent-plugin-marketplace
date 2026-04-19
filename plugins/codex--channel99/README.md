@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--channel99
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/channel99
+- Source Path: plugins/channel99
 - Version: 1.0.0
 
 ## Compatibility Summary

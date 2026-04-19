@@ -1,5 +1,5 @@
 {
-  "servers": {
+  "mcpServers": {
     "code-analyzer": {
       "command": "npx",
       "args": ["code-analyzer-mcp"],

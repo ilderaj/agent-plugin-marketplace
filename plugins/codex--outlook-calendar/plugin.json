@@ -19,5 +19,6 @@
     "daily-brief",
     "meeting-prep"
   ],
+  "skills": "./skills/",
   "strict": false
 }

@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--read-ai
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/read-ai
+- Source Path: plugins/read-ai
 - Version: 1.0.0
 
 ## Compatibility Summary

@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--waldo
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/waldo
+- Source Path: plugins/waldo
 - Version: 1.0.0
 
 ## Compatibility Summary

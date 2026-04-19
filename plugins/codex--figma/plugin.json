@@ -16,6 +16,8 @@
     "code-connect",
     "design-system"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
+  "hooks": "./hooks/hooks.json",
   "strict": false
 }

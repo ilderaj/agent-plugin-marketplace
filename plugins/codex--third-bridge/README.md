@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--third-bridge
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/third-bridge
+- Source Path: plugins/third-bridge
 - Version: 1.0.0
 
 ## Compatibility Summary

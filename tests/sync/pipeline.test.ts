@@ -6,7 +6,11 @@ import { CodexAdapter } from "../../src/adapters/codex";
 import { MarketplaceGenerator } from "../../src/generator/marketplace";
 import { VsCodePluginGenerator } from "../../src/generator/vscode-plugin";
 import { main } from "../../src/index";
-import { SyncPipeline, type SyncConfig } from "../../src/sync/pipeline";
+import {
+  computeDefaultToolchainFingerprint,
+  SyncPipeline,
+  type SyncConfig,
+} from "../../src/sync/pipeline";
 import { SyncStateManager } from "../../src/sync/sync-state";
 
 const FIXTURE = join(import.meta.dir, "..", "fixtures", "codex-github");
@@ -66,10 +70,11 @@ async function createLocalUpstream() {
   };
 }
 
-function createConfig(repoUrl: string): SyncConfig {
+function createConfig(repoUrl: string, toolchainFingerprint = "toolchain-v1"): SyncConfig {
   return {
     cacheDir: join(workspaceDir, "cache"),
     outputDir: join(workspaceDir, "output"),
+    toolchainFingerprint,
     repoUrls: {
       codex: repoUrl,
     },
@@ -85,6 +90,12 @@ function createConfig(repoUrl: string): SyncConfig {
   };
 }
 
+function createConfigWithoutFingerprint(repoUrl: string): SyncConfig {
+  const config = createConfig(repoUrl);
+  delete config.toolchainFingerprint;
+  return config;
+}
+
 beforeEach(async () => {
   workspaceDir = await createWorkspace("workspace");
 });
@@ -95,6 +106,39 @@ afterEach(async () => {
 });
 
 describe("SyncPipeline", () => {
+  test("computeDefaultToolchainFingerprint only hashes output-affecting runtime files", async () => {
+    const runtimeRoot = join(workspaceDir, "runtime-root");
+    const writeRuntimeFile = (relativePath: string, content: string) =>
+      writeFile(join(runtimeRoot, relativePath), content, "utf-8");
+
+    await mkdir(join(runtimeRoot, "adapters"), { recursive: true });
+    await mkdir(join(runtimeRoot, "generator"), { recursive: true });
+    await mkdir(join(runtimeRoot, "sync"), { recursive: true });
+    await mkdir(join(runtimeRoot, "utils"), { recursive: true });
+
+    await Promise.all([
+      writeRuntimeFile("adapters/codex.ts", "export const codex = 'v1';\n"),
+      writeRuntimeFile("adapters/types.ts", "export type Platform = 'codex';\n"),
+      writeRuntimeFile("generator/vscode-plugin.ts", "export const generated = true;\n"),
+      writeRuntimeFile("generator/marketplace.ts", "export const marketplace = true;\n"),
+      writeRuntimeFile("sync/pipeline.ts", "export const pipeline = true;\n"),
+      writeRuntimeFile("sync/sync-state.ts", "export const state = true;\n"),
+      writeRuntimeFile("utils/git.ts", "export const gitRuntime = 'v1';\n"),
+      writeRuntimeFile("sync/report-formatter.ts", "export const ignored = 'initial';\n"),
+      writeRuntimeFile("adapters/types.test.ts", "export const ignoredTest = 'initial';\n"),
+    ]);
+
+    const initialFingerprint = computeDefaultToolchainFingerprint(runtimeRoot);
+    expect(initialFingerprint).toMatch(/^[0-9a-f]{64}$/);
+
+    await writeRuntimeFile("sync/report-formatter.ts", "export const ignored = 'changed';\n");
+    await writeRuntimeFile("adapters/types.test.ts", "export const ignoredTest = 'changed';\n");
+    expect(computeDefaultToolchainFingerprint(runtimeRoot)).toBe(initialFingerprint);
+
+    await writeRuntimeFile("utils/git.ts", "export const gitRuntime = 'v2';\n");
+    expect(computeDefaultToolchainFingerprint(runtimeRoot)).not.toBe(initialFingerprint);
+  });
+
   test("run clones upstream, generates outputs, persists state, and pulls later updates", async () => {
     const upstream = await createLocalUpstream();
     const stateFile = join(workspaceDir, "data", "sync-state.json");
@@ -258,6 +302,165 @@ describe("SyncPipeline", () => {
     await expect(readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")).resolves.toContain(
       '"name": "codex--github"',
     );
+  });
+
+  test("run regenerates unchanged plugins when the toolchain fingerprint changes", async () => {
+    const upstream = await createLocalUpstream();
+    const stateFile = join(workspaceDir, "data", "sync-state.json");
+
+    await new SyncPipeline({
+      adapters: [new CodexAdapter()],
+      generator: new VsCodePluginGenerator(),
+      marketplaceGen: new MarketplaceGenerator(createConfig(upstream.bareRepoUrl, "toolchain-v1").marketplace),
+      stateManager: new SyncStateManager(stateFile),
+      config: createConfig(upstream.bareRepoUrl, "toolchain-v1"),
+    }).run();
+
+    const parseCalls: string[] = [];
+    const spyAdapter = {
+      platform: "codex" as const,
+      markerDir: ".codex-plugin",
+      discover(repoPath: string) {
+        return new CodexAdapter().discover(repoPath);
+      },
+      async parse(pluginPath: string) {
+        parseCalls.push(pluginPath);
+        return new CodexAdapter().parse(pluginPath);
+      },
+    };
+
+    const secondReport = await new SyncPipeline({
+      adapters: [spyAdapter],
+      generator: new VsCodePluginGenerator(),
+      marketplaceGen: new MarketplaceGenerator(createConfig(upstream.bareRepoUrl, "toolchain-v2").marketplace),
+      stateManager: new SyncStateManager(stateFile),
+      config: createConfig(upstream.bareRepoUrl, "toolchain-v2"),
+    }).run();
+
+    expect(secondReport).toEqual({
+      updated: 1,
+      total: 1,
+      added: [],
+      removed: [],
+      changed: [{ name: "codex-github", platform: "codex" }],
+    });
+    expect(parseCalls).toHaveLength(1);
+
+    const stateAfterSecondRun = JSON.parse(await readFile(stateFile, "utf-8")) as {
+      toolchainFingerprint?: string;
+    };
+    expect(stateAfterSecondRun.toolchainFingerprint).toBe("toolchain-v2");
+  });
+
+  test("run regenerates plugins from legacy state files without a stored toolchain fingerprint", async () => {
+    const upstream = await createLocalUpstream();
+    const stateFile = join(workspaceDir, "data", "sync-state.json");
+    const config = createConfig(upstream.bareRepoUrl, "toolchain-v1");
+
+    await new SyncPipeline({
+      adapters: [new CodexAdapter()],
+      generator: new VsCodePluginGenerator(),
+      marketplaceGen: new MarketplaceGenerator(config.marketplace),
+      stateManager: new SyncStateManager(stateFile),
+      config,
+    }).run();
+
+    const currentState = JSON.parse(await readFile(stateFile, "utf-8")) as {
+      lastSyncAt: string;
+      toolchainFingerprint?: string;
+      sources: object;
+    };
+    delete currentState.toolchainFingerprint;
+    await writeFile(stateFile, `${JSON.stringify(currentState, null, 2)}\n`, "utf-8");
+
+    const parseCalls: string[] = [];
+    const spyAdapter = {
+      platform: "codex" as const,
+      markerDir: ".codex-plugin",
+      discover(repoPath: string) {
+        return new CodexAdapter().discover(repoPath);
+      },
+      async parse(pluginPath: string) {
+        parseCalls.push(pluginPath);
+        return new CodexAdapter().parse(pluginPath);
+      },
+    };
+
+    const secondReport = await new SyncPipeline({
+      adapters: [spyAdapter],
+      generator: new VsCodePluginGenerator(),
+      marketplaceGen: new MarketplaceGenerator(config.marketplace),
+      stateManager: new SyncStateManager(stateFile),
+      config,
+    }).run();
+
+    expect(secondReport).toEqual({
+      updated: 1,
+      total: 1,
+      added: [],
+      removed: [],
+      changed: [{ name: "codex-github", platform: "codex" }],
+    });
+    expect(parseCalls).toHaveLength(1);
+
+    const upgradedState = JSON.parse(await readFile(stateFile, "utf-8")) as {
+      toolchainFingerprint?: string;
+    };
+    expect(upgradedState.toolchainFingerprint).toBe("toolchain-v1");
+
+    const thirdParseCalls: string[] = [];
+    const thirdReport = await new SyncPipeline({
+      adapters: [
+        {
+          platform: "codex" as const,
+          markerDir: ".codex-plugin",
+          discover(repoPath: string) {
+            return new CodexAdapter().discover(repoPath);
+          },
+          async parse(pluginPath: string) {
+            thirdParseCalls.push(pluginPath);
+            throw new Error("parse should not run after legacy state is upgraded");
+          },
+        },
+      ],
+      generator: new VsCodePluginGenerator(),
+      marketplaceGen: new MarketplaceGenerator(config.marketplace),
+      stateManager: new SyncStateManager(stateFile),
+      config,
+    }).run();
+
+    expect(thirdReport).toEqual({ updated: 0, total: 1, added: [], removed: [], changed: [] });
+    expect(thirdParseCalls).toHaveLength(0);
+  });
+
+  test("run computes and persists a stable default toolchain fingerprint when config omits one", async () => {
+    const upstream = await createLocalUpstream();
+    const stateFile = join(workspaceDir, "data", "sync-state.json");
+    const config = createConfigWithoutFingerprint(upstream.bareRepoUrl);
+    const makePipeline = () =>
+      new SyncPipeline({
+        adapters: [new CodexAdapter()],
+        generator: new VsCodePluginGenerator(),
+        marketplaceGen: new MarketplaceGenerator(config.marketplace),
+        stateManager: new SyncStateManager(stateFile),
+        config,
+      });
+
+    const firstReport = await makePipeline().run();
+    expect(firstReport.updated).toBe(1);
+
+    const stateAfterFirstRun = JSON.parse(await readFile(stateFile, "utf-8")) as {
+      toolchainFingerprint?: string;
+    };
+    expect(stateAfterFirstRun.toolchainFingerprint).toMatch(/^[0-9a-f]{64}$/);
+
+    const secondReport = await makePipeline().run();
+    expect(secondReport).toEqual({ updated: 0, total: 1, added: [], removed: [], changed: [] });
+
+    const stateAfterSecondRun = JSON.parse(await readFile(stateFile, "utf-8")) as {
+      toolchainFingerprint?: string;
+    };
+    expect(stateAfterSecondRun.toolchainFingerprint).toBe(stateAfterFirstRun.toolchainFingerprint);
   });
 
   test("main executes the sync command and prints the report", async () => {

@@ -1,7 +1,7 @@
 {
   "name": "codex--cloudinary",
   "version": "1.0.0",
-  "description": "Manage, search, and transform your Cloudinary media library — directly from ChatGPT.",
+  "description": "Manage, search, and transform your Cloudinary media library — directly from Codex.",
   "author": {
     "url": "https://cloudinary.com/",
     "name": "Cloudinary"

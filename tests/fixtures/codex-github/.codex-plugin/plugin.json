@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "tags": ["github", "vcs", "code-review"],
-  "skills": ["skills/github"],
+  "skills": "./skills/",
   "hooks": "hooks.json",
   "interface": "agent"
 }

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from 'bun:test';
-import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'fs/promises';
+import { chmod, mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { CodexAdapter } from '../../src/adapters/codex';
@@ -18,6 +18,16 @@ async function ensureCleanDir(path: string) {
 
 async function readJson(path: string) {
   return JSON.parse(await readFile(path, 'utf-8'));
+}
+
+function expectNormalizedText(content: string) {
+  expect(content).not.toContain('\r');
+  expect(content.endsWith('\n')).toBe(true);
+  expect(content).not.toMatch(/\n\n$/);
+
+  for (const line of content.split('\n').slice(0, -1)) {
+    expect(line).not.toMatch(/[ \t]+$/);
+  }
 }
 
 afterEach(async () => {
@@ -279,6 +289,142 @@ describe('VsCodePluginGenerator', () => {
     expect(manifest.version).toBe('0.0.0');
   });
 
+  test('normalizes text files inside copied skill directories while preserving binary files', async () => {
+    const sourceRoot = join(OUTPUT_ROOT, 'source-normalized-tree');
+    const outDir = join(OUTPUT_ROOT, 'normalized-tree');
+    const binaryFixture = new Uint8Array([0x00, 0xff, 0x7f, 0x0d, 0x0a, 0x42]);
+
+    try {
+      await ensureCleanDir(sourceRoot);
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'skills', 'cleanup'), { recursive: true });
+
+      await writeFile(
+        join(sourceRoot, 'skills', 'cleanup', 'SKILL.md'),
+        '# Cleanup skill  \r\nLine with spaces\t \r\n \r\n\r\n',
+        'utf-8'
+      );
+      await writeFile(
+        join(sourceRoot, 'skills', 'cleanup', 'LICENSE'),
+        'License line  \r\nSecond line\t \r\n\t \r\n\r\n',
+        'utf-8'
+      );
+      await writeFile(join(sourceRoot, 'skills', 'cleanup', 'icon.bin'), binaryFixture);
+
+      const ir: PluginIR = {
+        id: 'codex--normalized-text',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com/upstream',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'normalized-text',
+          version: '1.0.0',
+          description: 'Normalized text fixture',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [{ name: 'cleanup', path: 'skills/cleanup' }],
+          hooks: [],
+          agents: [],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const copiedSkill = await readFile(join(outDir, 'skills', 'cleanup', 'SKILL.md'), 'utf-8');
+      expectNormalizedText(copiedSkill);
+      expect(copiedSkill).toBe('# Cleanup skill\nLine with spaces\n');
+
+      const copiedLicense = await readFile(join(outDir, 'skills', 'cleanup', 'LICENSE'), 'utf-8');
+      expectNormalizedText(copiedLicense);
+      expect(copiedLicense).toBe('License line\nSecond line\n');
+
+      const copiedBinary = await readFile(join(outDir, 'skills', 'cleanup', 'icon.bin'));
+      expect(copiedBinary).toEqual(Buffer.from(binaryFixture));
+
+      const readme = await readFile(join(outDir, 'README.md'), 'utf-8');
+      expectNormalizedText(readme);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
+  test('preserves executable mode for normalized text files copied through directories', async () => {
+    const sourceRoot = join(OUTPUT_ROOT, 'source-executable-normalized-tree');
+    const outDir = join(OUTPUT_ROOT, 'executable-normalized-tree');
+    const sourceScript = join(sourceRoot, 'skills', 'cleanup', 'install.sh');
+
+    try {
+      await ensureCleanDir(sourceRoot);
+      await ensureCleanDir(outDir);
+      await mkdir(join(sourceRoot, 'skills', 'cleanup'), { recursive: true });
+
+      await writeFile(sourceScript, '#!/bin/sh\r\necho cleanup\r\n', 'utf-8');
+      await chmod(sourceScript, 0o755);
+
+      const ir: PluginIR = {
+        id: 'codex--normalized-executable-text',
+        source: {
+          platform: 'codex',
+          repoUrl: 'https://example.com/upstream',
+          pluginPath: sourceRoot,
+          commitSha: 'abc123',
+          version: '1.0.0',
+        },
+        manifest: {
+          name: 'normalized-executable-text',
+          version: '1.0.0',
+          description: 'Normalized executable text fixture',
+          author: { name: 'Test' },
+          raw: {},
+        },
+        components: {
+          skills: [{ name: 'cleanup', path: 'skills/cleanup' }],
+          hooks: [],
+          agents: [],
+          commands: [],
+          mcpServers: [],
+          rules: [],
+          apps: [],
+        },
+        compatibility: {
+          overall: 'full',
+          details: [],
+          warnings: [],
+          droppedComponents: [],
+        },
+      };
+
+      await new VsCodePluginGenerator().generate(ir, outDir);
+
+      const copiedScriptPath = join(outDir, 'skills', 'cleanup', 'install.sh');
+      const copiedScript = await readFile(copiedScriptPath, 'utf-8');
+      expectNormalizedText(copiedScript);
+      expect(copiedScript).toBe('#!/bin/sh\necho cleanup\n');
+
+      const sourceMode = (await stat(sourceScript)).mode & 0o777;
+      const copiedMode = (await stat(copiedScriptPath)).mode & 0o777;
+      expect(copiedMode & 0o111).toBe(sourceMode & 0o111);
+    } finally {
+      await rm(sourceRoot, { recursive: true, force: true });
+    }
+  });
+
   test('_meta.json pluginPath is a relative/logical path, not an absolute host path', async () => {
     const outDir = join(OUTPUT_ROOT, 'meta-relpath');
     await ensureCleanDir(outDir);
@@ -324,6 +470,51 @@ describe('VsCodePluginGenerator', () => {
     expect(meta._source.pluginPath).not.toMatch(/^\//);
     // must still be traceable (contains the plugin dir name)
     expect(meta._source.pluginPath).toContain('relpath-test');
+  });
+
+  test('README Source Path uses the logical plugin path instead of an absolute host path', async () => {
+    const outDir = join(OUTPUT_ROOT, 'readme-relpath');
+    await ensureCleanDir(outDir);
+
+    const ir: PluginIR = {
+      id: 'codex--readme-relpath-test',
+      source: {
+        platform: 'codex',
+        repoUrl: 'https://example.com/upstream',
+        pluginPath: '/absolute/host/path/to/cache/codex/plugins/readme-relpath-test',
+        pluginRelPath: 'plugins/readme-relpath-test',
+        commitSha: 'abc123',
+        version: '1.0.0',
+      },
+      manifest: {
+        name: 'readme-relpath-test',
+        version: '1.0.0',
+        description: 'README relative path test fixture',
+        author: { name: 'Test' },
+        raw: {},
+      },
+      components: {
+        skills: [],
+        hooks: [],
+        agents: [],
+        commands: [],
+        mcpServers: [],
+        rules: [],
+        apps: [],
+      },
+      compatibility: {
+        overall: 'full',
+        details: [],
+        warnings: [],
+        droppedComponents: [],
+      },
+    };
+
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const readme = await readFile(join(outDir, 'README.md'), 'utf-8');
+    expect(readme).toContain('- Source Path: plugins/readme-relpath-test');
+    expect(readme).not.toContain('/absolute/host/path/to/cache/codex/plugins/readme-relpath-test');
   });
 
   test('converts Codex YAML agents to markdown files with frontmatter', async () => {

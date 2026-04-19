@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--sendgrid
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/sendgrid
+- Source Path: plugins/sendgrid
 - Version: 0.0.0
 
 ## Compatibility Summary

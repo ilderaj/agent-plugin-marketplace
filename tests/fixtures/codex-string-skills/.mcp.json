@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "docs": {
+      "command": "npx",
+      "args": ["fixture-docs-mcp"],
+      "transport": "sse"
+    }
+  }
+}

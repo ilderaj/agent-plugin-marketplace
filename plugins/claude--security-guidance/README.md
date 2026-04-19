@@ -4,7 +4,7 @@
 - Platform: claude-code
 - Plugin ID: claude-code--security-guidance
 - Upstream: https://github.com/anthropics/claude-code.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/security-guidance
+- Source Path: plugins/security-guidance
 - Version: 1.0.0
 
 ## Compatibility Summary

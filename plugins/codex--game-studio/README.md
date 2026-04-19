@@ -4,14 +4,15 @@
 - Platform: codex
 - Plugin ID: codex--game-studio
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/game-studio
+- Source Path: plugins/game-studio
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: three-webgl-game, web-3d-asset-pipeline, web-game-foundations, sprite-pipeline, phaser-2d-game, game-studio, react-three-fiber-game, game-ui-frontend, game-playtest
 - Agents: none
 - Hooks: none
 - MCP: none

@@ -23,6 +23,7 @@
     "telemetry",
     "oslog"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

@@ -1,7 +1,7 @@
 {
   "name": "codex--mem",
   "version": "1.0.0",
-  "description": "Give ChatGPT the full context of your second brain by connecting your Mem knowledge base.",
+  "description": "Give Codex the full context of your second brain by connecting your Mem knowledge base.",
   "author": {
     "name": "Mem Labs, Inc.",
     "url": "https://mem.ai"

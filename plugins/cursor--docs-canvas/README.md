@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--docs-canvas
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/cursor/docs-canvas
+- Source Path: docs-canvas
 - Version: 0.1.0
 
 ## Compatibility Summary

@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--readwise
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/readwise
+- Source Path: plugins/readwise
 - Version: 1.0.0
 
 ## Compatibility Summary

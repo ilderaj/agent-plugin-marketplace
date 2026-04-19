@@ -18,6 +18,7 @@
     "monitoring",
     "debugging"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

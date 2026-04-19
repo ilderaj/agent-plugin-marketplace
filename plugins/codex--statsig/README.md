@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--statsig
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/statsig
+- Source Path: plugins/statsig
 - Version: 2.0.0
 
 ## Compatibility Summary

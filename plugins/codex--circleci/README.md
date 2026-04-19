@@ -4,14 +4,15 @@
 - Platform: codex
 - Plugin ID: codex--circleci
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/circleci
+- Source Path: plugins/circleci
 - Version: 1.0.0
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: chunk, config, cli, builds
 - Agents: none
 - Hooks: none
 - MCP: none

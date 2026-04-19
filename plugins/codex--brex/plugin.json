@@ -1,7 +1,7 @@
 {
   "name": "codex--brex",
   "version": "1.0.0",
-  "description": "Connect Brex to ChatGPT and review your company finances through natural conversation — at ChatGPT speed.",
+  "description": "Connect Brex to Codex and review your company finances through natural conversation — at Codex speed.",
   "author": {
     "name": "Brex Inc.",
     "url": "https://brex.com"

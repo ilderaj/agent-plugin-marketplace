@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/fyxer",
-    "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
+    "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
     "version": "1.0.0"
   },
   "_compatibility": {
