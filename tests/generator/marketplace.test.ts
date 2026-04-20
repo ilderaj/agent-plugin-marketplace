@@ -52,7 +52,7 @@ describe('MarketplaceGenerator', () => {
 
     // Check enriched fields on a specific entry
     const claudeEntry = result.plugins[0];
-    expect(claudeEntry.source).toBe('plugins/claude--code-review');
+    expect(claudeEntry.source).toBe('./plugins/claude--code-review');
     expect(claudeEntry.description).toBe('Automated code review assistant for Claude Code (from Claude Code)');
     expect(claudeEntry.version).toBe('2.1.0');
     expect(claudeEntry.author).toEqual({ name: 'Anthropic', email: 'support@anthropic.com' });
@@ -63,7 +63,7 @@ describe('MarketplaceGenerator', () => {
     const entry = createMarketplaceEntry(ir);
 
     expect(entry.name).toBe('codex--github');
-    expect(entry.source).toBe('plugins/codex--github');
+    expect(entry.source).toBe('./plugins/codex--github');
     expect(entry.description).toBe('GitHub integration plugin for Codex (from Codex)');
     expect(entry.version).toBe('1.0.0');
     expect(entry.author).toEqual({ name: 'OpenAI', email: 'support@openai.com', url: 'https://openai.com' });
@@ -146,7 +146,7 @@ describe('MarketplaceGenerator', () => {
     const entry = createMarketplaceEntryFromManifests(official, meta);
 
     expect(entry.name).toBe('codex--github');
-    expect(entry.source).toBe('plugins/codex--github');
+    expect(entry.source).toBe('./plugins/codex--github');
     expect(entry.description).toBe('GitHub integration plugin for Codex (from Codex)');
     expect(entry.version).toBe('1.0.0');
     expect(entry.author).toEqual({ name: 'OpenAI', email: 'support@openai.com' });

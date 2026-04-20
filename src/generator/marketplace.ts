@@ -82,7 +82,7 @@ export function createMarketplaceEntry(ir: PluginIR): MarketplacePluginEntry {
   const name = normalizeGeneratedPluginName(ir);
   const entry: MarketplacePluginEntry = {
     name,
-    source: `plugins/${name}`,
+    source: `./plugins/${name}`,
     description: `${ir.manifest.description} (from ${platformLabel(ir.source.platform)})`,
     strict: false,
   };
@@ -104,7 +104,7 @@ export function createMarketplaceEntryFromManifests(
 ): MarketplacePluginEntry {
   const entry: MarketplacePluginEntry = {
     name: official.name,
-    source: `plugins/${official.name}`,
+    source: `./plugins/${official.name}`,
     description: `${official.description} (from ${platformLabel(meta._source.platform)})`,
     strict: false,
   };

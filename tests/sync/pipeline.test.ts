@@ -209,7 +209,7 @@ describe("SyncPipeline", () => {
     expect(marketplace.plugins).toEqual([
       {
         name: "codex--github",
-        source: "plugins/codex--github",
+        source: "./plugins/codex--github",
         description: "GitHub integration plugin for Codex (from Codex)",
         version: "1.0.0",
         author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },
@@ -218,11 +218,18 @@ describe("SyncPipeline", () => {
       },
     ]);
 
-    // Dual-write: .github/plugin/marketplace.json must match root marketplace.json
+    // Triple-write: .github/plugin/marketplace.json and .claude-plugin/marketplace.json must match root marketplace.json
     const githubMarketplace = JSON.parse(
       await readFile(join(workspaceDir, "output", ".github", "plugin", "marketplace.json"), "utf-8"),
     ) as object;
     expect(githubMarketplace).toEqual(
+      JSON.parse(await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")),
+    );
+
+    const claudeMarketplace = JSON.parse(
+      await readFile(join(workspaceDir, "output", ".claude-plugin", "marketplace.json"), "utf-8"),
+    ) as object;
+    expect(claudeMarketplace).toEqual(
       JSON.parse(await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")),
     );
   });
@@ -253,7 +260,7 @@ describe("SyncPipeline", () => {
     expect(marketplace.plugins).toEqual([
       {
         name: "codex--github",
-        source: "plugins/codex--github",
+        source: "./plugins/codex--github",
         description: "GitHub integration plugin for Codex (from Codex)",
         version: "1.0.0",
         author: { name: "OpenAI", email: "support@openai.com", url: "https://openai.com" },

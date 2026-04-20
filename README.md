@@ -24,7 +24,7 @@ Outputs:
 
 ### Option A: Copilot CLI Marketplace (Recommended)
 
-This repository publishes a standard `.github/plugin/marketplace.json` that the Copilot CLI can consume directly.
+This repository publishes standard `marketplace.json`, `.github/plugin/marketplace.json`, and `.claude-plugin/marketplace.json` copies so both GitHub-style consumers and marketplace loaders can resolve the same catalog.
 
 ```bash
 # Add this marketplace to Copilot CLI
@@ -136,7 +136,7 @@ flowchart TD
 3. **Check** per-plugin commit SHA against `sync-state.json` — skip if unchanged
 4. **Parse** each plugin into a unified `PluginIR` via its platform adapter
 5. **Generate** VS Code plugin directory with converted files under `plugins/`
-6. **Build** `marketplace.json` (and `.github/plugin/marketplace.json`) from all `plugins/*/plugin.json` + `_meta.json` pairs
+6. **Build** `marketplace.json`, `.github/plugin/marketplace.json`, and `.claude-plugin/marketplace.json` from all `plugins/*/plugin.json` + `_meta.json` pairs
 7. **Persist** sync state for next incremental run
 
 ### Incremental Sync
@@ -182,7 +182,7 @@ Two GitHub Actions workflows automate the full lifecycle:
 Runs weekly (Friday 03:00 UTC) and on manual dispatch:
 
 1. Checks out the repo, installs Bun, runs `bun run sync`
-2. If `plugins/`, `marketplace.json`, `.github/plugin/marketplace.json`, or `data/sync-state.json` changed, creates a PR with a rich diff summary (added/removed/changed plugins)
+2. If `plugins/`, `marketplace.json`, `.github/plugin/marketplace.json`, `.claude-plugin/marketplace.json`, or `data/sync-state.json` changed, creates a PR with a rich diff summary (added/removed/changed plugins)
 3. Optionally sends Slack and/or Discord notifications
 
 **Schedule configuration:** Edit the `cron` lines in `sync.yml` to switch between weekly and daily. The `workflow_dispatch` input is informational only.
@@ -272,7 +272,7 @@ Delivered milestones are kept here for historical context. `1.0.0` shipped the v
 
 #### v0.3 — Copilot-Native Integration ✓
 
-- Standard `.github/plugin/marketplace.json` written on every sync (complete)
+- Standard `.github/plugin/marketplace.json` and `.claude-plugin/marketplace.json` written on every sync (complete)
 - `plugin.json` now contains only official Copilot CLI manifest fields with `strict: false`
 - Per-plugin `_meta.json` sidecar preserves source platform, compatibility, and display metadata
 - Support Copilot custom instructions (`.instructions.md`) as a first-class conversion target
