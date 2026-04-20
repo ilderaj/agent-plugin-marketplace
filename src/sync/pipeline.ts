@@ -248,5 +248,10 @@ export class SyncPipeline {
     const githubPath = join(this.options.config.outputDir, ".github", "plugin", "marketplace.json");
     await mkdir(join(this.options.config.outputDir, ".github", "plugin"), { recursive: true });
     await writeFile(githubPath, content, "utf-8");
+
+    // Write .claude-plugin/marketplace.json (Claude/VS Code marketplace discovery path)
+    const claudePath = join(this.options.config.outputDir, ".claude-plugin", "marketplace.json");
+    await mkdir(join(this.options.config.outputDir, ".claude-plugin"), { recursive: true });
+    await writeFile(claudePath, content, "utf-8");
   }
 }
