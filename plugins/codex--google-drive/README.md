@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--google-drive
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/google-drive
+- Source Path: plugins/google-drive
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: google-docs, google-slides-visual-iteration, google-slides-template-migration, google-slides-import-presentation, google-drive-comments, google-slides-template-surgery, google-sheets-formula-builder, google-sheets, google-sheets-chart-builder, google-drive, google-slides
 - Agents: none
 - Hooks: none
 - MCP: none

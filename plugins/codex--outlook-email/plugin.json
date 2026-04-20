@@ -15,5 +15,6 @@
     "email",
     "microsoft"
   ],
+  "skills": "./skills/",
   "strict": false
 }

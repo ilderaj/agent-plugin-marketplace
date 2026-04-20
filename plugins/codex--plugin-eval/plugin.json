@@ -18,5 +18,6 @@
     "quality",
     "budget"
   ],
+  "skills": "./skills/",
   "strict": false
 }

@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--coupler-io
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/coupler-io
+- Source Path: plugins/coupler-io
 - Version: 1.0.0
 
 ## Compatibility Summary

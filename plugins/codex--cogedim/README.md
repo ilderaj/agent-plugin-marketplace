@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--cogedim
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/cogedim
+- Source Path: plugins/cogedim
 - Version: 1.0.0
 
 ## Compatibility Summary

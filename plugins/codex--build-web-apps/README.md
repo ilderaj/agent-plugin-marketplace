@@ -4,17 +4,18 @@
 - Platform: codex
 - Plugin ID: codex--build-web-apps
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/build-web-apps
+- Source Path: plugins/build-web-apps
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
-- Agent: partial — Agent definitions require format conversion
+- Skill: full — Skills are cross-platform compatible
+- Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: deploy-to-vercel, web-design-guidelines, frontend-skill, react-best-practices, supabase-best-practices, stripe-best-practices, shadcn-best-practices
 - Agents: openai.yaml
 - Hooks: none
 - MCP: none

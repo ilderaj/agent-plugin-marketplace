@@ -1,8 +1,28 @@
 import { describe, test, expect } from 'bun:test';
 import { CodexAdapter } from '../../src/adapters/codex';
 import { join } from 'path';
+import { mkdir, rm } from 'fs/promises';
+import { randomBytes } from 'crypto';
 
 const FIXTURE = join(import.meta.dir, '../fixtures/codex-github');
+const STRING_SKILLS_FIXTURE = join(import.meta.dir, '../fixtures/codex-string-skills');
+const HOOKS_OBJECT_FIXTURE = join(import.meta.dir, '../fixtures/codex-hooks-object');
+const SCRATCH_ROOT = join(import.meta.dir, '../fixtures/.scratch/codex');
+
+async function withScratchPlugin(
+  name: string,
+  run: (pluginDir: string) => Promise<void>,
+) {
+  const scratchDir = join(SCRATCH_ROOT, `${name}-${randomBytes(8).toString('hex')}`);
+  const pluginDir = join(scratchDir, name);
+  await mkdir(pluginDir, { recursive: true });
+
+  try {
+    await run(pluginDir);
+  } finally {
+    await rm(scratchDir, { recursive: true, force: true });
+  }
+}
 
 describe('CodexAdapter', () => {
   const adapter = new CodexAdapter();
@@ -49,6 +69,78 @@ describe('CodexAdapter', () => {
     expect(typeof skill.hasScripts).toBe('boolean');
   });
 
+  test('parse resolves string skill directory paths into child skills', async () => {
+    const ir = await adapter.parse(STRING_SKILLS_FIXTURE);
+
+    expect(ir.components.skills.length).toBe(2);
+
+    const repoOps = ir.components.skills.find((skill) => skill.name === 'repo-ops');
+    expect(repoOps).toBeDefined();
+    expect(repoOps?.path).toBe('skills/repo-ops');
+    expect(repoOps?.hasScripts).toBe(true);
+
+    const issueTriage = ir.components.skills.find((skill) => skill.name === 'issue-triage');
+    expect(issueTriage).toBeDefined();
+    expect(issueTriage?.path).toBe('skills/issue-triage');
+    expect(issueTriage?.hasScripts).toBe(false);
+  });
+
+  test('parse skips missing and invalid declared string skill paths', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('string-skill-path-errors', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.codex-plugin'), { recursive: true });
+      await mkdir(join(pluginDir, 'skills/repo-ops'), { recursive: true });
+
+      await writeFile(
+        join(pluginDir, '.codex-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'string-skill-path-errors',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+          skills: ['skills', 'missing-skills', 'skills-file/child'],
+        }),
+      );
+      await writeFile(join(pluginDir, 'skills/repo-ops', 'SKILL.md'), '# Repo Ops');
+      await writeFile(join(pluginDir, 'skills-file'), 'not a directory');
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.skills).toHaveLength(1);
+      expect(ir.components.skills[0]).toMatchObject({
+        name: 'repo-ops',
+        path: 'skills/repo-ops',
+      });
+    });
+  });
+
+  test('parse skips declared string skill paths that exist as files', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('string-skill-file-path', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.codex-plugin'), { recursive: true });
+
+      await writeFile(
+        join(pluginDir, '.codex-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'string-skill-file-path',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+          skills: ['skills-file'],
+        }),
+      );
+      await writeFile(join(pluginDir, 'skills-file'), 'not a directory');
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.skills).toHaveLength(0);
+    });
+  });
+
   test('parse extracts hooks with events and format', async () => {
     const ir = await adapter.parse(FIXTURE);
     expect(ir.components.hooks.length).toBeGreaterThan(0);
@@ -78,6 +170,16 @@ describe('CodexAdapter', () => {
     // Should have exactly 3 unique events
     const uniqueEvents = new Set(hookRef.events);
     expect(uniqueEvents.size).toBe(3);
+  });
+
+  test('parse extracts object-form hooks using hook names as events', async () => {
+    const ir = await adapter.parse(HOOKS_OBJECT_FIXTURE);
+
+    expect(ir.components.hooks.length).toBe(1);
+    const hookRef = ir.components.hooks[0];
+    expect(hookRef.configPath).toBe('hooks.json');
+    expect(hookRef.format).toBe('codex');
+    expect(hookRef.events).toEqual(['PostToolUse', 'Stop']);
   });
 
   test('parse extracts app configuration', async () => {
@@ -175,6 +277,89 @@ describe('CodexAdapter', () => {
     expect(fsServer?.transport).toBe('sse');
   });
 
+  test('parse reads legacy top-level servers from .mcp.json', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('legacy-mcp-servers', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.codex-plugin'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.codex-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'legacy-mcp-servers',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+        }),
+      );
+      await writeFile(
+        join(pluginDir, '.mcp.json'),
+        JSON.stringify({
+          servers: {
+            legacyDocs: {
+              command: 'npx',
+              args: ['legacy-docs'],
+              transport: 'sse',
+            },
+          },
+        }),
+      );
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.mcpServers).toHaveLength(1);
+      expect(ir.components.mcpServers[0]).toEqual({
+        configPath: '.mcp.json',
+        servers: [{ name: 'legacyDocs', transport: 'sse' }],
+      });
+    });
+  });
+
+  test('parse prefers mcpServers over legacy servers in .mcp.json', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('preferred-mcp-servers', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.codex-plugin'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.codex-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'preferred-mcp-servers',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+        }),
+      );
+      await writeFile(
+        join(pluginDir, '.mcp.json'),
+        JSON.stringify({
+          mcpServers: {
+            docs: {
+              command: 'npx',
+              args: ['docs'],
+              transport: 'sse',
+            },
+          },
+          servers: {
+            legacyDocs: {
+              command: 'npx',
+              args: ['legacy-docs'],
+              transport: 'stdio',
+            },
+          },
+        }),
+      );
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.mcpServers).toHaveLength(1);
+      expect(ir.components.mcpServers[0]).toEqual({
+        configPath: '.mcp.json',
+        servers: [{ name: 'docs', transport: 'sse' }],
+      });
+    });
+  });
+
   test('parse correctly sets hasScripts to false when no scripts directory exists', async () => {
     const ir = await adapter.parse(FIXTURE);
     const skill = ir.components.skills[0];
@@ -209,63 +394,47 @@ describe('CodexAdapter', () => {
   });
 
   test('parse throws on invalid JSON in plugin.json', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-bad-json-${randomBytes(8).toString('hex')}`);
-    const badJsonFixture = join(tempDir, 'bad-json-fixture');
-    
-    // Create a temporary fixture with invalid JSON
-    await mkdir(join(badJsonFixture, '.codex-plugin'), { recursive: true });
-    await writeFile(join(badJsonFixture, '.codex-plugin', 'plugin.json'), '{invalid json}');
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('bad-json-fixture', async (badJsonFixture) => {
+      await mkdir(join(badJsonFixture, '.codex-plugin'), { recursive: true });
+      await writeFile(join(badJsonFixture, '.codex-plugin', 'plugin.json'), '{invalid json}');
+
       // Should throw, not silently return empty/default
       await expect(adapter.parse(badJsonFixture)).rejects.toThrow();
-    } finally {
-      // Clean up
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('parseHooks throws on invalid JSON in hooks file', async () => {
-    const { mkdir, writeFile, rm } = await import('fs/promises');
-    const { tmpdir } = await import('os');
-    const { randomBytes } = await import('crypto');
-    
-    const tempDir = join(tmpdir(), `test-bad-hooks-${randomBytes(8).toString('hex')}`);
-    const badHooksFixture = join(tempDir, 'bad-hooks-fixture');
-    
-    await mkdir(join(badHooksFixture, '.codex-plugin'), { recursive: true });
-    await mkdir(join(badHooksFixture, 'skills/test'), { recursive: true });
-    
-    const validPluginJson = {
-      name: "test",
-      version: "1.0.0",
-      description: "test",
-      author: { name: "test" },
-      license: "MIT",
-      skills: ["skills/test"],
-      hooks: "hooks.json"
-    };
-    
-    await writeFile(
-      join(badHooksFixture, '.codex-plugin', 'plugin.json'),
-      JSON.stringify(validPluginJson)
-    );
-    await writeFile(join(badHooksFixture, 'hooks.json'), '{invalid json}');
-    await writeFile(
-      join(badHooksFixture, 'skills/test/SKILL.md'),
-      '---\nname: test\ndescription: test\n---\n# Test'
-    );
-    
-    try {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('bad-hooks-fixture', async (badHooksFixture) => {
+      await mkdir(join(badHooksFixture, '.codex-plugin'), { recursive: true });
+      await mkdir(join(badHooksFixture, 'skills/test'), { recursive: true });
+
+      const validPluginJson = {
+        name: "test",
+        version: "1.0.0",
+        description: "test",
+        author: { name: "test" },
+        license: "MIT",
+        skills: ["skills/test"],
+        hooks: "hooks.json"
+      };
+
+      await writeFile(
+        join(badHooksFixture, '.codex-plugin', 'plugin.json'),
+        JSON.stringify(validPluginJson)
+      );
+      await writeFile(join(badHooksFixture, 'hooks.json'), '{invalid json}');
+      await writeFile(
+        join(badHooksFixture, 'skills/test/SKILL.md'),
+        '---\nname: test\ndescription: test\n---\n# Test'
+      );
+
       // Should throw on invalid hooks JSON, not silently ignore
       await expect(adapter.parse(badHooksFixture)).rejects.toThrow();
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test('fallback version: missing upstream version produces "0.0.0" in IR manifest and source', async () => {

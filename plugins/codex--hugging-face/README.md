@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--hugging-face
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/hugging-face
+- Source Path: plugins/hugging-face
 - Version: 1.0.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: vision-trainer, papers, datasets, transformers.js, llm-trainer, cli, gradio, paper-publisher, jobs, trackio, community-evals
 - Agents: none
 - Hooks: none
 - MCP: none

@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--google-calendar
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/google-calendar
+- Source Path: plugins/google-calendar
 - Version: 1.2.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: google-calendar-meeting-prep, google-calendar, google-calendar-daily-brief, google-calendar-group-scheduler, google-calendar-free-up-time
 - Agents: none
 - Hooks: none
 - MCP: none

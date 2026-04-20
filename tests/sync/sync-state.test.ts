@@ -50,6 +50,7 @@ describe("SyncStateManager", () => {
   test("save persists state to disk and load reads it back", async () => {
     const state: SyncState = {
       lastSyncAt: "2026-04-14T03:00:00.000Z",
+      toolchainFingerprint: "toolchain-v1",
       sources: {
         codex: {
           repoUrl: "https://github.com/openai/plugins",
@@ -63,7 +64,7 @@ describe("SyncStateManager", () => {
         },
       },
     };
-    const manager = new SyncStateManager(stateFilePath);
+    const manager = new SyncStateManager(stateFilePath, "toolchain-v1");
 
     await manager.save(state);
 
@@ -84,8 +85,8 @@ describe("SyncStateManager", () => {
     });
   });
 
-  test("needsUpdate returns true for unknown entries and false for the same sha", async () => {
-    const manager = new SyncStateManager(stateFilePath);
+  test("needsUpdate returns true for unknown entries and false for the same sha when toolchain matches", async () => {
+    const manager = new SyncStateManager(stateFilePath, "toolchain-v1");
 
     expect(manager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(true);
 
@@ -95,6 +96,126 @@ describe("SyncStateManager", () => {
     expect(manager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(false);
     expect(manager.needsUpdate("codex", "github", "plugin-sha-2")).toBe(true);
     expect(manager.needsUpdate("codex", "figma", "plugin-sha-1")).toBe(true);
+  });
+
+  test("needsUpdate returns true when toolchain fingerprint changes", async () => {
+    const initialManager = new SyncStateManager(stateFilePath, "toolchain-v1");
+    await initialManager.load();
+    initialManager.markSynced("codex", "github", "plugin-sha-1");
+    await initialManager.save();
+
+    const updatedManager = new SyncStateManager(stateFilePath, "toolchain-v2");
+    await updatedManager.load();
+
+    expect(updatedManager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(true);
+  });
+
+  test("needsUpdate returns true for legacy state without a stored toolchain fingerprint", async () => {
+    await mkdir(join(workspaceDir, "data"), { recursive: true });
+    await writeFile(
+      stateFilePath,
+      `${JSON.stringify(
+        {
+          lastSyncAt: "2026-04-14T03:00:00.000Z",
+          sources: {
+            codex: {
+              repoUrl: "https://github.com/openai/plugins",
+              lastCommit: "repo-sha-1",
+              plugins: {
+                github: {
+                  commitSha: "plugin-sha-1",
+                  syncedAt: "2026-04-14T03:00:00.000Z",
+                },
+              },
+            },
+          },
+        },
+        null,
+        2,
+      )}\n`,
+      "utf-8",
+    );
+
+    const manager = new SyncStateManager(stateFilePath, "toolchain-v1");
+    await manager.load();
+
+    expect(manager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(true);
+  });
+
+  test("needsUpdate keeps legacy toolchain invalidation for later unchanged plugins in the same run", async () => {
+    await mkdir(join(workspaceDir, "data"), { recursive: true });
+    await writeFile(
+      stateFilePath,
+      `${JSON.stringify(
+        {
+          lastSyncAt: "2026-04-14T03:00:00.000Z",
+          sources: {
+            codex: {
+              repoUrl: "https://github.com/openai/plugins",
+              lastCommit: "repo-sha-1",
+              plugins: {
+                github: {
+                  commitSha: "plugin-sha-1",
+                  syncedAt: "2026-04-14T03:00:00.000Z",
+                },
+                figma: {
+                  commitSha: "plugin-sha-2",
+                  syncedAt: "2026-04-14T03:00:00.000Z",
+                },
+              },
+            },
+          },
+        },
+        null,
+        2,
+      )}\n`,
+      "utf-8",
+    );
+
+    const manager = new SyncStateManager(stateFilePath, "toolchain-v1");
+    await manager.load();
+
+    expect(manager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(true);
+
+    manager.markSynced("codex", "github", "plugin-sha-1");
+
+    expect(manager.needsUpdate("codex", "figma", "plugin-sha-2")).toBe(true);
+  });
+
+  test("needsUpdate stops invalidating a legacy plugin after it is marked synced in the same run", async () => {
+    await mkdir(join(workspaceDir, "data"), { recursive: true });
+    await writeFile(
+      stateFilePath,
+      `${JSON.stringify(
+        {
+          lastSyncAt: "2026-04-14T03:00:00.000Z",
+          sources: {
+            codex: {
+              repoUrl: "https://github.com/openai/plugins",
+              lastCommit: "repo-sha-1",
+              plugins: {
+                github: {
+                  commitSha: "plugin-sha-1",
+                  syncedAt: "2026-04-14T03:00:00.000Z",
+                },
+              },
+            },
+          },
+        },
+        null,
+        2,
+      )}\n`,
+      "utf-8",
+    );
+
+    const manager = new SyncStateManager(stateFilePath, "toolchain-v1");
+    await manager.load();
+
+    expect(manager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(true);
+
+    manager.markSynced("codex", "github", "plugin-sha-1");
+
+    expect(manager.needsUpdate("codex", "github", "plugin-sha-1")).toBe(false);
   });
 
   test("markSynced creates missing platform and plugin entries and stamps syncedAt", async () => {

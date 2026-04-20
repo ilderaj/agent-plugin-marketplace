@@ -4,14 +4,15 @@
 - Platform: codex
 - Plugin ID: codex--sentry
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/sentry
+- Source Path: plugins/sentry
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: sentry
 - Agents: none
 - Hooks: none
 - MCP: none

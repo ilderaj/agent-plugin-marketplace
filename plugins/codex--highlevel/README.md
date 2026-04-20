@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--highlevel
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/highlevel
+- Source Path: plugins/highlevel
 - Version: v1.0.0
 
 ## Compatibility Summary

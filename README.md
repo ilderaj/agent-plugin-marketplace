@@ -279,27 +279,33 @@ Delivered milestones are kept here for historical context. `1.0.0` shipped the v
 
 ### Planned
 
-#### v0.4 — Plugin Quality and Curation
+#### v0.4 — More IDEs: Expand Source Platforms
 
-- Add automated compatibility testing: install each plugin in a headless VS Code instance and verify activation
-- Implement plugin scoring based on upstream activity, compatibility level, and component coverage
-- Add a `curated` tag to manually reviewed plugins, with an allowlist/blocklist mechanism
-- Generate a browsable static site (GitHub Pages) from `marketplace.json` for human discovery
+Bring plugins from more AI-native editors into the VS Code / Copilot ecosystem.
 
-#### v0.5 — Multi-Target Generation
+- Add **Windsurf (Codeium)** adapter: sync Windsurf rules, workflows, and AI presets so Copilot users gain access to Codeium's curated community prompts
+- Add **Zed** adapter: convert Zed assistant panels, slash commands, and context providers into Copilot-compatible skills and instructions
+- Add **JetBrains AI Assistant** adapter: extract AI prompts and custom actions from JetBrains plugin format and convert to `.instructions.md` and agent skills
+- Unified adapter scaffolding: streamline `SourceAdapter` interface to make adding new IDEs a one-day task instead of a week
 
-- Support Cursor as an output target (reverse adapter: IR → Cursor `.mdc` rules)
-- Support Claude Code as an output target (IR → Claude Code plugin format)
-- Enable cross-pollination: install a Codex plugin in Cursor, or a Cursor plugin in Claude Code
-- Add `bun run generate --target=copilot|cursor|claude` CLI flag
+#### v0.5 — Deeper Conversion: More Capabilities per Plugin
 
-#### v0.6 — Cloud-Native Automation
+Maximize the usable surface area of every synced plugin, not just metadata.
 
-- Move sync pipeline to a cloud-native runtime (Cloudflare Workers / AWS Lambda) for serverless execution
-- Support event-driven sync: trigger on upstream repo webhook push events instead of polling
-- Add a central registry API (`GET /plugins`, `GET /plugins/:name`) for programmatic access
-- Implement plugin versioning with semver: track upstream version bumps and generate changelogs
-- Add telemetry: track plugin install counts and surface popular plugins in the marketplace
+- **MCP server auto-wiring**: generate ready-to-use `.vscode/mcp.json` workspace configs so MCP-based plugins work out of the box after install
+- **Command → VS Code Task mapping**: convert platform-specific commands (`.sh` / `.js` scripts) into VS Code `tasks.json` entries with keybinding suggestions
+- **Hook normalization**: unify hook event models across all source platforms into a single VS Code-native lifecycle (file save, terminal run, commit, etc.)
+- **Composite plugin bundling**: detect plugins that work together (e.g. a skill + its MCP server + its agent) and generate a single combined plugin with all components wired up
+- **Compatibility self-test**: each generated plugin includes a `verify.ts` script that validates structure, resolves file references, and checks MCP server reachability
+
+#### v0.6 — Cross-Pollination: Bidirectional Sync and Community
+
+Enable every IDE ecosystem to benefit from every other, with community contribution as the growth engine.
+
+- **Multi-target generation**: `bun run generate --target=copilot|cursor|claude` outputs plugins in any target IDE's native format, turning this repo into a universal plugin interchange
+- **Reverse adapters**: IR → Cursor `.mdc` rules, IR → Claude Code plugin format, IR → Zed extensions — so a Codex plugin can run in Cursor, and vice versa
+- **Community plugin submissions**: accept third-party plugin PRs via a `plugins/community--<name>/` convention with automated validation CI, letting users contribute plugins from any IDE
+- **Browsable catalog**: generate a GitHub Pages static site from `marketplace.json` with search, filtering by platform/category/compatibility, and one-click install instructions
 
 ---
 

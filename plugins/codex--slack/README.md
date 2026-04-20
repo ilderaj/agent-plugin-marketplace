@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--slack
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/slack
+- Source Path: plugins/slack
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: slack-notification-triage, slack-daily-digest, slack-reply-drafting, slack, slack-outgoing-message, slack-channel-summarization
 - Agents: none
 - Hooks: none
 - MCP: none

@@ -10,9 +10,12 @@
   "_compatibility": {
     "overall": "partial",
     "notes": [
-      "Agent: partial — Claude markdown agents may require format conversion for other platforms"
+      "Agent: full — VS Code natively reads .claude/agents/*.md",
+      "Commands: partial — copied to output and require manual verification in VS Code"
     ],
-    "warnings": [],
+    "warnings": [
+      "Command files were copied to the output plugin and require manual verification in VS Code."
+    ],
     "droppedComponents": []
   }
 }

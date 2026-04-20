@@ -246,8 +246,8 @@ export class ClaudeAdapter implements SourceAdapter {
         const entries = await readdir(commandsPath, { withFileTypes: true });
         
         for (const entry of entries) {
-          if (entry.isFile() && (entry.name.endsWith('.sh') || entry.name.endsWith('.js') || entry.name.endsWith('.ts'))) {
-            const name = entry.name.replace(/\.(sh|js|ts)$/, '');
+          if (entry.isFile() && (entry.name.endsWith('.sh') || entry.name.endsWith('.js') || entry.name.endsWith('.ts') || entry.name.endsWith('.md'))) {
+            const name = entry.name.replace(/\.(sh|js|ts|md)$/, '');
             commands.push({
               name,
               path: `commands/${entry.name}`,
@@ -273,9 +273,13 @@ export class ClaudeAdapter implements SourceAdapter {
       const mcpJsonContent = await readFile(mcpJsonPath, 'utf-8');
       const mcpJson = JSON.parse(mcpJsonContent);
       
+      const serverMap = mcpJson.mcpServers && typeof mcpJson.mcpServers === 'object'
+        ? mcpJson.mcpServers
+        : mcpJson.servers;
+
       const servers = [];
-      if (mcpJson.servers && typeof mcpJson.servers === 'object') {
-        for (const [name, config] of Object.entries(mcpJson.servers)) {
+      if (serverMap && typeof serverMap === 'object') {
+        for (const [name, config] of Object.entries(serverMap)) {
           const serverConfig = config as any;
           servers.push({
             name,
@@ -337,13 +341,13 @@ export class ClaudeAdapter implements SourceAdapter {
     
     // Commands may need platform-specific handling
     for (const command of components.commands) {
-      details.push({
-        type: 'command',
-        name: command.name,
-        level: 'partial' as const,
-        notes: 'Platform-specific scripts (.sh/.js/.ts) copied to output; no direct VS Code command equivalent',
-      });
-    }
+        details.push({
+          type: 'command',
+          name: command.name,
+          level: 'partial' as const,
+          notes: 'Platform-specific scripts/docs (.sh/.js/.ts/.md) copied to output; no direct VS Code command equivalent',
+        });
+      }
     
     // MCP servers are cross-platform
     for (const mcp of components.mcpServers) {

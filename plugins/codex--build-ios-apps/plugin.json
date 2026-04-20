@@ -22,6 +22,8 @@
     "performance",
     "debugging"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
+  "mcpServers": "./.mcp.json",
   "strict": false
 }

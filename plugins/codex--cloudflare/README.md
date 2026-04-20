@@ -4,17 +4,19 @@
 - Platform: codex
 - Plugin ID: codex--cloudflare
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/cloudflare
+- Source Path: plugins/cloudflare
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
+- MCP: full — MCP servers are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: building-ai-agent-on-cloudflare, building-mcp-server-on-cloudflare, durable-objects, wrangler, agents-sdk, cloudflare, workers-best-practices, sandbox-sdk, web-perf
 - Agents: none
 - Hooks: none
-- MCP: none
+- MCP: cloudflare-api
 - Commands: none
 - Instructions: none
 

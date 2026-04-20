@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--github
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/github
+- Source Path: plugins/github
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: github, gh-fix-ci, yeet, gh-address-comments
 - Agents: none
 - Hooks: none
 - MCP: none

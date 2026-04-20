@@ -177,7 +177,7 @@
     {
       "name": "codex--attio",
       "source": "plugins/codex--attio",
-      "description": "Attio connects ChatGPT directly to your CRM workspace, letting you manage customer relationships through na... (from Codex)",
+      "description": "Attio connects Codex directly to your CRM workspace, letting you manage customer relationships through na... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -190,7 +190,7 @@
     {
       "name": "codex--binance",
       "source": "plugins/codex--binance",
-      "description": "Binance for ChatGPT lets you access and explore Binance public, read-only market data using natural language. (from Codex)",
+      "description": "Binance for Codex lets you access and explore Binance public, read-only market data using natural language. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -229,7 +229,7 @@
     {
       "name": "codex--brand24",
       "source": "plugins/codex--brand24",
-      "description": "The Brand24 app in ChatGPT lets marketing and PR teams instantly explore brand mentions, sentiment, and med... (from Codex)",
+      "description": "The Brand24 app in Codex lets marketing and PR teams instantly explore brand mentions, sentiment, and med... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -242,7 +242,7 @@
     {
       "name": "codex--brex",
       "source": "plugins/codex--brex",
-      "description": "Connect Brex to ChatGPT and review your company finances through natural conversation — at ChatGPT speed. (from Codex)",
+      "description": "Connect Brex to Codex and review your company finances through natural conversation — at Codex speed. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -352,7 +352,7 @@
     {
       "name": "codex--cb-insights",
       "source": "plugins/codex--cb-insights",
-      "description": "Unleash ChatGPT as your private markets research agent. (from Codex)",
+      "description": "Unleash Codex as your private markets research agent. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -365,7 +365,7 @@
     {
       "name": "codex--channel99",
       "source": "plugins/codex--channel99",
-      "description": "Channel99 real time go to market intelligence connects ChatGPT directly to Channel99’s performance marketin... (from Codex)",
+      "description": "Channel99 real time go to market intelligence connects Codex directly to Channel99’s performance marketin... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -408,7 +408,7 @@
     {
       "name": "codex--clickup",
       "source": "plugins/codex--clickup",
-      "description": "Turn ChatGPT into your ClickUp command center. (from Codex)",
+      "description": "Turn Codex into your ClickUp command center. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -444,7 +444,7 @@
     {
       "name": "codex--cloudinary",
       "source": "plugins/codex--cloudinary",
-      "description": "Manage, search, and transform your Cloudinary media library — directly from ChatGPT. (from Codex)",
+      "description": "Manage, search, and transform your Cloudinary media library — directly from Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -489,7 +489,7 @@
     {
       "name": "codex--common-room",
       "source": "plugins/codex--common-room",
-      "description": "Embed complete buyer intelligence directly within ChatGPT. (from Codex)",
+      "description": "Embed complete buyer intelligence directly within Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -515,7 +515,7 @@
     {
       "name": "codex--coupler-io",
       "source": "plugins/codex--coupler-io",
-      "description": "Analyze multi-channel marketing, financial, sales, e-commerce, and other business data within ChatGPT by co... (from Codex)",
+      "description": "Analyze multi-channel marketing, financial, sales, e-commerce, and other business data within Codex by co... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -567,7 +567,7 @@
     {
       "name": "codex--demandbase",
       "source": "plugins/codex--demandbase",
-      "description": "Demandbase integration with ChatGPT gives sales, marketing, and GTM teams seamless access to rich B2B data... (from Codex)",
+      "description": "Demandbase integration with Codex gives sales, marketing, and GTM teams seamless access to rich B2B data... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -606,7 +606,7 @@
     {
       "name": "codex--dovetail",
       "source": "plugins/codex--dovetail",
-      "description": "Connect Dovetail inside ChatGPT to turn customer feedback into decisions without leaving your conversation. (from Codex)",
+      "description": "Connect Dovetail inside Codex to turn customer feedback into decisions without leaving your conversation. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -632,7 +632,7 @@
     {
       "name": "codex--egnyte",
       "source": "plugins/codex--egnyte",
-      "description": "Work with documents and files stored in Egnyte directly from ChatGPT. (from Codex)",
+      "description": "Work with documents and files stored in Egnyte directly from Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -703,7 +703,7 @@
     {
       "name": "codex--fireflies",
       "source": "plugins/codex--fireflies",
-      "description": "The Fireflies app brings your meetings and knowledge directly into ChatGPT. (from Codex)",
+      "description": "The Fireflies app brings your meetings and knowledge directly into Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -716,7 +716,7 @@
     {
       "name": "codex--fyxer",
       "source": "plugins/codex--fyxer",
-      "description": "Fyxer for ChatGPT lets you write emails that sound like you, right from the chat. (from Codex)",
+      "description": "Fyxer for Codex lets you write emails that sound like you, right from the chat. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -846,7 +846,7 @@
     {
       "name": "codex--govtribe",
       "source": "plugins/codex--govtribe",
-      "description": "Search government contracts, awards, and vendors directly from ChatGPT. (from Codex)",
+      "description": "Search government contracts, awards, and vendors directly from Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -859,7 +859,7 @@
     {
       "name": "codex--granola",
       "source": "plugins/codex--granola",
-      "description": "Granola MCP connects your meeting history to ChatGPT so your assistant can pull real context from past conv... (from Codex)",
+      "description": "Granola MCP connects your meeting history to Codex so your assistant can pull real context from past conv... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -885,7 +885,7 @@
     {
       "name": "codex--help-scout",
       "source": "plugins/codex--help-scout",
-      "description": "Connect to sync Help Scout mailboxes and conversations for use in ChatGPT. (from Codex)",
+      "description": "Connect to sync Help Scout mailboxes and conversations for use in Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1034,7 +1034,7 @@
     {
       "name": "codex--mem",
       "source": "plugins/codex--mem",
-      "description": "Give ChatGPT the full context of your second brain by connecting your Mem knowledge base. (from Codex)",
+      "description": "Give Codex the full context of your second brain by connecting your Mem knowledge base. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1097,7 +1097,7 @@
     {
       "name": "codex--mt-newswires",
       "source": "plugins/codex--mt-newswires",
-      "description": "MT Newswires brings real-time global financial news directly into ChatGPT — providing original, unbiased an... (from Codex)",
+      "description": "MT Newswires brings real-time global financial news directly into Codex — providing original, unbiased an... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1197,7 +1197,7 @@
     {
       "name": "codex--omni-analytics",
       "source": "plugins/codex--omni-analytics",
-      "description": "Query Omni using the same semantic model, permissions, and logic defined by your data team directly from Ch... (from Codex)",
+      "description": "Query Omni using the same semantic model, permissions, and logic defined by your data team directly from Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1210,7 +1210,7 @@
     {
       "name": "codex--otter-ai",
       "source": "plugins/codex--otter-ai",
-      "description": "The Otter.ai MCP server connects ChatGPT to your meeting intelligence, enabling search and retrieval of tra... (from Codex)",
+      "description": "The Otter.ai MCP server connects Codex to your meeting intelligence, enabling search and retrieval of tra... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1263,7 +1263,7 @@
     {
       "name": "codex--particl-market-research",
       "source": "plugins/codex--particl-market-research",
-      "description": "Particl Market Research helps teams answer ecommerce research questions directly in ChatGPT. (from Codex)",
+      "description": "Particl Market Research helps teams answer ecommerce research questions directly in Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1276,7 +1276,7 @@
     {
       "name": "codex--pipedrive",
       "source": "plugins/codex--pipedrive",
-      "description": "Connect to sync Pipedrive deals and contacts for use in ChatGPT. (from Codex)",
+      "description": "Connect to sync Pipedrive deals and contacts for use in Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1336,7 +1336,7 @@
     {
       "name": "codex--pylon",
       "source": "plugins/codex--pylon",
-      "description": "Access Pylon's customer support platform directly from ChatGPT to search, manage, and resolve customer issues. (from Codex)",
+      "description": "Access Pylon's customer support platform directly from Codex to search, manage, and resolve customer issues. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1472,7 +1472,7 @@
     {
       "name": "codex--responsive",
       "source": "plugins/codex--responsive",
-      "description": "The Responsive App makes it easy to work with your organization’s data inside ChatGPT. (from Codex)",
+      "description": "The Responsive App makes it easy to work with your organization’s data inside Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1630,7 +1630,7 @@
     {
       "name": "codex--statsig",
       "source": "plugins/codex--statsig",
-      "description": "Bring your Statsig workspace into ChatGPT. (from Codex)",
+      "description": "Bring your Statsig workspace into Codex. (from Codex)",
       "strict": false,
       "version": "2.0.0",
       "author": {
@@ -1719,7 +1719,7 @@
     {
       "name": "codex--teamwork-com",
       "source": "plugins/codex--teamwork-com",
-      "description": "Connect to sync Teamwork projects and tasks for use in ChatGPT. (from Codex)",
+      "description": "Connect to sync Teamwork projects and tasks for use in Codex. (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {
@@ -1859,7 +1859,7 @@
     {
       "name": "codex--windsor-ai",
       "source": "plugins/codex--windsor-ai",
-      "description": "Windsor.ai connects your marketing and business data sources to ChatGPT so you can ask questions in natural... (from Codex)",
+      "description": "Windsor.ai connects your marketing and business data sources to Codex so you can ask questions in natural... (from Codex)",
       "strict": false,
       "version": "1.0.0",
       "author": {

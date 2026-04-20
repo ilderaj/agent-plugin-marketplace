@@ -58,19 +58,15 @@ describe("Test Fixtures Structure", () => {
       expect(json.author).toBeDefined();
     });
 
-    test("plugin.json declares skills array matching fixture structure", () => {
+    test("plugin.json declares skills string path matching fixture structure", () => {
       const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
       const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
 
       expect(json.skills).toBeDefined();
-      expect(Array.isArray(json.skills)).toBe(true);
-      expect(json.skills.length).toBeGreaterThan(0);
+      expect(typeof json.skills).toBe("string");
 
-      // Verify declared skill path exists
-      for (const skillPath of json.skills) {
-        const fullPath = join(fixturePath, skillPath);
-        expect(existsSync(fullPath)).toBe(true);
-      }
+      const fullPath = join(fixturePath, json.skills);
+      expect(existsSync(fullPath)).toBe(true);
     });
 
     test("plugin.json hooks path resolves to existing file", () => {
@@ -157,19 +153,72 @@ describe("Test Fixtures Structure", () => {
       const content = readFileSync(mcpPath, "utf-8");
       const json = JSON.parse(content);
       
-      expect(json.servers).toBeDefined();
-      expect(typeof json.servers).toBe("object");
-      
+      expect(json.mcpServers).toBeDefined();
+      expect(typeof json.mcpServers).toBe("object");
+
       // Verify at least one server exists
-      const serverNames = Object.keys(json.servers);
+      const serverNames = Object.keys(json.mcpServers);
       expect(serverNames.length).toBeGreaterThan(0);
-      
+
       // Verify server structure
       for (const serverName of serverNames) {
-        const server = json.servers[serverName];
+        const server = json.mcpServers[serverName];
         expect(server.command).toBeDefined();
         expect(server.transport).toBeDefined();
       }
+    });
+  });
+
+  describe("codex-string-skills fixture", () => {
+    const fixturePath = join(FIXTURES_DIR, "codex-string-skills");
+
+    test("directory exists", () => {
+      expect(existsSync(fixturePath)).toBe(true);
+      expect(statSync(fixturePath).isDirectory()).toBe(true);
+    });
+
+    test("plugin.json uses a string skills path", () => {
+      const pluginJsonPath = join(fixturePath, ".codex-plugin", "plugin.json");
+      const json = JSON.parse(readFileSync(pluginJsonPath, "utf-8"));
+
+      expect(json.skills).toBe("./skills/");
+      expect(existsSync(join(fixturePath, json.skills))).toBe(true);
+    });
+
+    test("skills directory contains multiple child skills", () => {
+      const repoOpsSkill = join(fixturePath, "skills", "repo-ops", "SKILL.md");
+      const issueTriageSkill = join(fixturePath, "skills", "issue-triage", "SKILL.md");
+
+      expect(existsSync(repoOpsSkill)).toBe(true);
+      expect(existsSync(issueTriageSkill)).toBe(true);
+      expect(validateSkillFrontmatter(repoOpsSkill)).toBe(true);
+      expect(validateSkillFrontmatter(issueTriageSkill)).toBe(true);
+    });
+
+    test(".mcp.json uses top-level mcpServers", () => {
+      const mcpPath = join(fixturePath, ".mcp.json");
+      const json = JSON.parse(readFileSync(mcpPath, "utf-8"));
+
+      expect(json.mcpServers).toBeDefined();
+      expect(json.servers).toBeUndefined();
+    });
+  });
+
+  describe("codex-hooks-object fixture", () => {
+    const fixturePath = join(FIXTURES_DIR, "codex-hooks-object");
+
+    test("directory exists", () => {
+      expect(existsSync(fixturePath)).toBe(true);
+      expect(statSync(fixturePath).isDirectory()).toBe(true);
+    });
+
+    test("hooks.json uses object-form hooks keyed by event", () => {
+      const hooksPath = join(fixturePath, "hooks.json");
+      const json = JSON.parse(readFileSync(hooksPath, "utf-8"));
+
+      expect(json.hooks).toBeDefined();
+      expect(Array.isArray(json.hooks)).toBe(false);
+      expect(Object.keys(json.hooks)).toEqual(["PostToolUse", "Stop"]);
     });
   });
 
@@ -314,9 +363,48 @@ describe("Test Fixtures Structure", () => {
       }
     });
 
+    test("commands/code-review.md exists with frontmatter", () => {
+      const commandPath = join(fixturePath, "commands", "code-review.md");
+      expect(existsSync(commandPath)).toBe(true);
+
+      const content = readFileSync(commandPath, "utf-8");
+      expect(content).toContain("description:");
+      expect(content).toContain("allowed-tools:");
+    });
+
+    test(".mcp.json uses top-level mcpServers", () => {
+      const mcpPath = join(fixturePath, ".mcp.json");
+      const json = JSON.parse(readFileSync(mcpPath, "utf-8"));
+
+      expect(json.mcpServers).toBeDefined();
+      expect(json.servers).toBeUndefined();
+    });
+
     test("README.md exists", () => {
       const readmePath = join(fixturePath, "README.md");
       expect(existsSync(readmePath)).toBe(true);
+    });
+  });
+
+  describe("claude-with-md-commands fixture", () => {
+    const fixturePath = join(FIXTURES_DIR, "claude-with-md-commands");
+
+    test("directory exists", () => {
+      expect(existsSync(fixturePath)).toBe(true);
+      expect(statSync(fixturePath).isDirectory()).toBe(true);
+    });
+
+    test("commands directory contains multiple markdown commands", () => {
+      const summarizePath = join(fixturePath, "commands", "summarize.md");
+      const releaseNotesPath = join(fixturePath, "commands", "release-notes.md");
+
+      expect(existsSync(summarizePath)).toBe(true);
+      expect(existsSync(releaseNotesPath)).toBe(true);
+
+      const summarizeContent = readFileSync(summarizePath, "utf-8");
+      const releaseNotesContent = readFileSync(releaseNotesPath, "utf-8");
+      expect(summarizeContent).toContain("allowed-tools:");
+      expect(releaseNotesContent).toContain("allowed-tools:");
     });
   });
 

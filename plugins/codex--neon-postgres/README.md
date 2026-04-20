@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--neon-postgres
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/neon-postgres
+- Source Path: plugins/neon-postgres
 - Version: 1.0.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: neon-postgres-egress-optimizer, neon-postgres
 - Agents: none
 - Hooks: none
 - MCP: none

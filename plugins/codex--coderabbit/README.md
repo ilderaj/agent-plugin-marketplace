@@ -4,14 +4,15 @@
 - Platform: codex
 - Plugin ID: codex--coderabbit
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/coderabbit
+- Source Path: plugins/coderabbit
 - Version: 1.1.0
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: coderabbit-review
 - Agents: none
 - Hooks: none
 - MCP: none

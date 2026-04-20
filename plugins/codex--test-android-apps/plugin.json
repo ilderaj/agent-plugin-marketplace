@@ -18,6 +18,7 @@
     "logcat",
     "uiautomator"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

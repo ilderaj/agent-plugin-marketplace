@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--create-plugin
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/create-plugin
+- Source Path: create-plugin
 - Version: 1.0.0
 
 ## Compatibility Summary
@@ -12,7 +12,7 @@
 - Skill: full — Skills are cross-platform compatible
 - Agent: partial — Agent definitions require format conversion
 - Rules: partial — converted to VS Code `.instructions.md` files
-- Warning: Cursor .mdc rules require conversion to VS Code .instructions.md files
+- Warning: Cursor .mdc rules were converted to VS Code .instructions.md files.
 
 ## Components
 - Skills: review-plugin-submission, create-plugin-scaffold

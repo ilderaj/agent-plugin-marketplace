@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--cursor-team-kit
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/cursor/cursor-team-kit
+- Source Path: cursor-team-kit
 - Version: 1.0.0
 
 ## Compatibility Summary
@@ -12,7 +12,7 @@
 - Skill: full — Skills are cross-platform compatible
 - Agent: partial — Agent definitions require format conversion
 - Rules: partial — converted to VS Code `.instructions.md` files
-- Warning: Cursor .mdc rules require conversion to VS Code .instructions.md files
+- Warning: Cursor .mdc rules were converted to VS Code .instructions.md files.
 
 ## Components
 - Skills: get-pr-comments, new-branch-and-pr, weekly-review, what-did-i-get-done, loop-on-ci, fix-merge-conflicts, review-and-ship, run-smoke-tests, deslop, fix-ci, check-compiler-errors, pr-review-canvas

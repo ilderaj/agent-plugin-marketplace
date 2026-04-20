@@ -16,5 +16,6 @@
     "spaces",
     "machine-learning"
   ],
+  "skills": "./skills/",
   "strict": false
 }

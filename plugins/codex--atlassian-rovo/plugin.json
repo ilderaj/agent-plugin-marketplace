@@ -11,6 +11,7 @@
   "keywords": [
     "atlassian"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

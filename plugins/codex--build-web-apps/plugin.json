@@ -21,6 +21,7 @@
     "full-stack",
     "ui-review"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

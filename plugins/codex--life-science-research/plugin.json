@@ -27,5 +27,6 @@
     "pathway-biology",
     "protein-structure"
   ],
+  "skills": "./skills/",
   "strict": false
 }

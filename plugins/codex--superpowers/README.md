@@ -4,14 +4,15 @@
 - Platform: codex
 - Plugin ID: codex--superpowers
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/superpowers
+- Source Path: plugins/superpowers
 - Version: 5.0.7
 
 ## Compatibility Summary
 - Overall: full
+- Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: none
+- Skills: using-git-worktrees, test-driven-development, systematic-debugging, using-superpowers, dispatching-parallel-agents, executing-plans, finishing-a-development-branch, brainstorming, writing-plans, requesting-code-review, receiving-code-review, writing-skills, verification-before-completion, subagent-driven-development
 - Agents: none
 - Hooks: none
 - MCP: none

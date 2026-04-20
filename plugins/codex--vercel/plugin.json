@@ -25,5 +25,6 @@
     "slack-bot",
     "discord-bot"
   ],
+  "skills": "./skills/",
   "strict": false
 }

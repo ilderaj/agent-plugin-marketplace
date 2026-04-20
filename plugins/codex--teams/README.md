@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--teams
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/teams
+- Source Path: plugins/teams
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: teams-planner-task-management, teams-channel-summarization, teams-notification-triage, teams-messages, teams-daily-digest, teams, teams-reply-drafting
 - Agents: none
 - Hooks: none
 - MCP: none

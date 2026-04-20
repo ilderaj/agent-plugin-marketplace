@@ -4,7 +4,7 @@
 - Platform: cursor
 - Plugin ID: cursor--pr-review-canvas
 - Upstream: https://github.com/cursor/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/cursor/pr-review-canvas
+- Source Path: pr-review-canvas
 - Version: 0.1.0
 
 ## Compatibility Summary

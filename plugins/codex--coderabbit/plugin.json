@@ -16,5 +16,6 @@
     "coderabbit",
     "codex"
   ],
+  "skills": "./skills/",
   "strict": false
 }

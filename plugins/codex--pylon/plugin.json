@@ -1,7 +1,7 @@
 {
   "name": "codex--pylon",
   "version": "1.0.0",
-  "description": "Access Pylon's customer support platform directly from ChatGPT to search, manage, and resolve customer issues.",
+  "description": "Access Pylon's customer support platform directly from Codex to search, manage, and resolve customer issues.",
   "author": {
     "name": "Pylon Labs Inc.",
     "url": "https://www.usepylon.com/"

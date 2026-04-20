@@ -1,3 +1,5 @@
+import { createHash } from "crypto";
+import { readFileSync, statSync } from "fs";
 import { mkdir, readdir, readFile, stat, writeFile } from "fs/promises";
 import { join, relative } from "path";
 import type { Platform, PluginIR, SourceAdapter } from "../adapters/types";
@@ -18,6 +20,7 @@ import { SyncStateManager } from "./sync-state";
 export interface SyncConfig {
   cacheDir: string;
   outputDir: string;
+  toolchainFingerprint?: string;
   repoUrls: Partial<Record<Platform, string>>;
   marketplace: MarketplaceConfig;
 }
@@ -43,10 +46,51 @@ export interface SyncPipelineOptions {
   config: SyncConfig;
 }
 
+const TOOLCHAIN_RUNTIME_FILES = [
+  "adapters/claude.ts",
+  "adapters/codex.ts",
+  "adapters/cursor.ts",
+  "adapters/types.ts",
+  "generator/marketplace.ts",
+  "generator/vscode-plugin.ts",
+  "sync/pipeline.ts",
+  "sync/sync-state.ts",
+  "utils/git.ts",
+] as const;
+
+export function computeDefaultToolchainFingerprint(runtimeRoot = join(import.meta.dir, "..")): string {
+  const hash = createHash("sha256");
+
+  for (const relativePath of TOOLCHAIN_RUNTIME_FILES) {
+    const filePath = join(runtimeRoot, relativePath);
+    try {
+      if (!statSync(filePath).isFile()) {
+        continue;
+      }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        continue;
+      }
+
+      throw error;
+    }
+
+    hash.update(relativePath);
+    hash.update("\0");
+    hash.update(readFileSync(filePath));
+    hash.update("\0");
+  }
+
+  return hash.digest("hex");
+}
+
 export class SyncPipeline {
   constructor(private readonly options: SyncPipelineOptions) {}
 
   async run(): Promise<SyncReport> {
+    this.options.stateManager.setToolchainFingerprint(
+      this.options.config.toolchainFingerprint ?? computeDefaultToolchainFingerprint(),
+    );
     await this.options.stateManager.load();
 
     let updated = 0;

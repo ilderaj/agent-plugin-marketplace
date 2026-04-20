@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--dow-jones-factiva
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/dow-jones-factiva
+- Source Path: plugins/dow-jones-factiva
 - Version: 1.0.0
 
 ## Compatibility Summary

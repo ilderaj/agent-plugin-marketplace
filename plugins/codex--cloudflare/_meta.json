@@ -9,7 +9,10 @@
   },
   "_compatibility": {
     "overall": "full",
-    "notes": [],
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      "MCP: full — MCP servers are cross-platform compatible"
+    ],
     "warnings": [],
     "droppedComponents": []
   }

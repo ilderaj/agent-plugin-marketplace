@@ -18,6 +18,7 @@
     "knowledge-management",
     "planning"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

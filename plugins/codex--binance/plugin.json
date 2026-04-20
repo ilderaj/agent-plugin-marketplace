@@ -1,7 +1,7 @@
 {
   "name": "codex--binance",
   "version": "1.0.0",
-  "description": "Binance for ChatGPT lets you access and explore Binance public, read-only market data using natural language.",
+  "description": "Binance for Codex lets you access and explore Binance public, read-only market data using natural language.",
   "author": {
     "name": "Binance",
     "url": "https://www.binance.com"

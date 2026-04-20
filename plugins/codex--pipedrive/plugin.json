@@ -1,7 +1,7 @@
 {
   "name": "codex--pipedrive",
   "version": "1.0.0",
-  "description": "Connect to sync Pipedrive deals and contacts for use in ChatGPT.",
+  "description": "Connect to sync Pipedrive deals and contacts for use in Codex.",
   "author": {
     "name": "OpenAI",
     "url": "https://www.pipedrive.com/"

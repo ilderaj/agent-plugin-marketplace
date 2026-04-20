@@ -15,5 +15,6 @@
     "observability",
     "triage"
   ],
+  "skills": "./skills/",
   "strict": false
 }

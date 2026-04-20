@@ -4,7 +4,7 @@
 - Platform: codex
 - Plugin ID: codex--setu-bharat-connect-billpay
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /home/runner/work/agent-plugin-marketplace/agent-plugin-marketplace/.cache/sync/codex/plugins/setu-bharat-connect-billpay
+- Source Path: plugins/setu-bharat-connect-billpay
 - Version: 1.0.0
 
 ## Compatibility Summary

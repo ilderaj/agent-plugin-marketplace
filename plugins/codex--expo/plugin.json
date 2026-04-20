@@ -23,6 +23,7 @@
     "upgrades",
     "native-modules"
   ],
+  "skills": "./skills/",
   "agents": "./agents/",
   "strict": false
 }

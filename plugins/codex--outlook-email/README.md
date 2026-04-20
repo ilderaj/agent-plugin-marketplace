@@ -4,16 +4,17 @@
 - Platform: codex
 - Plugin ID: codex--outlook-email
 - Upstream: https://github.com/openai/plugins.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/codex/plugins/outlook-email
+- Source Path: plugins/outlook-email
 - Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial
+- Skill: full — Skills are cross-platform compatible
 - .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: none
+- Skills: outlook-email-shared-mailboxes, outlook-email-inbox-triage, outlook-email-reply-drafting, outlook-email-task-extraction, outlook-email-subscription-cleanup, outlook-email
 - Agents: none
 - Hooks: none
 - MCP: none

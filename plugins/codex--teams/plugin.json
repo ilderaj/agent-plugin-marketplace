@@ -15,5 +15,6 @@
     "chat",
     "microsoft"
   ],
+  "skills": "./skills/",
   "strict": false
 }

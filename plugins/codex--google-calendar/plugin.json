@@ -18,5 +18,6 @@
     "scheduling",
     "productivity"
   ],
+  "skills": "./skills/",
   "strict": false
 }

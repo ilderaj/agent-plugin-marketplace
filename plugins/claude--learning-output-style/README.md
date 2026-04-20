@@ -4,7 +4,7 @@
 - Platform: claude-code
 - Plugin ID: claude-code--learning-output-style
 - Upstream: https://github.com/anthropics/claude-code.git
-- Source Path: /Users/jared/AgentPlugins/agent-plugin-marketplace/.worktrees/copilot-compat/.cache/sync/claude-code/plugins/learning-output-style
+- Source Path: plugins/learning-output-style
 - Version: 1.0.0
 
 ## Compatibility Summary

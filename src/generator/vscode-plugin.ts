@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, writeFile } from 'fs/promises';
+import { chmod, cp, mkdir, readdir, readFile, stat, writeFile } from 'fs/promises';
 import { basename, dirname, join, parse } from 'path';
 import type {
   AgentRef,
@@ -32,6 +32,33 @@ export function platformLabel(platform: PluginIR['source']['platform']) {
 }
 
 export class VsCodePluginGenerator {
+  private static readonly TEXT_OUTPUT_EXTENSIONS = new Set([
+    '.cjs',
+    '.css',
+    '.dot',
+    '.example',
+    '.html',
+    '.js',
+    '.json',
+    '.md',
+    '.py',
+    '.sh',
+    '.svg',
+    '.toml',
+    '.ts',
+    '.txt',
+    '.yaml',
+    '.yml',
+  ]);
+
+  private static readonly TEXT_OUTPUT_FILENAMES = new Set([
+    'CHANGELOG',
+    'COPYING',
+    'LICENSE',
+    'NOTICE',
+    'README',
+  ]);
+
   async generate(ir: PluginIR, outDir: string): Promise<void> {
     await mkdir(outDir, { recursive: true });
 
@@ -46,9 +73,9 @@ export class VsCodePluginGenerator {
 
     const official = this.buildOfficialManifest(ir);
     const meta = this.buildMeta(ir, compatibility);
-    await writeFile(join(outDir, 'plugin.json'), `${JSON.stringify(official, null, 2)}\n`, 'utf-8');
-    await writeFile(join(outDir, '_meta.json'), `${JSON.stringify(meta, null, 2)}\n`, 'utf-8');
-    await writeFile(join(outDir, 'README.md'), this.buildReadme(ir, meta), 'utf-8');
+    await this.writeTextFile(join(outDir, 'plugin.json'), `${JSON.stringify(official, null, 2)}\n`);
+    await this.writeTextFile(join(outDir, '_meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
+    await this.writeTextFile(join(outDir, 'README.md'), this.buildReadme(ir, meta));
   }
 
   private buildOfficialManifest(ir: PluginIR): OfficialPluginManifest {
@@ -159,8 +186,7 @@ export class VsCodePluginGenerator {
     // Sanitize to prevent path traversal: take only the last segment and strip leading dots
     const safeFilename = this.sanitizeAgentFilename(name);
     const outputPath = join(outDir, `agents/${safeFilename}.md`);
-    await mkdir(dirname(outputPath), { recursive: true });
-    await writeFile(outputPath, content, 'utf-8');
+    await this.writeTextFile(outputPath, content);
   }
 
   /** Strips path separators and leading dots so the filename always stays in the agents directory. */
@@ -320,10 +346,9 @@ export class VsCodePluginGenerator {
 
     const hook = ir.components.hooks[0];
     const outputPath = join(outDir, 'hooks', 'hooks.json');
-    await mkdir(dirname(outputPath), { recursive: true });
 
     const payload = await this.resolveJsonSource(ir, hook.configPath, 'hooks');
-    await writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf-8');
+    await this.writeTextFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`);
   }
 
   private async writeMcpConfig(ir: PluginIR, outDir: string) {
@@ -332,7 +357,7 @@ export class VsCodePluginGenerator {
     }
 
     const payload = await this.resolveMcpSource(ir, ir.components.mcpServers[0]);
-    await writeFile(join(outDir, '.mcp.json'), `${JSON.stringify(payload, null, 2)}\n`, 'utf-8');
+    await this.writeTextFile(join(outDir, '.mcp.json'), `${JSON.stringify(payload, null, 2)}\n`);
   }
 
   private async writeInstructions(ir: PluginIR, outDir: string) {
@@ -347,17 +372,62 @@ export class VsCodePluginGenerator {
       const sourcePath = join(ir.source.pluginPath, rule.path);
       const content = await readFile(sourcePath, 'utf-8');
       const outputName = `${parse(rule.path).name}.instructions.md`;
-      await writeFile(
-        join(instructionsDir, outputName),
-        this.convertRuleToInstruction(rule, content),
-        'utf-8'
-      );
+      await this.writeTextFile(join(instructionsDir, outputName), this.convertRuleToInstruction(rule, content));
     }
   }
 
   private async copyPath(sourcePath: string, destinationPath: string) {
+    const sourceStats = await stat(sourcePath);
+
+    if (sourceStats.isDirectory()) {
+      await mkdir(destinationPath, { recursive: true });
+
+      for (const entry of await readdir(sourcePath, { withFileTypes: true })) {
+        await this.copyPath(join(sourcePath, entry.name), join(destinationPath, entry.name));
+      }
+
+      return;
+    }
+
     await mkdir(dirname(destinationPath), { recursive: true });
+
+    if (this.isTextOutputPath(destinationPath)) {
+      const content = await readFile(sourcePath, 'utf-8');
+      await this.writeTextFile(destinationPath, content, sourceStats.mode);
+      return;
+    }
+
     await cp(sourcePath, destinationPath, { recursive: true });
+  }
+
+  private isTextOutputPath(path: string) {
+    const extension = parse(path).ext.toLowerCase();
+    if (VsCodePluginGenerator.TEXT_OUTPUT_EXTENSIONS.has(extension)) {
+      return true;
+    }
+
+    return extension === '' && VsCodePluginGenerator.TEXT_OUTPUT_FILENAMES.has(basename(path).toUpperCase());
+  }
+
+  private normalizeTextOutput(content: string) {
+    const normalizedLines = content
+      .replace(/\r\n?/g, '\n')
+      .split('\n')
+      .map((line) => line.replace(/[ \t]+$/g, ''));
+
+    while (normalizedLines.length > 0 && normalizedLines[normalizedLines.length - 1] === '') {
+      normalizedLines.pop();
+    }
+
+    return `${normalizedLines.join('\n')}\n`;
+  }
+
+  private async writeTextFile(path: string, content: string, mode?: number) {
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, this.normalizeTextOutput(content), 'utf-8');
+    if (mode !== undefined) {
+      await chmod(path, mode & 0o777);
+    }
   }
 
   private async resolveJsonSource(ir: PluginIR, configPath: string, fallbackKey: 'hooks') {
@@ -527,7 +597,7 @@ export class VsCodePluginGenerator {
       `- Platform: ${ir.source.platform}`,
       `- Plugin ID: ${ir.id}`,
       `- Upstream: ${ir.source.repoUrl}`,
-      `- Source Path: ${ir.source.pluginPath}`,
+      `- Source Path: ${meta._source.pluginPath}`,
       `- Version: ${ir.source.version}`,
       '',
       '## Compatibility Summary',

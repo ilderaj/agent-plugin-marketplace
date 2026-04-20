@@ -15,5 +15,6 @@
     "documents",
     "microsoft"
   ],
+  "skills": "./skills/",
   "strict": false
 }

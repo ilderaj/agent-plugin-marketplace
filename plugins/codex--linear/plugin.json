@@ -10,5 +10,6 @@
   "homepage": "https://linear.app/",
   "repository": "https://github.com/openai/plugins",
   "keywords": [],
+  "skills": "./skills/",
   "strict": false
 }

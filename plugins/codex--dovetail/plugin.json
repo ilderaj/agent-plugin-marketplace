@@ -1,7 +1,7 @@
 {
   "name": "codex--dovetail",
   "version": "1.0.0",
-  "description": "Connect Dovetail inside ChatGPT to turn customer feedback into decisions without leaving your conversation.",
+  "description": "Connect Dovetail inside Codex to turn customer feedback into decisions without leaving your conversation.",
   "author": {
     "name": "Dovetail",
     "url": "https://dovetail.com"

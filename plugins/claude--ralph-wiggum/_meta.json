@@ -8,9 +8,13 @@
     "version": "1.0.0"
   },
   "_compatibility": {
-    "overall": "full",
-    "notes": [],
-    "warnings": [],
+    "overall": "partial",
+    "notes": [
+      "Commands: partial — copied to output and require manual verification in VS Code"
+    ],
+    "warnings": [
+      "Command files were copied to the output plugin and require manual verification in VS Code."
+    ],
     "droppedComponents": []
   }
 }
