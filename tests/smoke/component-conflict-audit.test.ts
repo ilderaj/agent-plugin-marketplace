@@ -6,14 +6,42 @@ import { join } from "path";
 const REPO_ROOT = join(import.meta.dir, "../..");
 const PLUGINS_DIR = join(REPO_ROOT, "plugins");
 
-const ALLOWED_DUPLICATE_SKILL_NAMES = new Set([
-  "cli",
-  "pr-review-canvas",
-  "react-best-practices",
-  "stripe-best-practices",
+const EXPECTED_DUPLICATE_SKILL_LOCATIONS = new Map<string, string[]>([
+  ["cli", ["codex--circleci/skills/cli", "codex--hugging-face/skills/cli"]],
+  [
+    "pr-review-canvas",
+    ["cursor--cursor-team-kit/skills/pr-review-canvas", "cursor--pr-review-canvas/skills/pr-review-canvas"],
+  ],
+  [
+    "react-best-practices",
+    ["codex--build-web-apps/skills/react-best-practices", "codex--vercel/skills/react-best-practices"],
+  ],
+  [
+    "stripe-best-practices",
+    ["codex--build-web-apps/skills/stripe-best-practices", "codex--stripe/skills/stripe-best-practices"],
+  ],
 ]);
 
-const ALLOWED_DUPLICATE_AGENT_NAMES = new Set(["code-reviewer", "openai"]);
+const EXPECTED_DUPLICATE_AGENT_LOCATIONS = new Map<string, string[]>([
+  [
+    "code-reviewer",
+    ["claude--feature-dev/agents/code-reviewer.md", "claude--pr-review-toolkit/agents/code-reviewer.md"],
+  ],
+  [
+    "openai",
+    [
+      "codex--atlassian-rovo/agents/openai.md",
+      "codex--build-ios-apps/agents/openai.md",
+      "codex--build-macos-apps/agents/openai.md",
+      "codex--build-web-apps/agents/openai.md",
+      "codex--expo/agents/openai.md",
+      "codex--figma/agents/openai.md",
+      "codex--notion/agents/openai.md",
+      "codex--render/agents/openai.md",
+      "codex--test-android-apps/agents/openai.md",
+    ],
+  ],
+]);
 
 type PluginManifest = {
   skills?: string;
@@ -56,14 +84,52 @@ async function collectAgentEntries(pluginName: string, manifest: PluginManifest)
     .sort();
 }
 
-function findUnexpectedDuplicates(
-  componentsByName: Map<string, string[]>,
-  allowlist: Set<string>
-): string[] {
+function findUnexpectedDuplicates(componentsByName: Map<string, string[]>, expected: Map<string, string[]>): string[] {
   return Array.from(componentsByName.entries())
-    .filter(([name, locations]) => locations.length > 1 && !allowlist.has(name))
+    .filter(([name, locations]) => {
+      if (locations.length <= 1) return false;
+      const expectedLocations = expected.get(name);
+      return (
+        expectedLocations === undefined ||
+        expectedLocations.length !== locations.length ||
+        expectedLocations.some((location, index) => location !== locations.slice().sort()[index])
+      );
+    })
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([name, locations]) => `${name}: ${locations.sort().join(", ")}`);
+}
+
+function findUnexpectedDuplicateBaselineChanges(
+  componentsByName: Map<string, string[]>,
+  expected: Map<string, string[]>
+): string[] {
+  const issues: string[] = [];
+
+  for (const [name, expectedLocations] of expected.entries()) {
+    const actualLocations = componentsByName.get(name)?.slice().sort();
+    if (!actualLocations) {
+      issues.push(`${name}: expected duplicate baseline missing (${expectedLocations.join(", ")})`);
+      continue;
+    }
+
+    if (actualLocations.length !== expectedLocations.length) {
+      issues.push(
+        `${name}: expected ${expectedLocations.length} occurrences but found ${actualLocations.length} (${actualLocations.join(", ")})`
+      );
+      continue;
+    }
+
+    for (let index = 0; index < expectedLocations.length; index += 1) {
+      if (actualLocations[index] !== expectedLocations[index]) {
+        issues.push(
+          `${name}: expected ${expectedLocations.join(", ")} but found ${actualLocations.join(", ")}`
+        );
+        break;
+      }
+    }
+  }
+
+  return issues;
 }
 
 describe("component conflict audit", () => {
@@ -79,7 +145,8 @@ describe("component conflict audit", () => {
       }
     }
 
-    expect(findUnexpectedDuplicates(skillLocations, ALLOWED_DUPLICATE_SKILL_NAMES)).toEqual([]);
+    expect(findUnexpectedDuplicates(skillLocations, EXPECTED_DUPLICATE_SKILL_LOCATIONS)).toEqual([]);
+    expect(findUnexpectedDuplicateBaselineChanges(skillLocations, EXPECTED_DUPLICATE_SKILL_LOCATIONS)).toEqual([]);
   });
 
   test("new duplicate agent names are rejected while the current allowlist stays allowed", async () => {
@@ -94,6 +161,7 @@ describe("component conflict audit", () => {
       }
     }
 
-    expect(findUnexpectedDuplicates(agentLocations, ALLOWED_DUPLICATE_AGENT_NAMES)).toEqual([]);
+    expect(findUnexpectedDuplicates(agentLocations, EXPECTED_DUPLICATE_AGENT_LOCATIONS)).toEqual([]);
+    expect(findUnexpectedDuplicateBaselineChanges(agentLocations, EXPECTED_DUPLICATE_AGENT_LOCATIONS)).toEqual([]);
   });
 });
