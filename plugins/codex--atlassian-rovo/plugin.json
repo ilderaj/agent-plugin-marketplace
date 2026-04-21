@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Manage Jira and Confluence fast",
   "author": {
+    "name": "Atlassian",
     "url": "https://www.atlassian.com"
   },
   "license": "MIT",

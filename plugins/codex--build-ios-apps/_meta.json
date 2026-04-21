@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/build-ios-apps",
-    "commitSha": "fbfc41dfb3d2a2305e0e7373c6d83ce4e95e7ed9",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "0.1.0"
   },
   "_compatibility": {

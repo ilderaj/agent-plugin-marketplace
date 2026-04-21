@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/superpowers",
-    "commitSha": "6c24048e447572232e2198745a4f82ba86912fe7",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "5.0.7"
   },
   "_compatibility": {

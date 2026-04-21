@@ -5,7 +5,6 @@ import { join } from "path";
 
 const REPO_ROOT = join(import.meta.dir, "../..");
 const PLUGINS_DIR = join(REPO_ROOT, "plugins");
-const README_PATH = join(REPO_ROOT, "README.md");
 
 const OFFICIAL_COMPONENTS = [
   { key: "skills", canonicalPath: "skills", expectedType: "directory" },
@@ -124,10 +123,13 @@ describe("generated artifact audit", () => {
   });
 
   test("README no longer references source YAML agent filenames", async () => {
-    const readme = await readFile(README_PATH, "utf8");
     const forbiddenMentions = new Set<string>();
 
     for (const pluginName of await listPluginNames()) {
+      const readmePath = join(PLUGINS_DIR, pluginName, "README.md");
+      if (!existsSync(readmePath)) continue;
+
+      const readme = await readFile(readmePath, "utf8");
       const manifest = await readManifest(pluginName);
       for (const agentName of await collectAgentNames(pluginName, manifest)) {
         for (const extension of ["yaml", "yml"]) {

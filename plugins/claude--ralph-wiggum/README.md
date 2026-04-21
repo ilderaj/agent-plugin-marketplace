@@ -17,7 +17,7 @@
 - Agents: none
 - Hooks: none
 - MCP: none
-- Commands: help.md, cancel-ralph.md, ralph-loop.md
+- Commands: cancel-ralph.md, help.md, ralph-loop.md
 - Instructions: none
 
 ## Dropped Components

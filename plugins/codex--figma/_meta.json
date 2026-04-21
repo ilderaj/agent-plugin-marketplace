@@ -4,14 +4,13 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/figma",
-    "commitSha": "78e4d982f8f0610d8d0f83140b90ea41acb8bd66",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "2.0.7"
   },
   "_compatibility": {
     "overall": "partial",
     "notes": [
       "Skill: full — Skills are cross-platform compatible",
-      "Hook: partial — Codex hooks require format conversion; limited to 5 events with Bash-only tool interception",
       "Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.",
       ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
     ],

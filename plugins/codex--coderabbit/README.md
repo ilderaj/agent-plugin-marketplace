@@ -5,7 +5,7 @@
 - Plugin ID: codex--coderabbit
 - Upstream: https://github.com/openai/plugins.git
 - Source Path: plugins/coderabbit
-- Version: 1.1.0
+- Version: 1.1.1
 
 ## Compatibility Summary
 - Overall: full

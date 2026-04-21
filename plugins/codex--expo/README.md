@@ -14,7 +14,7 @@
 
 ## Components
 - Skills: expo-dev-client, native-data-fetching, expo-api-routes, expo-deployment, expo-ui-jetpack-compose, expo-ui-swift-ui, use-dom, expo-module, building-native-ui, codex-expo-run-actions, upgrading-expo, expo-cicd-workflows, expo-tailwind-setup
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

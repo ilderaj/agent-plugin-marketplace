@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/remotion",
-    "commitSha": "459bc0ca9d6c6e21e4385ba20b04bbd4a8c98ae8",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "1.0.0"
   },
   "_compatibility": {

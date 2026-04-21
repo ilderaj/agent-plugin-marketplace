@@ -17,7 +17,7 @@
 - Agents: none
 - Hooks: none
 - MCP: none
-- Commands: commit-push-pr.md, clean_gone.md, commit.md
+- Commands: clean_gone.md, commit-push-pr.md, commit.md
 - Instructions: none
 
 ## Dropped Components

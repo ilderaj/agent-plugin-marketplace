@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Search, create, edit designs",
   "author": {
+    "name": "Canva",
     "url": "https://www.canva.com"
   },
   "license": "MIT",

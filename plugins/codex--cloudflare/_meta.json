@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/cloudflare",
-    "commitSha": "c33798c8a1e6da61a75e06e33ceae39a35f05ea5",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "0.1.0"
   },
   "_compatibility": {
