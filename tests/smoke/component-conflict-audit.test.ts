@@ -88,15 +88,16 @@ function findUnexpectedDuplicates(componentsByName: Map<string, string[]>, expec
   return Array.from(componentsByName.entries())
     .filter(([name, locations]) => {
       if (locations.length <= 1) return false;
-      const expectedLocations = expected.get(name);
+      const actualLocations = locations.slice().sort();
+      const expectedLocations = expected.get(name)?.slice().sort();
       return (
         expectedLocations === undefined ||
-        expectedLocations.length !== locations.length ||
-        expectedLocations.some((location, index) => location !== locations.slice().sort()[index])
+        expectedLocations.length !== actualLocations.length ||
+        expectedLocations.some((location, index) => location !== actualLocations[index])
       );
     })
     .sort(([left], [right]) => left.localeCompare(right))
-    .map(([name, locations]) => `${name}: ${locations.sort().join(", ")}`);
+    .map(([name, locations]) => `${name}: ${locations.slice().sort().join(", ")}`);
 }
 
 function findUnexpectedDuplicateBaselineChanges(
@@ -106,23 +107,24 @@ function findUnexpectedDuplicateBaselineChanges(
   const issues: string[] = [];
 
   for (const [name, expectedLocations] of expected.entries()) {
+    const sortedExpectedLocations = expectedLocations.slice().sort();
     const actualLocations = componentsByName.get(name)?.slice().sort();
     if (!actualLocations) {
-      issues.push(`${name}: expected duplicate baseline missing (${expectedLocations.join(", ")})`);
+      issues.push(`${name}: expected duplicate baseline missing (${sortedExpectedLocations.join(", ")})`);
       continue;
     }
 
-    if (actualLocations.length !== expectedLocations.length) {
+    if (actualLocations.length !== sortedExpectedLocations.length) {
       issues.push(
-        `${name}: expected ${expectedLocations.length} occurrences but found ${actualLocations.length} (${actualLocations.join(", ")})`
+        `${name}: expected ${sortedExpectedLocations.length} occurrences but found ${actualLocations.length} (${actualLocations.join(", ")})`
       );
       continue;
     }
 
-    for (let index = 0; index < expectedLocations.length; index += 1) {
-      if (actualLocations[index] !== expectedLocations[index]) {
+    for (let index = 0; index < sortedExpectedLocations.length; index += 1) {
+      if (actualLocations[index] !== sortedExpectedLocations[index]) {
         issues.push(
-          `${name}: expected ${expectedLocations.join(", ")} but found ${actualLocations.join(", ")}`
+          `${name}: expected ${sortedExpectedLocations.join(", ")} but found ${actualLocations.join(", ")}`
         );
         break;
       }
