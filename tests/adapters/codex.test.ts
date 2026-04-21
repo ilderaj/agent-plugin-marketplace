@@ -67,7 +67,7 @@ describe('CodexAdapter', () => {
     const skill = ir.components.skills[0];
     expect(skill.name).toBe('github');
     expect(skill.path).toBe('skills/github');
-    expect(typeof skill.hasScripts).toBe('boolean');
+    expect(skill.hasScripts).toBe(true);
   });
 
   test('parse resolves string skill directory paths into child skills', async () => {
