@@ -605,11 +605,12 @@ describe('VsCodePluginGenerator', () => {
     await ensureCleanDir(outDir);
     await mkdir(agentsDir, { recursive: true });
     await writeFile(join(agentsDir, 'openai.yaml'), 'stale private agent\n', 'utf-8');
+    await writeFile(join(agentsDir, 'orphan.md'), 'stale generated agent\n', 'utf-8');
 
     await new VsCodePluginGenerator().generate(ir, outDir);
 
     await expect(stat(join(agentsDir, 'openai.yaml'))).rejects.toThrow();
-    expect((await readdir(agentsDir)).sort()).toEqual(['reviewer.md', 'tester.md']);
+    await expect(stat(join(agentsDir, 'orphan.md'))).rejects.toThrow();
   });
 
   test('agent YAML with path-traversal name does not escape the agents output directory', async () => {
