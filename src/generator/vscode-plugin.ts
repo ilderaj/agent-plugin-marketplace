@@ -75,7 +75,7 @@ export class VsCodePluginGenerator {
     const meta = this.buildMeta(ir, compatibility);
     await this.writeTextFile(join(outDir, 'plugin.json'), `${JSON.stringify(official, null, 2)}\n`);
     await this.writeTextFile(join(outDir, '_meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
-    await this.writeTextFile(join(outDir, 'README.md'), this.buildReadme(ir, meta));
+    await this.writeTextFile(join(outDir, 'README.md'), await this.buildReadme(ir, meta, outDir));
   }
 
   private buildOfficialManifest(ir: PluginIR): OfficialPluginManifest {
@@ -94,6 +94,7 @@ export class VsCodePluginGenerator {
       category: ir.manifest.category,
       ...(ir.components.skills.length > 0 ? { skills: './skills/' as const } : {}),
       ...(ir.components.agents.length > 0 ? { agents: './agents/' as const } : {}),
+      ...(ir.components.commands.length > 0 ? { commands: './commands/' as const } : {}),
       ...(ir.components.hooks.length > 0 ? { hooks: './hooks/hooks.json' as const } : {}),
       ...(ir.components.mcpServers.length > 0 ? { mcpServers: './.mcp.json' as const } : {}),
       strict: false,
@@ -121,7 +122,19 @@ export class VsCodePluginGenerator {
 
   private async copySkills(ir: PluginIR, outDir: string) {
     for (const skill of ir.components.skills) {
-      await this.copyPath(join(ir.source.pluginPath, skill.path), join(outDir, skill.path));
+      await this.copySkillDir(join(ir.source.pluginPath, skill.path), join(outDir, skill.path));
+    }
+  }
+
+  private async copySkillDir(sourcePath: string, destinationPath: string) {
+    await mkdir(destinationPath, { recursive: true });
+
+    for (const entry of await readdir(sourcePath, { withFileTypes: true })) {
+      if (entry.isDirectory() && entry.name === 'agents') {
+        continue;
+      }
+
+      await this.copyPath(join(sourcePath, entry.name), join(destinationPath, entry.name));
     }
   }
 
@@ -567,20 +580,19 @@ export class VsCodePluginGenerator {
     return levels.reduce((worst, current) => (order[current] > order[worst] ? current : worst), 'full');
   }
 
-  private buildReadme(ir: PluginIR, meta: MetaPluginManifest) {
+  private async buildReadme(ir: PluginIR, meta: MetaPluginManifest, outDir: string) {
+    const agents = await this.listGeneratedFiles(join(outDir, 'agents'));
+    const commands = await this.listGeneratedFiles(join(outDir, 'commands'));
+    const instructions = await this.listGeneratedFiles(join(outDir, 'instructions'));
     const componentLines = [
       ir.components.skills.length > 0 ? `- Skills: ${ir.components.skills.map((skill) => skill.name).join(', ')}` : '- Skills: none',
-      ir.components.agents.length > 0 ? `- Agents: ${ir.components.agents.map((agent) => basename(agent.path)).join(', ')}` : '- Agents: none',
+      agents.length > 0 ? `- Agents: ${agents.join(', ')}` : '- Agents: none',
       ir.components.hooks.length > 0 ? `- Hooks: hooks/hooks.json (${ir.components.hooks[0].events.join(', ')})` : '- Hooks: none',
       ir.components.mcpServers.length > 0
         ? `- MCP: ${ir.components.mcpServers.flatMap((ref) => ref.servers.map((server) => server.name)).join(', ')}`
         : '- MCP: none',
-      ir.components.commands.length > 0
-        ? `- Commands: ${ir.components.commands.map((command) => basename(command.path)).join(', ')}`
-        : '- Commands: none',
-      ir.components.rules.length > 0
-        ? `- Instructions: ${ir.components.rules.map((rule) => `${parse(rule.path).name}.instructions.md`).join(', ')}`
-        : '- Instructions: none',
+      commands.length > 0 ? `- Commands: ${commands.join(', ')}` : '- Commands: none',
+      instructions.length > 0 ? `- Instructions: ${instructions.join(', ')}` : '- Instructions: none',
     ];
 
     const droppedLines =
@@ -655,6 +667,30 @@ export class VsCodePluginGenerator {
         return 'Commands';
       default:
         return type.charAt(0).toUpperCase() + type.slice(1);
+    }
+  }
+
+  private async listGeneratedFiles(rootDir: string, currentDir = rootDir): Promise<string[]> {
+    try {
+      const entries = await readdir(currentDir, { withFileTypes: true });
+      const files = await Promise.all(
+        entries.map(async (entry) => {
+          const entryPath = join(currentDir, entry.name);
+          if (entry.isDirectory()) {
+            return this.listGeneratedFiles(rootDir, entryPath);
+          }
+
+          return [entryPath.slice(rootDir.length + 1).replace(/\\/g, '/')];
+        })
+      );
+
+      return files.flat().sort((left, right) => left.localeCompare(right));
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        return [];
+      }
+
+      throw error;
     }
   }
 }
