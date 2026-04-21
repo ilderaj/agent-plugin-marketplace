@@ -249,6 +249,8 @@ bun run build            # compile TypeScript → dist/
 bun run sync             # full sync pipeline
 ```
 
+For compatibility-sensitive validation guidance, see `docs/testing/plugin-test-strategy.md`.
+
 ### Add a New Platform Adapter
 
 1. Create `src/adapters/<platform>.ts` implementing the `SourceAdapter` interface
