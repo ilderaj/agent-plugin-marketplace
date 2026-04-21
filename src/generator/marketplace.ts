@@ -43,6 +43,7 @@ export interface OfficialPluginManifest {
   tags?: string[];
   skills?: './skills/';
   agents?: './agents/';
+  commands?: './commands/';
   hooks?: './hooks/hooks.json';
   mcpServers?: './.mcp.json';
   strict: false;

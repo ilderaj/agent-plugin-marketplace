@@ -7,5 +7,6 @@
     "email": "sbidasaria@anthropic.com"
   },
   "agents": "./agents/",
+  "commands": "./commands/",
   "strict": false
 }

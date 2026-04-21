@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
-import { cp, mkdir, readFile, rm, writeFile } from "fs/promises";
+import { cp, mkdir, readFile, rm, stat, writeFile } from "fs/promises";
 import { randomUUID } from "crypto";
 import { join } from "path";
 import { CodexAdapter } from "../../src/adapters/codex";
@@ -183,6 +183,10 @@ describe("SyncPipeline", () => {
       generatedMeta._source.commitSha,
     );
 
+    await mkdir(join(generatedPluginDir, "agents"), { recursive: true });
+    await writeFile(join(generatedPluginDir, "agents", "openai.yaml"), "stale private agent\n", "utf-8");
+    await writeFile(join(generatedPluginDir, "agents", "orphan.md"), "stale generated agent\n", "utf-8");
+
     await writeFile(join(upstream.pluginDir, "README.md"), "# Updated plugin\n", "utf-8");
     await runGit(["add", "plugins/codex-github/README.md"], upstream.sourceRepo);
     await runGit(["commit", "-m", "Update plugin"], upstream.sourceRepo);
@@ -202,6 +206,8 @@ describe("SyncPipeline", () => {
       await readFile(join(generatedPluginDir, "_meta.json"), "utf-8"),
     ) as { _source: { commitSha: string } };
     expect(regeneratedMeta._source.commitSha).toBe(updatedHead);
+    await expect(stat(join(generatedPluginDir, "agents", "openai.yaml"))).rejects.toThrow();
+    await expect(stat(join(generatedPluginDir, "agents", "orphan.md"))).rejects.toThrow();
 
     const marketplace = JSON.parse(
       await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8"),

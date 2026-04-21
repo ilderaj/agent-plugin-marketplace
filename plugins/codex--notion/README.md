@@ -16,7 +16,7 @@
 
 ## Components
 - Skills: notion-meeting-intelligence, notion-research-documentation, notion-knowledge-capture, notion-spec-to-implementation
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Payments and business tools",
   "author": {
+    "name": "Stripe",
     "url": "https://stripe.com"
   },
   "license": "MIT",

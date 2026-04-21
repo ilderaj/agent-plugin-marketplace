@@ -6,5 +6,6 @@
     "name": "Daisy Hollman",
     "email": "daisy@anthropic.com"
   },
+  "commands": "./commands/",
   "strict": false
 }

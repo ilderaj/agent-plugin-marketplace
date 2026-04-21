@@ -14,7 +14,7 @@
 
 ## Components
 - Skills: android-emulator-qa
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

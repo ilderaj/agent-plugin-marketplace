@@ -6,5 +6,6 @@
     "name": "Anthropic",
     "email": "support@anthropic.com"
   },
+  "commands": "./commands/",
   "strict": false
 }

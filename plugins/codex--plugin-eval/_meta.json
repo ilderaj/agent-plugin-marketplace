@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/plugin-eval",
-    "commitSha": "610a632ae9a27eca49f7d937fbe60379fd04257b",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "0.1.0"
   },
   "_compatibility": {

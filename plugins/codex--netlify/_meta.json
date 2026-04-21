@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/netlify",
-    "commitSha": "b4940fd0a222022ecd7852e20a4c89ed36b9e9de",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "1.1.0"
   },
   "_compatibility": {

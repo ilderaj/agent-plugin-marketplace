@@ -14,7 +14,7 @@
 
 ## Components
 - Skills: render-migrate-from-heroku, render-workflows, render-debug, render-deploy, render-monitor
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

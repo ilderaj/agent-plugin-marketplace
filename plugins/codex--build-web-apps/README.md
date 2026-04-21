@@ -16,7 +16,7 @@
 
 ## Components
 - Skills: deploy-to-vercel, web-design-guidelines, frontend-skill, react-best-practices, supabase-best-practices, stripe-best-practices, shadcn-best-practices
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

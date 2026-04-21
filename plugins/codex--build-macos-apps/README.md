@@ -14,7 +14,7 @@
 
 ## Components
 - Skills: liquid-glass, signing-entitlements, packaging-notarization, test-triage, window-management, telemetry, swiftui-patterns, view-refactor, appkit-interop, build-run-debug, swiftpm-macos
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

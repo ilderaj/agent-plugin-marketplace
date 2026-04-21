@@ -16,7 +16,7 @@
 
 ## Components
 - Skills: triage-issue, capture-tasks-from-meeting-notes, generate-status-report, search-company-knowledge, spec-to-backlog
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: none
 - Commands: none

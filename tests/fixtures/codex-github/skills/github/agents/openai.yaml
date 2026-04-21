@@ -1,0 +1,4 @@
+name: openai
+model: gpt-4.1
+purpose: Review GitHub issue summaries before publication.
+visibility: private

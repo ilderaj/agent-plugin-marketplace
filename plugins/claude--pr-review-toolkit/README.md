@@ -15,7 +15,7 @@
 
 ## Components
 - Skills: none
-- Agents: code-reviewer.md, silent-failure-hunter.md, code-simplifier.md, comment-analyzer.md, pr-test-analyzer.md, type-design-analyzer.md
+- Agents: code-reviewer.md, code-simplifier.md, comment-analyzer.md, pr-test-analyzer.md, silent-failure-hunter.md, type-design-analyzer.md
 - Hooks: none
 - MCP: none
 - Commands: review-pr.md

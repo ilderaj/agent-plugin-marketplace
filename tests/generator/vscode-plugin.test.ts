@@ -75,6 +75,36 @@ describe('VsCodePluginGenerator', () => {
     expect(await readFile(join(outDir, 'README.md'), 'utf-8')).toContain('.app.json');
   });
 
+  test('cleanup for one plugin does not touch sibling output directories', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDirA = join(OUTPUT_ROOT, 'codex-sibling-a');
+    const outDirB = join(OUTPUT_ROOT, 'codex-sibling-b');
+    const sentinel = 'keep me';
+
+    await ensureCleanDir(outDirA);
+    await ensureCleanDir(outDirB);
+    await writeFile(join(outDirB, 'sentinel.txt'), sentinel);
+
+    await new VsCodePluginGenerator().generate(ir, outDirA);
+
+    expect(await readFile(join(outDirB, 'sentinel.txt'), 'utf-8')).toBe(sentinel);
+    await expect(stat(join(outDirB, 'sentinel.txt'))).resolves.toBeDefined();
+  });
+
+  test('filters skill-private agents while preserving public skill assets', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'codex-skill-private-filter');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    await expect(stat(join(outDir, 'skills/github/SKILL.md'))).resolves.toBeDefined();
+    await expect(stat(join(outDir, 'skills/github/assets/github.svg'))).resolves.toBeDefined();
+    await expect(stat(join(outDir, 'skills/github/references/reference.md'))).resolves.toBeDefined();
+    await expect(stat(join(outDir, 'skills/github/scripts/setup.sh'))).resolves.toBeDefined();
+    await expect(stat(join(outDir, 'skills/github/agents/openai.yaml'))).rejects.toThrow();
+  });
+
   test('normalizes Claude plugin naming but preserves source platform metadata', async () => {
     const ir = await new ClaudeAdapter().parse(join(FIXTURES_DIR, 'claude-code-review'));
     const outDir = join(OUTPUT_ROOT, 'claude');
@@ -99,6 +129,17 @@ describe('VsCodePluginGenerator', () => {
     expect(meta._source.platform).toBe('claude-code');
 
     expect(await readFile(join(outDir, 'README.md'), 'utf-8')).toContain('claude-code');
+  });
+
+  test('emits commands manifest path for Claude fixtures', async () => {
+    const ir = await new ClaudeAdapter().parse(join(FIXTURES_DIR, 'claude-code-review'));
+    const outDir = join(OUTPUT_ROOT, 'claude-commands-manifest');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const manifest = await readJson(join(outDir, 'plugin.json'));
+    expect(manifest.commands).toBe('./commands/');
   });
 
   test('converts Cursor rules into VS Code instructions and renames MCP config', async () => {
@@ -148,6 +189,17 @@ describe('VsCodePluginGenerator', () => {
     expect(readme).toContain('converted to VS Code `.instructions.md` files');
     expect(readme).toContain('manual verification');
     expect(readme).toContain('Compatibility Summary');
+  });
+
+  test('emits commands manifest path for Cursor fixtures', async () => {
+    const ir = await new CursorAdapter().parse(join(FIXTURES_DIR, 'cursor-continual-learning'));
+    const outDir = join(OUTPUT_ROOT, 'cursor-commands-manifest');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const manifest = await readJson(join(outDir, 'plugin.json'));
+    expect(manifest.commands).toBe('./commands/');
   });
 
   test('converts ambiguous Cursor rule (alwaysApply: false, no globs) to applyTo: ** with origin comment', async () => {
@@ -544,6 +596,40 @@ describe('VsCodePluginGenerator', () => {
     expect(testerMd).toContain('name: tester');
     expect(testerMd).toContain('description: Test automation agent');
     await expect(stat(join(outDir, 'agents/tester.yml'))).rejects.toThrow();
+  });
+
+  test('README lists generated markdown agents and hides source/private YAML agent filenames', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'codex-readme-agent-list');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const readme = await readFile(join(outDir, 'README.md'), 'utf-8');
+    expect(readme).toContain('reviewer.md');
+    expect(readme).toContain('tester.md');
+    expect(readme).not.toContain('reviewer.yaml');
+    expect(readme).not.toContain('tester.yml');
+    expect(readme).not.toContain('openai.yaml');
+  });
+
+  test('removes stale generated agent files before writing fresh output', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDir = join(OUTPUT_ROOT, 'codex-stale-output-cleanup');
+    const agentsDir = join(outDir, 'agents');
+
+    await ensureCleanDir(outDir);
+    await mkdir(agentsDir, { recursive: true });
+    await writeFile(join(agentsDir, 'openai.yaml'), 'stale private agent\n', 'utf-8');
+    await writeFile(join(agentsDir, 'orphan.md'), 'stale generated agent\n', 'utf-8');
+
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    await expect(stat(join(agentsDir, 'openai.yaml'))).rejects.toThrow();
+    await expect(stat(join(agentsDir, 'orphan.md'))).rejects.toThrow();
+    const readme = await readFile(join(outDir, 'README.md'), 'utf-8');
+    expect(readme).not.toContain('openai.yaml');
+    expect(readme).not.toContain('orphan.md');
   });
 
   test('agent YAML with path-traversal name does not escape the agents output directory', async () => {
