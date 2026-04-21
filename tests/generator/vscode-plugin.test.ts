@@ -611,6 +611,9 @@ describe('VsCodePluginGenerator', () => {
 
     await expect(stat(join(agentsDir, 'openai.yaml'))).rejects.toThrow();
     await expect(stat(join(agentsDir, 'orphan.md'))).rejects.toThrow();
+    const readme = await readFile(join(outDir, 'README.md'), 'utf-8');
+    expect(readme).not.toContain('openai.yaml');
+    expect(readme).not.toContain('orphan.md');
   });
 
   test('agent YAML with path-traversal name does not escape the agents output directory', async () => {

@@ -1,4 +1,4 @@
-import { chmod, cp, mkdir, readdir, readFile, stat, writeFile } from 'fs/promises';
+import { chmod, cp, mkdir, readdir, readFile, rm, stat, writeFile } from 'fs/promises';
 import { basename, dirname, join, parse } from 'path';
 import type {
   AgentRef,
@@ -60,6 +60,7 @@ export class VsCodePluginGenerator {
   ]);
 
   async generate(ir: PluginIR, outDir: string): Promise<void> {
+    await rm(outDir, { recursive: true, force: true });
     await mkdir(outDir, { recursive: true });
 
     const compatibility = this.buildGeneratedCompatibility(ir);
