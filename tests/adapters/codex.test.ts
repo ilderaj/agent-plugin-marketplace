@@ -7,6 +7,7 @@ import { randomBytes } from 'crypto';
 const FIXTURE = join(import.meta.dir, '../fixtures/codex-github');
 const STRING_SKILLS_FIXTURE = join(import.meta.dir, '../fixtures/codex-string-skills');
 const HOOKS_OBJECT_FIXTURE = join(import.meta.dir, '../fixtures/codex-hooks-object');
+const NO_APP_FIXTURE = join(import.meta.dir, '../fixtures/codex-no-app');
 const SCRATCH_ROOT = join(import.meta.dir, '../fixtures/.scratch/codex');
 
 async function withScratchPlugin(
@@ -361,9 +362,9 @@ describe('CodexAdapter', () => {
   });
 
   test('parse correctly sets hasScripts to false when no scripts directory exists', async () => {
-    const ir = await adapter.parse(FIXTURE);
+    const ir = await adapter.parse(NO_APP_FIXTURE);
     const skill = ir.components.skills[0];
-    // Current fixture has no scripts/ directory, so hasScripts should be false
+    // codex-no-app/skills/test has no scripts/ directory, so hasScripts should be false
     expect(skill.hasScripts).toBe(false);
   });
 

@@ -1,0 +1,2149 @@
+{
+  "name": "agent-plugin-marketplace",
+  "owner": {
+    "name": "agent-plugin-marketplace"
+  },
+  "metadata": {
+    "description": "Cross-platform agent plugins converted for VS Code"
+  },
+  "plugins": [
+    {
+      "name": "claude--agent-sdk-dev",
+      "source": "./plugins/claude--agent-sdk-dev",
+      "description": "Claude Agent SDK Development Plugin (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Ashwin Bhat",
+        "email": "ashwin@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--claude-opus-4-5-migration",
+      "source": "./plugins/claude--claude-opus-4-5-migration",
+      "description": "Migrate your code and prompts from Sonnet 4.x and Opus 4.1 to Opus 4.5. (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "William Hu",
+        "email": "whu@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--code-review",
+      "source": "./plugins/claude--code-review",
+      "description": "Automated code review for pull requests using multiple specialized agents with confidence-based scoring (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Boris Cherny",
+        "email": "boris@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--commit-commands",
+      "source": "./plugins/claude--commit-commands",
+      "description": "Streamline your git workflow with simple commands for committing, pushing, and creating pull requests (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "email": "support@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--explanatory-output-style",
+      "source": "./plugins/claude--explanatory-output-style",
+      "description": "Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style) (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Dickson Tsai",
+        "email": "dickson@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--feature-dev",
+      "source": "./plugins/claude--feature-dev",
+      "description": "Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Sid Bidasaria",
+        "email": "sbidasaria@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--frontend-design",
+      "source": "./plugins/claude--frontend-design",
+      "description": "Frontend design skill for UI/UX implementation (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Prithvi Rajasekaran, Alexander Bricken"
+      }
+    },
+    {
+      "name": "claude--hookify",
+      "source": "./plugins/claude--hookify",
+      "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns (from Claude Code)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "Daisy Hollman",
+        "email": "daisy@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--learning-output-style",
+      "source": "./plugins/claude--learning-output-style",
+      "description": "Interactive learning mode that requests meaningful code contributions at decision points (mimics the unshipped Learning output style) (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Boris Cherny",
+        "email": "boris@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--pr-review-toolkit",
+      "source": "./plugins/claude--pr-review-toolkit",
+      "description": "Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Daisy",
+        "email": "daisy@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--ralph-wiggum",
+      "source": "./plugins/claude--ralph-wiggum",
+      "description": "Implementation of the Ralph Wiggum technique - continuous self-referential AI loops for interactive iterative development. Run Claude in a while-true loop with the same prompt until task completion. (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Daisy Hollman",
+        "email": "daisy@anthropic.com"
+      }
+    },
+    {
+      "name": "claude--security-guidance",
+      "source": "./plugins/claude--security-guidance",
+      "description": "Security reminder hook that warns about potential security issues when editing files, including command injection, XSS, and unsafe code patterns (from Claude Code)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "David Dworken",
+        "email": "dworken@anthropic.com"
+      }
+    },
+    {
+      "name": "codex--alpaca",
+      "source": "./plugins/codex--alpaca",
+      "description": "Stop watching the markets. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Alpaca",
+        "url": "https://alpaca.markets/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--amplitude",
+      "source": "./plugins/codex--amplitude",
+      "description": "Product analytics and funnels (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Amplitude"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--atlassian-rovo",
+      "source": "./plugins/codex--atlassian-rovo",
+      "description": "Manage Jira and Confluence fast (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Atlassian",
+        "url": "https://www.atlassian.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "atlassian"
+      ]
+    },
+    {
+      "name": "codex--attio",
+      "source": "./plugins/codex--attio",
+      "description": "Attio connects Codex directly to your CRM workspace, letting you manage customer relationships through na... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Attio Ltd",
+        "url": "https://attio.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--binance",
+      "source": "./plugins/codex--binance",
+      "description": "Binance for Codex lets you access and explore Binance public, read-only market data using natural language. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Binance",
+        "url": "https://www.binance.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--biorender",
+      "source": "./plugins/codex--biorender",
+      "description": "BioRender helps scientists create professional figures in minutes. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "BioRender",
+        "url": "https://biorender.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--box",
+      "source": "./plugins/codex--box",
+      "description": "Search and reference your documents (from Codex)",
+      "strict": false,
+      "version": "0.0.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://www.box.com/home"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--brand24",
+      "source": "./plugins/codex--brand24",
+      "description": "The Brand24 app in Codex lets marketing and PR teams instantly explore brand mentions, sentiment, and med... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Brand24 Global Inc.",
+        "url": "https://brand24.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--brex",
+      "source": "./plugins/codex--brex",
+      "description": "Connect Brex to Codex and review your company finances through natural conversation — at Codex speed. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Brex Inc.",
+        "url": "https://brex.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--build-ios-apps",
+      "source": "./plugins/codex--build-ios-apps",
+      "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance audits, and simulator debugging. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "ios",
+        "swift",
+        "swiftui",
+        "app-intents",
+        "shortcuts",
+        "siri",
+        "spotlight",
+        "xcode",
+        "performance",
+        "debugging"
+      ]
+    },
+    {
+      "name": "codex--build-macos-apps",
+      "source": "./plugins/codex--build-macos-apps",
+      "description": "Build, run, test, debug, instrument, and implement local macOS apps using Xcode, SwiftUI, AppKit interop, unified logging, and shell-first desktop workflows. (from Codex)",
+      "strict": false,
+      "version": "0.1.2",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "macos",
+        "swift",
+        "swiftui",
+        "appkit",
+        "xcode",
+        "swiftpm",
+        "debugging",
+        "codesign",
+        "logging",
+        "telemetry",
+        "oslog"
+      ]
+    },
+    {
+      "name": "codex--build-web-apps",
+      "source": "./plugins/codex--build-web-apps",
+      "description": "Build web apps with workflows for UI reviews, React improvements, deployment, payments, and database design. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "build-web-apps",
+        "build",
+        "react",
+        "vercel",
+        "stripe",
+        "supabase",
+        "shadcn",
+        "full-stack",
+        "ui-review"
+      ]
+    },
+    {
+      "name": "codex--canva",
+      "source": "./plugins/codex--canva",
+      "description": "Search, create, edit designs (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Canva",
+        "url": "https://www.canva.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--carta-crm",
+      "source": "./plugins/codex--carta-crm",
+      "description": "Carta CRM helps investment teams stay on top of deal flow by keeping deals, companies, and relationships in... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Carta Inc.",
+        "url": "https://carta.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--cb-insights",
+      "source": "./plugins/codex--cb-insights",
+      "description": "Unleash Codex as your private markets research agent. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "CB Insights",
+        "url": "https://cbinsights.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--channel99",
+      "source": "./plugins/codex--channel99",
+      "description": "Channel99 real time go to market intelligence connects Codex directly to Channel99’s performance marketin... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Channel99 Inc. ",
+        "url": "https://www.channel99.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--circleback",
+      "source": "./plugins/codex--circleback",
+      "description": "Circleback helps teams get the most out of every conversation with AI-powered meeting notes, action items,... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Circleback AI, Inc.",
+        "url": "https://circleback.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--circleci",
+      "source": "./plugins/codex--circleci",
+      "description": "Build, test, and deploy any application (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "CircleCI",
+        "url": "https://circleci.com"
+      },
+      "repository": "https://github.com/circleci-public/skills",
+      "keywords": [
+        "circleci",
+        "ci/cd",
+        "ci"
+      ]
+    },
+    {
+      "name": "codex--clickup",
+      "source": "./plugins/codex--clickup",
+      "description": "Turn Codex into your ClickUp command center. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "ClickUp"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--cloudflare",
+      "source": "./plugins/codex--cloudflare",
+      "description": "Cloudflare platform plugin with curated skills for Workers, Wrangler, and Agents SDK plus the official Cloudflare API MCP server. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "Cloudflare",
+        "url": "https://workers.cloudflare.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "cloudflare",
+        "workflow",
+        "deployment",
+        "edge-functions",
+        "edge",
+        "analytics",
+        "wrangler",
+        "agents-sdk",
+        "serverless",
+        "ai-gateway"
+      ]
+    },
+    {
+      "name": "codex--cloudinary",
+      "source": "./plugins/codex--cloudinary",
+      "description": "Manage, search, and transform your Cloudinary media library — directly from Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cloudinary",
+        "url": "https://cloudinary.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--coderabbit",
+      "source": "./plugins/codex--coderabbit",
+      "description": "AI-powered code review in Codex, powered by CodeRabbit. (from Codex)",
+      "strict": false,
+      "version": "1.1.1",
+      "author": {
+        "name": "CodeRabbit AI",
+        "email": "support@coderabbit.ai",
+        "url": "https://coderabbit.ai"
+      },
+      "repository": "https://github.com/coderabbitai/codex-plugin",
+      "keywords": [
+        "code-review",
+        "ai",
+        "coderabbit",
+        "codex"
+      ]
+    },
+    {
+      "name": "codex--cogedim",
+      "source": "./plugins/codex--cogedim",
+      "description": "Cogedim is one of France's leading real estate developers. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "ALTAREA PROMOTION MANAGEMENT",
+        "url": "https://www.cogedim.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--common-room",
+      "source": "./plugins/codex--common-room",
+      "description": "Embed complete buyer intelligence directly within Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Common Room",
+        "url": "https://commonroom.io"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--conductor",
+      "source": "./plugins/codex--conductor",
+      "description": "The Conductor MCP server retrieves proprietary performance metrics regarding a brand's visibility, sentimen... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Conductor Inc.",
+        "url": "https://www.conductor.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--coupler-io",
+      "source": "./plugins/codex--coupler-io",
+      "description": "Analyze multi-channel marketing, financial, sales, e-commerce, and other business data within Codex by co... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Coupler.io",
+        "url": "https://www.coupler.io/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--coveo",
+      "source": "./plugins/codex--coveo",
+      "description": "Search your enterprise content (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Coveo",
+        "url": "https://www.coveo.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--cube",
+      "source": "./plugins/codex--cube",
+      "description": "With the Cube MCP Server, you can: - Query live Cube data from actuals, budgets, forecasts, variances, and... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cube",
+        "url": "https://www.cubesoftware.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--daloopa",
+      "source": "./plugins/codex--daloopa",
+      "description": "Daloopa supplies high quality fundamental data sourced from SEC Filings, investor presentations and any pub... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Daloopa, Inc.",
+        "url": "https://daloopa.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--demandbase",
+      "source": "./plugins/codex--demandbase",
+      "description": "Demandbase integration with Codex gives sales, marketing, and GTM teams seamless access to rich B2B data... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Demandbase Inc",
+        "url": "https://www.demandbase.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--docket",
+      "source": "./plugins/codex--docket",
+      "description": "Docket AI makes your sales knowledge your instant superpower. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Docket AI",
+        "url": "https://www.docket.io/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--domotz-preview",
+      "source": "./plugins/codex--domotz-preview",
+      "description": "Monitor and manage your network infrastructure through natural language. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Domotz",
+        "url": "https://www.domotz.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--dovetail",
+      "source": "./plugins/codex--dovetail",
+      "description": "Connect Dovetail inside Codex to turn customer feedback into decisions without leaving your conversation. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Dovetail",
+        "url": "https://dovetail.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--dow-jones-factiva",
+      "source": "./plugins/codex--dow-jones-factiva",
+      "description": "The Factiva Connector, enables authorized users to search Factiva’s global news archive, including premium... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Factiva, Inc.",
+        "url": "https://www.dowjones.com/business-intelligence/factiva/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--egnyte",
+      "source": "./plugins/codex--egnyte",
+      "description": "Work with documents and files stored in Egnyte directly from Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Egnyte Inc",
+        "url": "https://www.egnyte.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--expo",
+      "source": "./plugins/codex--expo",
+      "description": "Official Expo skills for building, deploying, upgrading, and debugging Expo and React Native apps. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Expo Team",
+        "email": "support@expo.dev",
+        "url": "https://expo.dev"
+      },
+      "repository": "https://github.com/expo/skills/tree/main/plugins/expo",
+      "keywords": [
+        "expo",
+        "react-native",
+        "expo-router",
+        "codex-run-actions",
+        "eas",
+        "mobile",
+        "ios",
+        "android",
+        "deployment",
+        "upgrades",
+        "native-modules"
+      ]
+    },
+    {
+      "name": "codex--figma",
+      "source": "./plugins/codex--figma",
+      "description": "Figma workflows for design implementation, Code Connect templates, and design system rule generation. (from Codex)",
+      "strict": false,
+      "version": "2.0.7",
+      "author": {
+        "name": "Figma",
+        "url": "https://www.figma.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "figma",
+        "design-to-code",
+        "ui-implementation",
+        "code-connect",
+        "design-system"
+      ]
+    },
+    {
+      "name": "codex--finn",
+      "source": "./plugins/codex--finn",
+      "description": "A FINN car subscription is a flexible way to stay mobile anytime - without long-term commitments like buyin... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "FINN GmbH",
+        "url": "https://www.finn.com/de-DE"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--fireflies",
+      "source": "./plugins/codex--fireflies",
+      "description": "The Fireflies app brings your meetings and knowledge directly into Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Fireflies",
+        "url": "https://fireflies.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--fyxer",
+      "source": "./plugins/codex--fyxer",
+      "description": "Fyxer for Codex lets you write emails that sound like you, right from the chat. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Fyxer",
+        "url": "https://www.fyxer.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--game-studio",
+      "source": "./plugins/codex--game-studio",
+      "description": "Design, prototype, and ship browser games with guided 2D and 3D workflows, asset pipelines, and playtesting support. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "games",
+        "phaser",
+        "threejs",
+        "react-three-fiber",
+        "gltf",
+        "rapier",
+        "webgl",
+        "sprites",
+        "playtest"
+      ]
+    },
+    {
+      "name": "codex--github",
+      "source": "./plugins/codex--github",
+      "description": "Inspect repositories, triage pull requests and issues, debug CI, and publish changes through a hybrid GitHub connector and CLI workflow. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "github",
+        "pull-request",
+        "code-review",
+        "issues",
+        "ci",
+        "actions"
+      ]
+    },
+    {
+      "name": "codex--gitlab-issues",
+      "source": "./plugins/codex--gitlab-issues",
+      "description": "Connect to sync GitLab Issues and merge requests for use in ChatGPT. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://about.gitlab.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--gmail",
+      "source": "./plugins/codex--gmail",
+      "description": "Work with Gmail using the configured Gmail app connector. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "gmail",
+        "email",
+        "google"
+      ]
+    },
+    {
+      "name": "codex--google-calendar",
+      "source": "./plugins/codex--google-calendar",
+      "description": "Connect Google Calendar for scheduling, availability, daily briefs, and event management. (from Codex)",
+      "strict": false,
+      "version": "1.2.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "google-calendar",
+        "calendar",
+        "agenda",
+        "daily-brief",
+        "scheduling",
+        "productivity"
+      ]
+    },
+    {
+      "name": "codex--google-drive",
+      "source": "./plugins/codex--google-drive",
+      "description": "Use Google Drive as the single entrypoint for Drive, Docs, Sheets, and Slides work. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "google-drive",
+        "google-docs",
+        "google-sheets",
+        "google-slides",
+        "productivity"
+      ]
+    },
+    {
+      "name": "codex--govtribe",
+      "source": "./plugins/codex--govtribe",
+      "description": "Search government contracts, awards, and vendors directly from Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Government Executive Media Group LLC",
+        "url": "https://govtribe.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--granola",
+      "source": "./plugins/codex--granola",
+      "description": "Granola MCP connects your meeting history to Codex so your assistant can pull real context from past conv... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Granola",
+        "url": "https://www.granola.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--happenstance",
+      "source": "./plugins/codex--happenstance",
+      "description": "Happenstance searches your professional network using natural language to find the right people. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Happenstance, Inc.",
+        "url": "https://happenstance.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--help-scout",
+      "source": "./plugins/codex--help-scout",
+      "description": "Connect to sync Help Scout mailboxes and conversations for use in Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://www.helpscout.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--highlevel",
+      "source": "./plugins/codex--highlevel",
+      "description": "HighLevel gives agencies a unified CRM, automation, and client communication platform. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "HighLevel",
+        "url": "https://www.gohighlevel.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--hostinger",
+      "source": "./plugins/codex--hostinger",
+      "description": "Hostinger Horizons lets you build real websites and apps just by describing what you want. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Hostinger",
+        "url": "https://hostinger.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--hubspot",
+      "source": "./plugins/codex--hubspot",
+      "description": "Work with your HubSpot data to analyze patterns, create and update records, and manage your CRM operations. (from Codex)",
+      "strict": false,
+      "version": "2.0.0",
+      "author": {
+        "name": "HubSpot",
+        "url": "https://www.hubspot.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--hugging-face",
+      "source": "./plugins/codex--hugging-face",
+      "description": "Inspect models, datasets, Spaces, and research (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Hugging Face",
+        "url": "https://huggingface.co"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "hugging-face",
+        "models",
+        "datasets",
+        "spaces",
+        "machine-learning"
+      ]
+    },
+    {
+      "name": "codex--jam",
+      "source": "./plugins/codex--jam",
+      "description": "Screen record with context (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Jam",
+        "url": "https://jam.dev"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--keybid-puls",
+      "source": "./plugins/codex--keybid-puls",
+      "description": "Unlock the profitability of short-term rental investments with our ROI Calculator app, tailored for platfor... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "KeyBid",
+        "url": "https://keybid.eu"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--life-science-research",
+      "source": "./plugins/codex--life-science-research",
+      "description": "General life-sciences research workflows with query routing, evidence synthesis, and optional parallel subagent analysis across genetics, omics, biology, chemistry, structure, clinical evidence, and public dataset discovery. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI"
+      },
+      "repository": "https://github.com/openai/openai/tree/master/plugins/life-science-research",
+      "keywords": [
+        "life-science",
+        "research",
+        "bioinformatics",
+        "human-genetics",
+        "functional-genomics",
+        "transcriptomics",
+        "proteomics",
+        "metabolomics",
+        "clinical-research",
+        "drug-discovery",
+        "skill-routing",
+        "evidence-synthesis",
+        "parallel-analysis",
+        "gwas",
+        "variant-interpretation",
+        "pathway-biology",
+        "protein-structure"
+      ]
+    },
+    {
+      "name": "codex--linear",
+      "source": "./plugins/codex--linear",
+      "description": "Find and reference issues and projects. (from Codex)",
+      "strict": false,
+      "version": "0.0.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://linear.app/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--marcopolo",
+      "source": "./plugins/codex--marcopolo",
+      "description": "MarcoPolo spins up a secure container where Claude can work with your actual data. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Immersa, Inc.",
+        "url": "https://marcopolo.dev"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--mem",
+      "source": "./plugins/codex--mem",
+      "description": "Give Codex the full context of your second brain by connecting your Mem knowledge base. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Mem Labs, Inc.",
+        "url": "https://mem.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--monday-com",
+      "source": "./plugins/codex--monday-com",
+      "description": "A powerful MCP connector enabling AI agents to seamlessly interact with monday.com. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Monday.com",
+        "url": "https://monday.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--moody-s",
+      "source": "./plugins/codex--moody-s",
+      "description": "Credit and risk intelligence (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Moody's"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--morningstar",
+      "source": "./plugins/codex--morningstar",
+      "description": "Investment and fund research (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Morningstar"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--motherduck",
+      "source": "./plugins/codex--motherduck",
+      "description": "Connect AI assistants to your MotherDuck data warehouse. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "MotherDuck Corporation",
+        "url": "https://motherduck.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--mt-newswires",
+      "source": "./plugins/codex--mt-newswires",
+      "description": "MT Newswires brings real-time global financial news directly into Codex — providing original, unbiased an... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "MT Newswires",
+        "url": "https://www.mtnewswires.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--myregistry-com",
+      "source": "./plugins/codex--myregistry-com",
+      "description": "MyRegistry.com helps make gift-giving easy for friends & family to get you the gifts you really want! (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "MyRegistry.com",
+        "url": "https://www.myregistry.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--neon-postgres",
+      "source": "./plugins/codex--neon-postgres",
+      "description": "Manage Neon Serverless Postgres projects and databases with the neon-postgres agent skill and the Neon MCP Server (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Neon",
+        "email": "andre@neon.tech",
+        "url": "https://neon.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "neon",
+        "postgres",
+        "serverless",
+        "database",
+        "mcp",
+        "sql"
+      ]
+    },
+    {
+      "name": "codex--netlify",
+      "source": "./plugins/codex--netlify",
+      "description": "Deploy projects and manage preview or production releases on Netlify. (from Codex)",
+      "strict": false,
+      "version": "1.1.0",
+      "author": {
+        "name": "Netlify",
+        "url": "https://www.netlify.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "netlify",
+        "deployment",
+        "hosting",
+        "preview",
+        "static-sites"
+      ]
+    },
+    {
+      "name": "codex--network-solutions",
+      "source": "./plugins/codex--network-solutions",
+      "description": "The Network Solutions Domain Search Assistant makes finding an available domain fast, simple, and conversat... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Network Solutions",
+        "url": "https://www.networksolutions.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--notion",
+      "source": "./plugins/codex--notion",
+      "description": "Notion workflows for implementation planning, research synthesis, meeting preparation, and knowledge capture. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "notion",
+        "documentation",
+        "research",
+        "meeting-prep",
+        "knowledge-management",
+        "planning"
+      ]
+    },
+    {
+      "name": "codex--omni-analytics",
+      "source": "./plugins/codex--omni-analytics",
+      "description": "Query Omni using the same semantic model, permissions, and logic defined by your data team directly from Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Omni Analytics",
+        "url": "https://www.omni.co"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--otter-ai",
+      "source": "./plugins/codex--otter-ai",
+      "description": "The Otter.ai MCP server connects Codex to your meeting intelligence, enabling search and retrieval of tra... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Otter.ai",
+        "url": "https://otter.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--outlook-calendar",
+      "source": "./plugins/codex--outlook-calendar",
+      "description": "Connect Outlook Calendar for scheduling, daily briefs, event prep, and safe meeting changes. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "outlook-calendar",
+        "calendar",
+        "microsoft",
+        "scheduling",
+        "teams",
+        "daily-brief",
+        "meeting-prep"
+      ]
+    },
+    {
+      "name": "codex--outlook-email",
+      "source": "./plugins/codex--outlook-email",
+      "description": "Work with Outlook Email using the configured Microsoft Outlook app connector. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "outlook-email",
+        "email",
+        "microsoft"
+      ]
+    },
+    {
+      "name": "codex--particl-market-research",
+      "source": "./plugins/codex--particl-market-research",
+      "description": "Particl Market Research helps teams answer ecommerce research questions directly in Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Particl",
+        "url": "https://www.particl.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--pipedrive",
+      "source": "./plugins/codex--pipedrive",
+      "description": "Connect to sync Pipedrive deals and contacts for use in Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://www.pipedrive.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--pitchbook",
+      "source": "./plugins/codex--pitchbook",
+      "description": "PitchBook provides structured access to private capital market data across  companies, investors, funds, de... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "PitchBook",
+        "url": "https://www.pitchbook.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--plugin-eval",
+      "source": "./plugins/codex--plugin-eval",
+      "description": "Evaluate Codex skills and plugins from chat with a beginner-friendly start command, local-first reports, token budget explanations, and guided benchmarking. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI Codex",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "codex",
+        "plugin",
+        "skill",
+        "evaluation",
+        "quality",
+        "budget"
+      ]
+    },
+    {
+      "name": "codex--policynote",
+      "source": "./plugins/codex--policynote",
+      "description": "Use the PolicyNote app to access structured policy and regulatory intelligence from around the world. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "FiscalNote",
+        "url": "https://fiscalnote.com/products/policynote-api"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--pylon",
+      "source": "./plugins/codex--pylon",
+      "description": "Access Pylon's customer support platform directly from Codex to search, manage, and resolve customer issues. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Pylon Labs Inc.",
+        "url": "https://www.usepylon.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--quartr",
+      "source": "./plugins/codex--quartr",
+      "description": "Access structured first-party IR data from over 14,500+ public companies across 65 markets Quartr delivers... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Quartr",
+        "url": "https://quartr.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--quicknode",
+      "source": "./plugins/codex--quicknode",
+      "description": "Manage your Quicknode infrastructure directly in OpenAI. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Quicknode",
+        "url": "https://www.quicknode.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--ranked-ai",
+      "source": "./plugins/codex--ranked-ai",
+      "description": "Ranked AI provides industry leading AI SEO & PPC software, with a fully managed service integrated into it. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Ranked AI, LLC",
+        "url": "https://www.ranked.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--razorpay",
+      "source": "./plugins/codex--razorpay",
+      "description": "Connect your Razorpay account to access your payment data through conversation. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Razorpay Software Private Limited",
+        "url": "https://razorpay.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--read-ai",
+      "source": "./plugins/codex--read-ai",
+      "description": "Read AI brings your meeting intelligence directly into your AI workflows. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Read AI, Inc",
+        "url": "https://read.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--readwise",
+      "source": "./plugins/codex--readwise",
+      "description": "The official app for Readwise and Reader. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Readwise Inc.",
+        "url": "https://readwise.io"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--remotion",
+      "source": "./plugins/codex--remotion",
+      "description": "Remotion video creation skills — best practices, animations, audio, captions, 3D, and more for building programmatic videos with React. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Remotion",
+        "email": "hi@remotion.dev",
+        "url": "https://remotion.dev"
+      },
+      "repository": "https://github.com/remotion-dev/remotion",
+      "keywords": [
+        "remotion",
+        "video",
+        "react",
+        "animation",
+        "composition",
+        "rendering",
+        "ffmpeg",
+        "captions",
+        "audio"
+      ]
+    },
+    {
+      "name": "codex--render",
+      "source": "./plugins/codex--render",
+      "description": "Skills for deploying, debugging, monitoring, and migrating apps on Render. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "Render",
+        "email": "support@render.com",
+        "url": "https://render.com"
+      },
+      "repository": "https://github.com/renderinc/render-codex-plugin",
+      "keywords": [
+        "render",
+        "deploy",
+        "cloud",
+        "blueprint",
+        "monitoring",
+        "debugging"
+      ]
+    },
+    {
+      "name": "codex--responsive",
+      "source": "./plugins/codex--responsive",
+      "description": "The Responsive App makes it easy to work with your organization’s data inside Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "RFPIO Inc. (d/b/a Responsive)",
+        "url": "https://www.responsive.io"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--s-p-global",
+      "source": "./plugins/codex--s-p-global",
+      "description": "Use natural language to query a range of S&P Global datasets, including S&P Capital IQ Financials, transcri... (from Codex)",
+      "strict": false,
+      "version": "2.0.0",
+      "author": {
+        "name": "S&P Global",
+        "url": "https://www.spglobal.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--scite",
+      "source": "./plugins/codex--scite",
+      "description": "Scite delivers answers grounded in peer-reviewed research you can verify. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Scite",
+        "url": "https://www.scite.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--semrush",
+      "source": "./plugins/codex--semrush",
+      "description": "The Semrush MCP provides structured, quantitative SEO and traffic data for domains, keywords, backlinks, an... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Semrush Holdings, Inc.",
+        "url": "https://www.semrush.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--sendgrid",
+      "source": "./plugins/codex--sendgrid",
+      "description": "Connector for interacting with the SendGrid email API. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://sendgrid.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--sentry",
+      "source": "./plugins/codex--sentry",
+      "description": "Inspect recent issues and events in Sentry from Codex. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "sentry",
+        "observability",
+        "triage"
+      ]
+    },
+    {
+      "name": "codex--setu-bharat-connect-billpay",
+      "source": "./plugins/codex--setu-bharat-connect-billpay",
+      "description": "This app helps you pay your utility bills through simple conversation. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Setu",
+        "url": "https://setu.co/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--sharepoint",
+      "source": "./plugins/codex--sharepoint",
+      "description": "Work with SharePoint using the configured Microsoft SharePoint app connector. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "sharepoint",
+        "documents",
+        "microsoft"
+      ]
+    },
+    {
+      "name": "codex--signnow",
+      "source": "./plugins/codex--signnow",
+      "description": "Get documents signed faster without switching between tools. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "airSlate Inc",
+        "url": "https://www.signnow.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--skywatch",
+      "source": "./plugins/codex--skywatch",
+      "description": "Search and explore satellite imagery from top providers including Vantor, Planet, Airbus, and more, all in... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "SkyWatch Space Applications Inc.",
+        "url": "https://skywatch.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--slack",
+      "source": "./plugins/codex--slack",
+      "description": "Work with Slack using the configured Slack integration. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "slack",
+        "chat",
+        "collaboration"
+      ]
+    },
+    {
+      "name": "codex--statsig",
+      "source": "./plugins/codex--statsig",
+      "description": "Bring your Statsig workspace into Codex. (from Codex)",
+      "strict": false,
+      "version": "2.0.0",
+      "author": {
+        "name": "Statsig, LLC",
+        "url": "https://statsig.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--streak",
+      "source": "./plugins/codex--streak",
+      "description": "Streak is a CRM built directly into Gmail, so you can track deals, contacts, and workflows from your inbox. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Rewardly, Inc.",
+        "url": "https://www.streak.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--stripe",
+      "source": "./plugins/codex--stripe",
+      "description": "Payments and business tools (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Stripe",
+        "url": "https://stripe.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--superpowers",
+      "source": "./plugins/codex--superpowers",
+      "description": "An agentic skills framework & software development methodology that works: planning, TDD, debugging, and collaboration workflows. (from Codex)",
+      "strict": false,
+      "version": "5.0.7",
+      "author": {
+        "name": "Jesse Vincent",
+        "email": "jesse@fsck.com",
+        "url": "https://github.com/obra"
+      },
+      "repository": "https://github.com/obra/superpowers",
+      "keywords": [
+        "brainstorming",
+        "subagent-driven-development",
+        "skills",
+        "planning",
+        "tdd",
+        "debugging",
+        "code-review",
+        "workflow"
+      ]
+    },
+    {
+      "name": "codex--taxdown",
+      "source": "./plugins/codex--taxdown",
+      "description": "TaxDown te ayuda a resolver dudas fiscales en España, tanto para particulares como autónomos: deducciones,... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "TAXDOWN S.L.",
+        "url": "https://taxdown.es/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--teams",
+      "source": "./plugins/codex--teams",
+      "description": "Work with Teams using the configured Microsoft Teams app connector. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "teams",
+        "chat",
+        "microsoft"
+      ]
+    },
+    {
+      "name": "codex--teamwork-com",
+      "source": "./plugins/codex--teamwork-com",
+      "description": "Connect to sync Teamwork projects and tasks for use in Codex. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "OpenAI",
+        "url": "https://www.teamwork.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--test-android-apps",
+      "source": "./plugins/codex--test-android-apps",
+      "description": "Test Android apps with emulator workflows for reproduction, screenshots, UI inspection, and log capture. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI",
+        "email": "support@openai.com",
+        "url": "https://openai.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "android",
+        "adb",
+        "emulator",
+        "qa",
+        "logcat",
+        "uiautomator"
+      ]
+    },
+    {
+      "name": "codex--third-bridge",
+      "source": "./plugins/codex--third-bridge",
+      "description": "Seamlessly incorporate critical context and trusted insights from industry experts as part of your financia... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Third Bridge Group",
+        "url": "https://www.thirdbridge.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--tinman-ai",
+      "source": "./plugins/codex--tinman-ai",
+      "description": "Tinman AI helps loan officers and underwriters quickly underwrite home financing scenarios and answer compl... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Better",
+        "url": "https://better.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--united-rentals",
+      "source": "./plugins/codex--united-rentals",
+      "description": "Get the right equipment for the job without guesswork. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "United Rentals",
+        "url": "https://www.unitedrentals.com"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--vantage",
+      "source": "./plugins/codex--vantage",
+      "description": "Vantage is a cloud observability and optimization platform that aggregates cloud infrastructure costs acros... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Vantage",
+        "url": "https://www.vantage.sh"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--vercel",
+      "source": "./plugins/codex--vercel",
+      "description": "Build and deploy web apps and agents (from Codex)",
+      "strict": false,
+      "version": "0.21.0",
+      "author": {
+        "name": "Vercel Labs",
+        "url": "https://github.com/vercel"
+      },
+      "repository": "https://github.com/vercel/vercel-plugin",
+      "keywords": [
+        "vercel",
+        "nextjs",
+        "ai-sdk",
+        "turborepo",
+        "turbopack",
+        "workflow",
+        "deployment",
+        "edge-functions",
+        "serverless",
+        "ai-gateway",
+        "chat-sdk",
+        "chat-bot",
+        "slack-bot",
+        "discord-bot"
+      ]
+    },
+    {
+      "name": "codex--waldo",
+      "source": "./plugins/codex--waldo",
+      "description": "Waldo is an AI-powered strategy platform for agencies and brands. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Curiosities, Inc.",
+        "url": "https://www.waldo.fyi"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--weatherpromise",
+      "source": "./plugins/codex--weatherpromise",
+      "description": "Protect your trip with WeatherPromise and get back the full cost if it rains more than promised during your... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "WeatherPromise, Inc.",
+        "url": "https://www.weatherpromise.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--windsor-ai",
+      "source": "./plugins/codex--windsor-ai",
+      "description": "Windsor.ai connects your marketing and business data sources to Codex so you can ask questions in natural... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Windsor.ai",
+        "url": "https://windsor.ai"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--yepcode",
+      "source": "./plugins/codex--yepcode",
+      "description": "YepCode lets you build custom AI tools using your own code with JSON Schema-defined inputs, executed in an... (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "YepCode S.L.",
+        "url": "https://yepcode.io/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "codex--zoominfo",
+      "source": "./plugins/codex--zoominfo",
+      "description": "Access ZoomInfo’s data and AI context within ChatGPT. (from Codex)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "ZoomInfo Technologies LLC",
+        "url": "https://www.zoominfo.com/"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": []
+    },
+    {
+      "name": "cursor--agent-compatibility",
+      "source": "./plugins/cursor--agent-compatibility",
+      "description": "CLI-backed repo compatibility scans plus Cursor agents that audit startup, validation, and docs against reality. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "agent-compatibility",
+        "agents",
+        "compatibility",
+        "cursor-plugin",
+        "repo-audit",
+        "startup",
+        "validation"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "agents",
+        "compatibility",
+        "quality",
+        "workflow"
+      ]
+    },
+    {
+      "name": "cursor--cli-for-agent",
+      "source": "./plugins/cursor--cli-for-agent",
+      "description": "Patterns for designing CLIs that coding agents can run reliably: non-interactive flags, layered help with examples, pipelines, actionable errors, idempotency, and dry-run. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "cli",
+        "command-line",
+        "agents",
+        "automation",
+        "terminal",
+        "flags",
+        "help"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "cli",
+        "agents",
+        "automation",
+        "developer-tools"
+      ]
+    },
+    {
+      "name": "cursor--continual-learning",
+      "source": "./plugins/cursor--continual-learning",
+      "description": "Incrementally learns durable user preferences and workspace facts from transcript changes and keeps AGENTS.md up to date with plain bullet points. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "continual-learning",
+        "agent-memory",
+        "transcripts",
+        "hooks",
+        "incremental"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "automation",
+        "memory",
+        "transcripts"
+      ]
+    },
+    {
+      "name": "cursor--create-plugin",
+      "source": "./plugins/cursor--create-plugin",
+      "description": "Scaffold and validate new Cursor plugins. Handles directory setup, manifest generation, and pre-submission quality checks for the marketplace. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "create-plugin",
+        "cursor-plugin",
+        "marketplace",
+        "plugin-authoring"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "meta",
+        "authoring",
+        "templates"
+      ]
+    },
+    {
+      "name": "cursor--cursor-team-kit",
+      "source": "./plugins/cursor--cursor-team-kit",
+      "description": "Internal workflows used by Cursor developers for CI, code review, and shipping. Covers the full dev loop: CI monitoring and fixing, PR creation, merge conflicts, smoke tests, compiler checks, code cleanup, and work summaries. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "cursor-team-kit",
+        "ci",
+        "code-review",
+        "shipping",
+        "testing"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "internal-workflows",
+        "quality",
+        "delivery"
+      ]
+    },
+    {
+      "name": "cursor--docs-canvas",
+      "source": "./plugins/cursor--docs-canvas",
+      "description": "Render documentation — architecture notes, API references, runbooks, and codebase walkthroughs — as a navigable Cursor Canvas with sections, table of contents, diagrams, and cross-references. (from Cursor)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "cursor-plugin",
+        "canvas",
+        "documentation",
+        "docs",
+        "architecture",
+        "reference"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "canvas",
+        "documentation",
+        "workflow"
+      ]
+    },
+    {
+      "name": "cursor--pr-review-canvas",
+      "source": "./plugins/cursor--pr-review-canvas",
+      "description": "Render PR diffs as interactive Cursor Canvases organized for reviewer comprehension — groups changes by importance, separates boilerplate from core logic, and highlights tricky or unexpected code. (from Cursor)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "cursor-plugin",
+        "canvas",
+        "pr-review",
+        "code-review",
+        "diff",
+        "pull-request"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "canvas",
+        "code-review",
+        "pull-request",
+        "workflow"
+      ]
+    },
+    {
+      "name": "cursor--ralph-loop",
+      "source": "./plugins/cursor--ralph-loop",
+      "description": "Continuous self-referential AI loops for iterative development, implementing the Ralph Wiggum technique. Run the agent in a while-true loop with the same prompt until task completion. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "ralph",
+        "loop",
+        "iteration",
+        "self-referential",
+        "automation",
+        "iterative-development"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "automation",
+        "iteration",
+        "agent-loop"
+      ]
+    },
+    {
+      "name": "cursor--teaching",
+      "source": "./plugins/cursor--teaching",
+      "description": "Skill mapping, practice plans, and learning retrospectives. Builds personalized roadmaps with milestones and practice checkpoints, and runs periodic reviews to adjust based on progress. (from Cursor)",
+      "strict": false,
+      "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "teaching",
+        "study-plan",
+        "practice",
+        "feedback",
+        "mentorship"
+      ],
+      "category": "utilities",
+      "tags": [
+        "teaching",
+        "education",
+        "practice"
+      ]
+    }
+  ]
+}
