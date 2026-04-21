@@ -111,6 +111,9 @@ async function assertInstalledPluginArtifacts(testHome: string, pluginName: stri
   const nestedAgentYaml = Array.from(new Bun.Glob('skills/*/agents/*.yaml').scanSync({ cwd: installedPluginDir }));
   expect(nestedAgentYaml).toHaveLength(0);
 
+  const topLevelAgentYaml = Array.from(new Bun.Glob('agents/*.yaml').scanSync({ cwd: installedPluginDir }));
+  expect(topLevelAgentYaml).toHaveLength(0);
+
   const topLevelEntries = await readdir(installedPluginDir);
   expect(topLevelEntries.filter((entry) => entry.endsWith('.yaml'))).toHaveLength(0);
 }
