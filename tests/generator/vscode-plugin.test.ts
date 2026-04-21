@@ -75,6 +75,22 @@ describe('VsCodePluginGenerator', () => {
     expect(await readFile(join(outDir, 'README.md'), 'utf-8')).toContain('.app.json');
   });
 
+  test('cleanup for one plugin does not touch sibling output directories', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
+    const outDirA = join(OUTPUT_ROOT, 'codex-sibling-a');
+    const outDirB = join(OUTPUT_ROOT, 'codex-sibling-b');
+    const sentinel = 'keep me';
+
+    await ensureCleanDir(outDirA);
+    await ensureCleanDir(outDirB);
+    await writeFile(join(outDirB, 'sentinel.txt'), sentinel);
+
+    await new VsCodePluginGenerator().generate(ir, outDirA);
+
+    expect(await readFile(join(outDirB, 'sentinel.txt'), 'utf-8')).toBe(sentinel);
+    await expect(stat(join(outDirB, 'sentinel.txt'))).resolves.toBeDefined();
+  });
+
   test('filters skill-private agents while preserving public skill assets', async () => {
     const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-github'));
     const outDir = join(OUTPUT_ROOT, 'codex-skill-private-filter');
