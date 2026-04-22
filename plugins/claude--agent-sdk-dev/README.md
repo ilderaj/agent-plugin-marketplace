@@ -15,7 +15,7 @@
 
 ## Components
 - Skills: none
-- Agents: agent-sdk-verifier-ts.md, agent-sdk-verifier-py.md
+- Agents: agent-sdk-verifier-py.md, agent-sdk-verifier-ts.md
 - Hooks: none
 - MCP: none
 - Commands: new-sdk-app.md

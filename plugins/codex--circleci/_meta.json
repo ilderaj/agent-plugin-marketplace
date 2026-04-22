@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/circleci",
-    "commitSha": "b832dd55290738a56090ceffe4d4afd5a16e08bf",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "1.0.0"
   },
   "_compatibility": {

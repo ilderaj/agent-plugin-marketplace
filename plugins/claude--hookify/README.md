@@ -19,7 +19,7 @@
 - Agents: conversation-analyzer.md
 - Hooks: none
 - MCP: none
-- Commands: help.md, list.md, configure.md, hookify.md
+- Commands: configure.md, help.md, hookify.md, list.md
 - Instructions: none
 
 ## Dropped Components

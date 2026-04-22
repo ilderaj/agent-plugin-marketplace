@@ -14,7 +14,7 @@
 
 ## Components
 - Skills: check-agent-compatibility
-- Agents: startup-review.md, validation-review.md, compatibility-scan-review.md, docs-reliability-review.md
+- Agents: compatibility-scan-review.md, docs-reliability-review.md, startup-review.md, validation-review.md
 - Hooks: none
 - MCP: none
 - Commands: none

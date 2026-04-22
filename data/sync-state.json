@@ -1,520 +1,520 @@
 {
-  "lastSyncAt": "2026-04-19T18:57:00.578Z",
-  "toolchainFingerprint": "c293b6cfc12844e3ea3ed7c79d51a2eacbd305a0145f352303607ae1031fb71a",
+  "lastSyncAt": "2026-04-21T18:20:34.447Z",
+  "toolchainFingerprint": "a0b005b7d608686a2aa39ffe290294a016778ec7086d8ec2fa8ed43ccfa15a72",
   "sources": {
     "codex": {
       "repoUrl": "https://github.com/openai/plugins.git",
-      "lastCommit": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
+      "lastCommit": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
       "plugins": {
         "alpaca": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.329Z"
+          "syncedAt": "2026-04-21T18:20:28.017Z"
         },
         "amplitude": {
           "commitSha": "99f0215239c31991c58e10efef7e9a4e50481445",
-          "syncedAt": "2026-04-19T18:56:58.343Z"
+          "syncedAt": "2026-04-21T18:20:28.030Z"
         },
         "atlassian-rovo": {
-          "commitSha": "5914cdcc090816b63d570f1b1e38eb182b28d8f5",
-          "syncedAt": "2026-04-19T18:56:58.364Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.051Z"
         },
         "attio": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.377Z"
+          "syncedAt": "2026-04-21T18:20:28.064Z"
         },
         "binance": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.391Z"
+          "syncedAt": "2026-04-21T18:20:28.077Z"
         },
         "biorender": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.403Z"
+          "syncedAt": "2026-04-21T18:20:28.090Z"
         },
         "box": {
-          "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
-          "syncedAt": "2026-04-19T18:56:58.421Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.108Z"
         },
         "brand24": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.433Z"
+          "syncedAt": "2026-04-21T18:20:28.122Z"
         },
         "brex": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.445Z"
+          "syncedAt": "2026-04-21T18:20:28.135Z"
         },
         "build-ios-apps": {
-          "commitSha": "fbfc41dfb3d2a2305e0e7373c6d83ce4e95e7ed9",
-          "syncedAt": "2026-04-19T18:56:58.470Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.164Z"
         },
         "build-macos-apps": {
           "commitSha": "c989653d89097f901adbead90921fcb82b907fad",
-          "syncedAt": "2026-04-19T18:56:58.490Z"
+          "syncedAt": "2026-04-21T18:20:28.189Z"
         },
         "build-web-apps": {
-          "commitSha": "2a8be46b96f3c5ac7d989adccb483d3a6f52ab6b",
-          "syncedAt": "2026-04-19T18:56:58.529Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.259Z"
         },
         "canva": {
-          "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
-          "syncedAt": "2026-04-19T18:56:58.545Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.276Z"
         },
         "carta-crm": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.557Z"
+          "syncedAt": "2026-04-21T18:20:28.290Z"
         },
         "cb-insights": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.569Z"
+          "syncedAt": "2026-04-21T18:20:28.304Z"
         },
         "channel99": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.582Z"
+          "syncedAt": "2026-04-21T18:20:28.317Z"
         },
         "circleback": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.594Z"
+          "syncedAt": "2026-04-21T18:20:28.330Z"
         },
         "circleci": {
-          "commitSha": "b832dd55290738a56090ceffe4d4afd5a16e08bf",
-          "syncedAt": "2026-04-19T18:56:58.610Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.346Z"
         },
         "clickup": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.622Z"
+          "syncedAt": "2026-04-21T18:20:28.358Z"
         },
         "cloudflare": {
-          "commitSha": "c33798c8a1e6da61a75e06e33ceae39a35f05ea5",
-          "syncedAt": "2026-04-19T18:56:58.716Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.477Z"
         },
         "cloudinary": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.728Z"
+          "syncedAt": "2026-04-21T18:20:28.491Z"
         },
         "coderabbit": {
-          "commitSha": "1f87561ac4dae225447336612b9304903921bb85",
-          "syncedAt": "2026-04-19T18:56:58.741Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.504Z"
         },
         "cogedim": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.754Z"
+          "syncedAt": "2026-04-21T18:20:28.518Z"
         },
         "common-room": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.766Z"
+          "syncedAt": "2026-04-21T18:20:28.530Z"
         },
         "conductor": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.778Z"
+          "syncedAt": "2026-04-21T18:20:28.543Z"
         },
         "coupler-io": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.790Z"
+          "syncedAt": "2026-04-21T18:20:28.556Z"
         },
         "coveo": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.802Z"
+          "syncedAt": "2026-04-21T18:20:28.569Z"
         },
         "cube": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.813Z"
+          "syncedAt": "2026-04-21T18:20:28.582Z"
         },
         "daloopa": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.825Z"
+          "syncedAt": "2026-04-21T18:20:28.595Z"
         },
         "demandbase": {
-          "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.837Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.620Z"
         },
         "docket": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.849Z"
+          "syncedAt": "2026-04-21T18:20:28.645Z"
         },
         "domotz-preview": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:58.863Z"
+          "syncedAt": "2026-04-21T18:20:28.658Z"
         },
         "dovetail": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.910Z"
+          "syncedAt": "2026-04-21T18:20:28.670Z"
         },
         "dow-jones-factiva": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.926Z"
+          "syncedAt": "2026-04-21T18:20:28.683Z"
         },
         "egnyte": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:58.938Z"
+          "syncedAt": "2026-04-21T18:20:28.696Z"
         },
         "expo": {
           "commitSha": "b2f3314f8f385fd55f2485cea68e8002729c870f",
-          "syncedAt": "2026-04-19T18:56:58.965Z"
+          "syncedAt": "2026-04-21T18:20:28.727Z"
         },
         "figma": {
-          "commitSha": "78e4d982f8f0610d8d0f83140b90ea41acb8bd66",
-          "syncedAt": "2026-04-19T18:56:59.000Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.763Z"
         },
         "finn": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.012Z"
+          "syncedAt": "2026-04-21T18:20:28.776Z"
         },
         "fireflies": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.025Z"
+          "syncedAt": "2026-04-21T18:20:28.788Z"
         },
         "fyxer": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.037Z"
+          "syncedAt": "2026-04-21T18:20:28.801Z"
         },
         "game-studio": {
-          "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
-          "syncedAt": "2026-04-19T18:56:59.053Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.818Z"
         },
         "github": {
           "commitSha": "96adb50181823339d6e0973d7ce1d567bff204bd",
-          "syncedAt": "2026-04-19T18:56:59.072Z"
+          "syncedAt": "2026-04-21T18:20:28.837Z"
         },
         "gmail": {
           "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
-          "syncedAt": "2026-04-19T18:56:59.093Z"
+          "syncedAt": "2026-04-21T18:20:28.855Z"
         },
         "google-calendar": {
           "commitSha": "a35a37d871da56e82e39f8d46b9a3775cc6fe760",
-          "syncedAt": "2026-04-19T18:56:59.112Z"
+          "syncedAt": "2026-04-21T18:20:28.874Z"
         },
         "google-drive": {
-          "commitSha": "b7ebf6296733cddb871d0e914288e8a0c0a3dcfe",
-          "syncedAt": "2026-04-19T18:56:59.138Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.903Z"
         },
         "govtribe": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.150Z"
+          "syncedAt": "2026-04-21T18:20:28.917Z"
         },
         "granola": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.162Z"
+          "syncedAt": "2026-04-21T18:20:28.935Z"
         },
         "happenstance": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.174Z"
+          "syncedAt": "2026-04-21T18:20:28.950Z"
         },
         "help-scout": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.187Z"
+          "syncedAt": "2026-04-21T18:20:28.963Z"
         },
         "highlevel": {
-          "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.199Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:28.976Z"
         },
         "hostinger": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.211Z"
+          "syncedAt": "2026-04-21T18:20:28.998Z"
         },
         "hubspot": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.223Z"
+          "syncedAt": "2026-04-21T18:20:29.016Z"
         },
         "hugging-face": {
-          "commitSha": "2a8be46b96f3c5ac7d989adccb483d3a6f52ab6b",
-          "syncedAt": "2026-04-19T18:56:59.258Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.052Z"
         },
         "jam": {
-          "commitSha": "743b9a8c27d989b3238a40d8c65dd0f5b02be574",
-          "syncedAt": "2026-04-19T18:56:59.272Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.065Z"
         },
         "keybid-puls": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.284Z"
+          "syncedAt": "2026-04-21T18:20:29.091Z"
         },
         "life-science-research": {
-          "commitSha": "2032fd0291961d866feca472adc8ed6a8cddafc6",
-          "syncedAt": "2026-04-19T18:56:59.332Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.162Z"
         },
         "linear": {
-          "commitSha": "3d6b9c1a90375db41c4e21ee284d577c5e96d4b4",
-          "syncedAt": "2026-04-19T18:56:59.346Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.187Z"
         },
         "marcopolo": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.359Z"
+          "syncedAt": "2026-04-21T18:20:29.202Z"
         },
         "mem": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.372Z"
+          "syncedAt": "2026-04-21T18:20:29.217Z"
         },
         "monday-com": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.392Z"
+          "syncedAt": "2026-04-21T18:20:29.233Z"
         },
         "moody-s": {
           "commitSha": "99f0215239c31991c58e10efef7e9a4e50481445",
-          "syncedAt": "2026-04-19T18:56:59.405Z"
+          "syncedAt": "2026-04-21T18:20:29.247Z"
         },
         "morningstar": {
           "commitSha": "99f0215239c31991c58e10efef7e9a4e50481445",
-          "syncedAt": "2026-04-19T18:56:59.417Z"
+          "syncedAt": "2026-04-21T18:20:29.261Z"
         },
         "motherduck": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.429Z"
+          "syncedAt": "2026-04-21T18:20:29.285Z"
         },
         "mt-newswires": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.441Z"
+          "syncedAt": "2026-04-21T18:20:29.300Z"
         },
         "myregistry-com": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.453Z"
+          "syncedAt": "2026-04-21T18:20:29.315Z"
         },
         "neon-postgres": {
           "commitSha": "bb07d439ba5f23713f3c34c2f9f4b1ecd8deab2e",
-          "syncedAt": "2026-04-19T18:56:59.466Z"
+          "syncedAt": "2026-04-21T18:20:29.333Z"
         },
         "netlify": {
-          "commitSha": "b4940fd0a222022ecd7852e20a4c89ed36b9e9de",
-          "syncedAt": "2026-04-19T18:56:59.496Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.367Z"
         },
         "network-solutions": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.508Z"
+          "syncedAt": "2026-04-21T18:20:29.420Z"
         },
         "notion": {
           "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
-          "syncedAt": "2026-04-19T18:56:59.539Z"
+          "syncedAt": "2026-04-21T18:20:29.510Z"
         },
         "omni-analytics": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.552Z"
+          "syncedAt": "2026-04-21T18:20:29.525Z"
         },
         "otter-ai": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.563Z"
+          "syncedAt": "2026-04-21T18:20:29.540Z"
         },
         "outlook-calendar": {
           "commitSha": "dd74c49bdf9bafc07c085dbc45ed7774cd8e6a5c",
-          "syncedAt": "2026-04-19T18:56:59.581Z"
+          "syncedAt": "2026-04-21T18:20:29.560Z"
         },
         "outlook-email": {
           "commitSha": "bfb04a0796c9e29717bca758876a868a32b9e4d0",
-          "syncedAt": "2026-04-19T18:56:59.596Z"
+          "syncedAt": "2026-04-21T18:20:29.578Z"
         },
         "particl-market-research": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.608Z"
+          "syncedAt": "2026-04-21T18:20:29.623Z"
         },
         "pipedrive": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.621Z"
+          "syncedAt": "2026-04-21T18:20:29.644Z"
         },
         "pitchbook": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.633Z"
+          "syncedAt": "2026-04-21T18:20:29.659Z"
         },
         "plugin-eval": {
-          "commitSha": "610a632ae9a27eca49f7d937fbe60379fd04257b",
-          "syncedAt": "2026-04-19T18:56:59.646Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.674Z"
         },
         "policynote": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.658Z"
+          "syncedAt": "2026-04-21T18:20:29.689Z"
         },
         "pylon": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.670Z"
+          "syncedAt": "2026-04-21T18:20:29.703Z"
         },
         "quartr": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.682Z"
+          "syncedAt": "2026-04-21T18:20:29.730Z"
         },
         "quicknode": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.694Z"
+          "syncedAt": "2026-04-21T18:20:29.747Z"
         },
         "ranked-ai": {
-          "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.706Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.762Z"
         },
         "razorpay": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.718Z"
+          "syncedAt": "2026-04-21T18:20:29.776Z"
         },
         "read-ai": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.730Z"
+          "syncedAt": "2026-04-21T18:20:29.790Z"
         },
         "readwise": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.742Z"
+          "syncedAt": "2026-04-21T18:20:29.807Z"
         },
         "remotion": {
-          "commitSha": "459bc0ca9d6c6e21e4385ba20b04bbd4a8c98ae8",
-          "syncedAt": "2026-04-19T18:56:59.764Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.836Z"
         },
         "render": {
-          "commitSha": "314574a046f21938025ae443f9c6dbbd0c2c9b7a",
-          "syncedAt": "2026-04-19T18:56:59.789Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.865Z"
         },
         "responsive": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.802Z"
+          "syncedAt": "2026-04-21T18:20:29.879Z"
         },
         "scite": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.813Z"
+          "syncedAt": "2026-04-21T18:20:29.897Z"
         },
         "semrush": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.825Z"
+          "syncedAt": "2026-04-21T18:20:29.916Z"
         },
         "sendgrid": {
-          "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.837Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:29.931Z"
         },
         "sentry": {
           "commitSha": "0a2c3b82d2ebd1da0f3dc2f09391d20da40d731c",
-          "syncedAt": "2026-04-19T18:56:59.853Z"
+          "syncedAt": "2026-04-21T18:20:29.982Z"
         },
         "setu-bharat-connect-billpay": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.865Z"
+          "syncedAt": "2026-04-21T18:20:30.006Z"
         },
         "sharepoint": {
           "commitSha": "bfb04a0796c9e29717bca758876a868a32b9e4d0",
-          "syncedAt": "2026-04-19T18:56:59.886Z"
+          "syncedAt": "2026-04-21T18:20:30.030Z"
         },
         "signnow": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.930Z"
+          "syncedAt": "2026-04-21T18:20:30.045Z"
         },
         "skywatch": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:56:59.948Z"
+          "syncedAt": "2026-04-21T18:20:30.060Z"
         },
         "slack": {
           "commitSha": "d88301d4694edc6282ca554e97fb8425cbd5a250",
-          "syncedAt": "2026-04-19T18:56:59.967Z"
+          "syncedAt": "2026-04-21T18:20:30.082Z"
         },
         "statsig": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:56:59.989Z"
+          "syncedAt": "2026-04-21T18:20:30.103Z"
         },
         "streak": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.019Z"
+          "syncedAt": "2026-04-21T18:20:30.118Z"
         },
         "stripe": {
-          "commitSha": "83b5c6c37251ffd7d5be0df0db02be6dc6e64df0",
-          "syncedAt": "2026-04-19T18:57:00.049Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:30.134Z"
         },
         "superpowers": {
-          "commitSha": "6c24048e447572232e2198745a4f82ba86912fe7",
-          "syncedAt": "2026-04-19T18:57:00.074Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:30.164Z"
         },
         "taxdown": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.086Z"
+          "syncedAt": "2026-04-21T18:20:30.179Z"
         },
         "teams": {
           "commitSha": "dd74c49bdf9bafc07c085dbc45ed7774cd8e6a5c",
-          "syncedAt": "2026-04-19T18:57:00.103Z"
+          "syncedAt": "2026-04-21T18:20:30.206Z"
         },
         "teamwork-com": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:57:00.115Z"
+          "syncedAt": "2026-04-21T18:20:30.221Z"
         },
         "test-android-apps": {
           "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
-          "syncedAt": "2026-04-19T18:57:00.130Z"
+          "syncedAt": "2026-04-21T18:20:30.238Z"
         },
         "third-bridge": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.142Z"
+          "syncedAt": "2026-04-21T18:20:30.252Z"
         },
         "tinman-ai": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.154Z"
+          "syncedAt": "2026-04-21T18:20:30.267Z"
         },
         "united-rentals": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.165Z"
+          "syncedAt": "2026-04-21T18:20:30.281Z"
         },
         "vantage": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.177Z"
+          "syncedAt": "2026-04-21T18:20:30.303Z"
         },
         "vercel": {
-          "commitSha": "2a8be46b96f3c5ac7d989adccb483d3a6f52ab6b",
-          "syncedAt": "2026-04-19T18:57:00.209Z"
+          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+          "syncedAt": "2026-04-21T18:20:30.344Z"
         },
         "waldo": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.222Z"
+          "syncedAt": "2026-04-21T18:20:30.359Z"
         },
         "weatherpromise": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.234Z"
+          "syncedAt": "2026-04-21T18:20:30.374Z"
         },
         "windsor-ai": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
-          "syncedAt": "2026-04-19T18:57:00.245Z"
+          "syncedAt": "2026-04-21T18:20:30.394Z"
         },
         "yepcode": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
-          "syncedAt": "2026-04-19T18:57:00.257Z"
+          "syncedAt": "2026-04-21T18:20:30.418Z"
         }
       }
     },
     "claude-code": {
       "repoUrl": "https://github.com/anthropics/claude-code.git",
-      "lastCommit": "0385848b4e737831fc3b973d9a78d31950a87d9d",
+      "lastCommit": "fe53778ed90fd971bf4ec78fa1f65ccf0536352f",
       "plugins": {
         "agent-sdk-dev": {
           "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
-          "syncedAt": "2026-04-19T18:57:00.288Z"
+          "syncedAt": "2026-04-21T18:20:32.848Z"
         },
         "claude-opus-4-5-migration": {
           "commitSha": "a194a9d41b7384879fe88368d67367d7ae1a59e7",
-          "syncedAt": "2026-04-19T18:57:00.304Z"
+          "syncedAt": "2026-04-21T18:20:32.865Z"
         },
         "code-review": {
           "commitSha": "db8834ba1d72e9a26fba30ac85f3bc4316bb0689",
-          "syncedAt": "2026-04-19T18:57:00.316Z"
+          "syncedAt": "2026-04-21T18:20:32.879Z"
         },
         "commit-commands": {
           "commitSha": "207b22de658ee343561159f576fd8c6f0e97c7ae",
-          "syncedAt": "2026-04-19T18:57:00.330Z"
+          "syncedAt": "2026-04-21T18:20:32.894Z"
         },
         "explanatory-output-style": {
           "commitSha": "3af8ef29be10d2f0dc98ee5db4ae7e9558ff48e5",
-          "syncedAt": "2026-04-19T18:57:00.343Z"
+          "syncedAt": "2026-04-21T18:20:32.908Z"
         },
         "feature-dev": {
           "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
-          "syncedAt": "2026-04-19T18:57:00.358Z"
+          "syncedAt": "2026-04-21T18:20:32.924Z"
         },
         "frontend-design": {
           "commitSha": "c91a6b660de1b1a607f8d7ec3eea53ec567d710a",
-          "syncedAt": "2026-04-19T18:57:00.372Z"
+          "syncedAt": "2026-04-21T18:20:32.939Z"
         },
         "hookify": {
           "commitSha": "59372c0921b0170e81f9c63777962d02347411d5",
-          "syncedAt": "2026-04-19T18:57:00.388Z"
+          "syncedAt": "2026-04-21T18:20:32.957Z"
         },
         "learning-output-style": {
           "commitSha": "3af8ef29be10d2f0dc98ee5db4ae7e9558ff48e5",
-          "syncedAt": "2026-04-19T18:57:00.401Z"
+          "syncedAt": "2026-04-21T18:20:32.970Z"
         },
         "pr-review-toolkit": {
           "commitSha": "f7ab5c799caf2ec8c7cd1b99d2bc2f158459ef5e",
-          "syncedAt": "2026-04-19T18:57:00.417Z"
+          "syncedAt": "2026-04-21T18:20:32.988Z"
         },
         "ralph-wiggum": {
           "commitSha": "c2022d3698c2ed89a5d9ca4a724571d2819057a5",
-          "syncedAt": "2026-04-19T18:57:00.430Z"
+          "syncedAt": "2026-04-21T18:20:33.003Z"
         },
         "security-guidance": {
           "commitSha": "f876b851167130da1fac34f655a1ae55aa31a068",
-          "syncedAt": "2026-04-19T18:57:00.443Z"
+          "syncedAt": "2026-04-21T18:20:33.017Z"
         }
       }
     },
@@ -524,39 +524,39 @@
       "plugins": {
         "agent-compatibility": {
           "commitSha": "f006be721cf80886bfa0055872cd8bc39ec4cd02",
-          "syncedAt": "2026-04-19T18:57:00.471Z"
+          "syncedAt": "2026-04-21T18:20:34.319Z"
         },
         "cli-for-agent": {
           "commitSha": "26a1497493298e36d8bf39208a57bb59252a811e",
-          "syncedAt": "2026-04-19T18:57:00.483Z"
+          "syncedAt": "2026-04-21T18:20:34.333Z"
         },
         "continual-learning": {
           "commitSha": "9c39b574a4c2f4374b568effd115b6dc6fbe3bf4",
-          "syncedAt": "2026-04-19T18:57:00.496Z"
+          "syncedAt": "2026-04-21T18:20:34.348Z"
         },
         "create-plugin": {
           "commitSha": "82d7c797faccace88376505c1ae7d06cb84a549f",
-          "syncedAt": "2026-04-19T18:57:00.509Z"
+          "syncedAt": "2026-04-21T18:20:34.363Z"
         },
         "cursor-team-kit": {
           "commitSha": "469d9f7d7885e0f6dcaa46ad66228b8a150380c0",
-          "syncedAt": "2026-04-19T18:57:00.525Z"
+          "syncedAt": "2026-04-21T18:20:34.384Z"
         },
         "docs-canvas": {
           "commitSha": "442ab7d08f4d629b39a6a6d9726e51442b93db4d",
-          "syncedAt": "2026-04-19T18:57:00.537Z"
+          "syncedAt": "2026-04-21T18:20:34.401Z"
         },
         "pr-review-canvas": {
           "commitSha": "442ab7d08f4d629b39a6a6d9726e51442b93db4d",
-          "syncedAt": "2026-04-19T18:57:00.550Z"
+          "syncedAt": "2026-04-21T18:20:34.417Z"
         },
         "ralph-loop": {
           "commitSha": "b697d35c75cf47b35ecea1d45df243bf865fc022",
-          "syncedAt": "2026-04-19T18:57:00.566Z"
+          "syncedAt": "2026-04-21T18:20:34.432Z"
         },
         "teaching": {
           "commitSha": "2cf89ae30b83b8e2ae2361ea457169bdc5bc74d8",
-          "syncedAt": "2026-04-19T18:57:00.578Z"
+          "syncedAt": "2026-04-21T18:20:34.447Z"
         }
       }
     }

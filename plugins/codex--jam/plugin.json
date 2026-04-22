@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Screen record with context",
   "author": {
+    "name": "Jam",
     "url": "https://jam.dev"
   },
   "license": "MIT",

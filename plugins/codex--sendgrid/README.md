@@ -5,7 +5,7 @@
 - Plugin ID: codex--sendgrid
 - Upstream: https://github.com/openai/plugins.git
 - Source Path: plugins/sendgrid
-- Version: 0.0.0
+- Version: 0.1.0
 
 ## Compatibility Summary
 - Overall: partial

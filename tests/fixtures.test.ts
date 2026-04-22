@@ -92,6 +92,50 @@ describe("Test Fixtures Structure", () => {
       expect(validateSkillFrontmatter(skillPath)).toBe(true);
     });
 
+    test("skills/github/agents/openai.yaml exists", () => {
+      const agentPath = join(
+        fixturePath,
+        "skills",
+        "github",
+        "agents",
+        "openai.yaml",
+      );
+      expect(existsSync(agentPath)).toBe(true);
+    });
+
+    test("skills/github/assets/github.svg exists", () => {
+      const assetPath = join(
+        fixturePath,
+        "skills",
+        "github",
+        "assets",
+        "github.svg",
+      );
+      expect(existsSync(assetPath)).toBe(true);
+    });
+
+    test("skills/github/references/reference.md exists", () => {
+      const referencePath = join(
+        fixturePath,
+        "skills",
+        "github",
+        "references",
+        "reference.md",
+      );
+      expect(existsSync(referencePath)).toBe(true);
+    });
+
+    test("skills/github/scripts/setup.sh exists", () => {
+      const scriptPath = join(
+        fixturePath,
+        "skills",
+        "github",
+        "scripts",
+        "setup.sh",
+      );
+      expect(existsSync(scriptPath)).toBe(true);
+    });
+
     test("hooks.json exists at root level", () => {
       const hooksPath = join(fixturePath, "hooks.json");
       expect(existsSync(hooksPath)).toBe(true);

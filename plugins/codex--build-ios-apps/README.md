@@ -15,7 +15,7 @@
 
 ## Components
 - Skills: ios-app-intents, swiftui-liquid-glass, swiftui-performance-audit, swiftui-ui-patterns, ios-debugger-agent, swiftui-view-refactor
-- Agents: openai.yaml
+- Agents: openai.md
 - Hooks: none
 - MCP: xcodebuildmcp
 - Commands: none

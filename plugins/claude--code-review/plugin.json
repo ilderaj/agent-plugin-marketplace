@@ -6,5 +6,6 @@
     "name": "Boris Cherny",
     "email": "boris@anthropic.com"
   },
+  "commands": "./commands/",
   "strict": false
 }

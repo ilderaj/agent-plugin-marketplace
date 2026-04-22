@@ -5,7 +5,7 @@
 - Plugin ID: codex--highlevel
 - Upstream: https://github.com/openai/plugins.git
 - Source Path: plugins/highlevel
-- Version: v1.0.0
+- Version: 1.0.0
 
 ## Compatibility Summary
 - Overall: partial

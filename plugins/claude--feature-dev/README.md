@@ -15,7 +15,7 @@
 
 ## Components
 - Skills: none
-- Agents: code-reviewer.md, code-explorer.md, code-architect.md
+- Agents: code-architect.md, code-explorer.md, code-reviewer.md
 - Hooks: none
 - MCP: none
 - Commands: feature-dev.md

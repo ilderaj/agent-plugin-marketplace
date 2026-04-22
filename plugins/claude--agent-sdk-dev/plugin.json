@@ -7,5 +7,6 @@
     "email": "ashwin@anthropic.com"
   },
   "agents": "./agents/",
+  "commands": "./commands/",
   "strict": false
 }

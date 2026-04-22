@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/canva",
-    "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
+    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
     "version": "1.0.0"
   },
   "_compatibility": {
