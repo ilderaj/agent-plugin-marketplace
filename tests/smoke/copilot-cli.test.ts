@@ -12,7 +12,7 @@ const PLUGINS_DIR = join(REPO_ROOT, 'plugins');
 const GITHUB_MARKETPLACE = join(REPO_ROOT, '.github', 'plugin', 'marketplace.json');
 const SMOKE_ROOT = join(import.meta.dir, '../.generated/smoke');
 const SMOKE_TIMEOUT_MS = 15_000;
-const REPRESENTATIVE_PLUGINS = ['codex--build-ios-apps', 'codex--figma', 'claude--hookify'] as const;
+const REPRESENTATIVE_PLUGINS = ['codex--build-ios-apps', 'codex--figma', 'claude--hookify', 'claude--rtk'] as const;
 const INSTALL_OUTPUT_PATTERN = /Installed \d+ skills?\./;
 const MANIFEST_ARTIFACTS = [
   { key: 'skills', fallbackPath: 'skills' },
