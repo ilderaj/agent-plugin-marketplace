@@ -15,5 +15,20 @@
     ],
     "warnings": [],
     "droppedComponents": []
+  },
+  "_runtime": {
+    "mcp": {
+      "version": 1,
+      "servers": [
+        {
+          "key": "codex--cloudflare::cloudflare-api",
+          "pluginId": "codex--cloudflare",
+          "name": "cloudflare-api",
+          "transport": "stdio",
+          "sourceConfigPath": ".mcp.json",
+          "defaultConnectionPolicy": "on_demand"
+        }
+      ]
+    }
   }
 }
