@@ -171,7 +171,7 @@ describe("generated artifact audit", () => {
       const runtimeServers = metaContent._runtime.mcp.servers;
       const mcpServers = mcpContent.mcpServers || {};
 
-      if (Object.keys(runtimeServers).length === 0) {
+      if (runtimeServers.length === 0) {
         issues.push(
           `${pluginName}: _runtime.mcp.servers exists but is empty (expected ${Object.keys(mcpServers).length} servers)`
         );
