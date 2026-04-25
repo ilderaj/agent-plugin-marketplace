@@ -153,4 +153,38 @@ describe('MarketplaceGenerator', () => {
     expect(entry.keywords).toEqual(['github', 'codex']);
     expect(entry.strict).toBe(false);
   });
+
+  test('MetaPluginManifest can carry _runtime.mcp descriptor with server key and defaultConnectionPolicy', () => {
+    const meta: MetaPluginManifest = {
+      displayName: 'Example MCP Plugin',
+      _source: {
+        platform: 'codex',
+        upstream: 'https://github.com/example/example.git',
+        pluginPath: '/fixtures/example',
+        commitSha: 'def456',
+        version: '1.0.0',
+      },
+      _compatibility: {
+        overall: 'full',
+        notes: [],
+        warnings: [],
+        droppedComponents: [],
+      },
+      _runtime: {
+        mcp: {
+          defaultConnectionPolicy: 'on_demand',
+          servers: [
+            {
+              key: 'codex--example::demo-server',
+              command: 'npx',
+              args: ['-y', '@example/demo-mcp-server'],
+            },
+          ],
+        },
+      },
+    };
+
+    expect(meta._runtime?.mcp?.servers[0].key).toBe('codex--example::demo-server');
+    expect(meta._runtime?.mcp?.defaultConnectionPolicy).toBe('on_demand');
+  });
 });
