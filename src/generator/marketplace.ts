@@ -32,17 +32,19 @@ export interface MarketplaceDocument {
 /** MCP connection policy: whether a server should be disabled, connected on demand, or preconnected. */
 export type McpConnectionPolicy = 'disabled' | 'on_demand' | 'preconnect';
 
-/** Runtime MCP server descriptor carrying key, command, args, and optional env. */
+/** Runtime MCP server descriptor carrying key, plugin info, transport details, and connection policy. */
 export interface RuntimeMcpServerDescriptor {
   key: string;
-  command: string;
-  args?: string[];
-  env?: Record<string, string>;
+  pluginId: string;
+  name: string;
+  transport: string;
+  sourceConfigPath: string;
+  defaultConnectionPolicy: Exclude<McpConnectionPolicy, 'disabled'>;
 }
 
-/** Runtime MCP metadata with servers and default connection policy. */
+/** Runtime MCP metadata with version and servers. */
 export interface RuntimeMcpMetadata {
-  defaultConnectionPolicy: Exclude<McpConnectionPolicy, 'disabled'>;
+  version: 1;
   servers: RuntimeMcpServerDescriptor[];
 }
 

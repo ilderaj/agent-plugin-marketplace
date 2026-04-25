@@ -154,7 +154,7 @@ describe('MarketplaceGenerator', () => {
     expect(entry.strict).toBe(false);
   });
 
-  test('MetaPluginManifest can carry _runtime.mcp descriptor with server key and defaultConnectionPolicy', () => {
+  test('MetaPluginManifest can carry _runtime.mcp with version and complete server descriptors', () => {
     const meta: MetaPluginManifest = {
       displayName: 'Example MCP Plugin',
       _source: {
@@ -172,19 +172,28 @@ describe('MarketplaceGenerator', () => {
       },
       _runtime: {
         mcp: {
-          defaultConnectionPolicy: 'on_demand',
+          version: 1,
           servers: [
             {
               key: 'codex--example::demo-server',
-              command: 'npx',
-              args: ['-y', '@example/demo-mcp-server'],
+              pluginId: 'codex--example',
+              name: 'Demo Server',
+              transport: 'stdio',
+              sourceConfigPath: '.mcp.json',
+              defaultConnectionPolicy: 'on_demand',
             },
           ],
         },
       },
     };
 
+    expect(meta._runtime?.mcp?.version).toBe(1);
+    expect(meta._runtime?.mcp?.servers).toHaveLength(1);
     expect(meta._runtime?.mcp?.servers[0].key).toBe('codex--example::demo-server');
-    expect(meta._runtime?.mcp?.defaultConnectionPolicy).toBe('on_demand');
+    expect(meta._runtime?.mcp?.servers[0].pluginId).toBe('codex--example');
+    expect(meta._runtime?.mcp?.servers[0].name).toBe('Demo Server');
+    expect(meta._runtime?.mcp?.servers[0].transport).toBe('stdio');
+    expect(meta._runtime?.mcp?.servers[0].sourceConfigPath).toBe('.mcp.json');
+    expect(meta._runtime?.mcp?.servers[0].defaultConnectionPolicy).toBe('on_demand');
   });
 });
