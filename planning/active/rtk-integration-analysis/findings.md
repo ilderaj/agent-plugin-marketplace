@@ -20,6 +20,10 @@
 - 计划采用 `plugins/claude--rtk/` 作为静态插件目录，复用现有平台前缀体系，并通过 `_meta.json` / `README.md` 记录“manual wrapper” provenance。
 - 计划手工更新三份 marketplace manifest，而不是运行全量 `bun run sync`，以避免把其他 upstream 漂移带入本次变更。
 - implementation plan 路径：`docs/superpowers/plans/2026-04-24-rtk-manual-integration.md`
+- 仓库根 `.gitignore` 已忽略 `.worktrees/`，可以安全创建项目内 worktree。
+- 当前仓库已有多个 `.worktrees/*` 先例，符合仓库现有协作方式。
 
-## 待确认
-- 是否进入 execution 阶段并按 companion plan 逐步落地。
+## 执行约束
+- companion plan 明确要求先加载 `test-driven-development`，再进入代码修改。
+- completion gate 前需要加载 `verification-before-completion`。
+- 需要按 tracked task 继续维护 `planning/active/rtk-integration-analysis/` 三个文件，而不是只依赖会话内上下文。
