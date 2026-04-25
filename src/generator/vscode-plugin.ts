@@ -102,11 +102,41 @@ export class VsCodePluginGenerator {
     };
   }
 
+  private buildRuntimeMcpMetadata(ir: PluginIR): MetaPluginManifest['_runtime'] {
+    if (ir.components.mcpServers.length === 0) {
+      return undefined;
+    }
+
+    const pluginId = normalizeGeneratedPluginName(ir);
+    const servers: import('./marketplace').RuntimeMcpServerDescriptor[] = [];
+
+    for (const mcpRef of ir.components.mcpServers) {
+      for (const server of mcpRef.servers) {
+        servers.push({
+          key: `${pluginId}::${server.name}`,
+          pluginId,
+          name: server.name,
+          transport: server.transport,
+          sourceConfigPath: mcpRef.configPath,
+          defaultConnectionPolicy: 'on_demand',
+        });
+      }
+    }
+
+    return {
+      mcp: {
+        version: 1,
+        servers,
+      },
+    };
+  }
+
   private buildMeta(
     ir: PluginIR,
     compatibility: MetaPluginManifest['_compatibility']
   ): MetaPluginManifest {
     const normalizedName = normalizeGeneratedPluginName(ir);
+    const runtime = this.buildRuntimeMcpMetadata(ir);
 
     return {
       displayName: `${this.humanizeName(ir.manifest.displayName ?? ir.manifest.name)} (from ${platformLabel(ir.source.platform)})`,
@@ -118,6 +148,7 @@ export class VsCodePluginGenerator {
         version: ir.source.version,
       },
       _compatibility: compatibility,
+      ...(runtime ? { _runtime: runtime } : {}),
     };
   }
 
