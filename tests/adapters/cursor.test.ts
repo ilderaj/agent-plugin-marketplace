@@ -476,4 +476,45 @@ describe('CursorAdapter', () => {
       }
     );
   });
+
+  test('parse infers http transport from type field when transport is missing', async () => {
+    await withTempPlugin(
+      'http-type-transport',
+      async (pluginRoot) => {
+        await mkdir(join(pluginRoot, '.cursor-plugin'), { recursive: true });
+
+        await writeFile(
+          join(pluginRoot, '.cursor-plugin', 'plugin.json'),
+          JSON.stringify({
+            name: 'test',
+            version: '1.0.0',
+            description: 'test',
+            author: { name: 'test' },
+            license: 'MIT',
+            mcp: 'mcp.json'
+          })
+        );
+        await writeFile(
+          join(pluginRoot, 'mcp.json'),
+          JSON.stringify({
+            mcpServers: {
+              'cloudflare-api': {
+                type: 'http',
+                url: 'https://mcp.cloudflare.com/mcp',
+              },
+            },
+          })
+        );
+      },
+      async (pluginRoot) => {
+        const ir = await adapter.parse(pluginRoot);
+
+        expect(ir.components.mcpServers).toHaveLength(1);
+        expect(ir.components.mcpServers[0]).toEqual({
+          configPath: 'mcp.json',
+          servers: [{ name: 'cloudflare-api', transport: 'http' }],
+        });
+      }
+    );
+  });
 });

@@ -109,6 +109,42 @@ describe('ClaudeAdapter', () => {
     expect(releaseNotes?.path).toBe('commands/release-notes.md');
   });
 
+  test('parse infers http transport from type field when transport is missing', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('http-type-transport', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.claude-plugin'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.claude-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'http-type-transport',
+          version: '1.0.0',
+          description: 'test plugin',
+          authors: [{ name: 'Test' }],
+        }),
+      );
+      await writeFile(
+        join(pluginDir, '.mcp.json'),
+        JSON.stringify({
+          mcpServers: {
+            'cloudflare-api': {
+              type: 'http',
+              url: 'https://mcp.cloudflare.com/mcp',
+            },
+          },
+        }),
+      );
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.mcpServers).toHaveLength(1);
+      expect(ir.components.mcpServers[0]).toEqual({
+        configPath: '.mcp.json',
+        servers: [{ name: 'cloudflare-api', transport: 'http' }],
+      });
+    });
+  });
+
   test('parse extracts MCP servers with correct transport', async () => {
     const ir = await adapter.parse(FIXTURE);
     expect(ir.components.mcpServers.length).toBe(1);
