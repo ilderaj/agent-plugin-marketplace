@@ -153,4 +153,47 @@ describe('MarketplaceGenerator', () => {
     expect(entry.keywords).toEqual(['github', 'codex']);
     expect(entry.strict).toBe(false);
   });
+
+  test('MetaPluginManifest can carry _runtime.mcp with version and complete server descriptors', () => {
+    const meta: MetaPluginManifest = {
+      displayName: 'Example MCP Plugin',
+      _source: {
+        platform: 'codex',
+        upstream: 'https://github.com/example/example.git',
+        pluginPath: '/fixtures/example',
+        commitSha: 'def456',
+        version: '1.0.0',
+      },
+      _compatibility: {
+        overall: 'full',
+        notes: [],
+        warnings: [],
+        droppedComponents: [],
+      },
+      _runtime: {
+        mcp: {
+          version: 1,
+          servers: [
+            {
+              key: 'codex--example::demo-server',
+              pluginId: 'codex--example',
+              name: 'Demo Server',
+              transport: 'stdio',
+              sourceConfigPath: '.mcp.json',
+              defaultConnectionPolicy: 'on_demand',
+            },
+          ],
+        },
+      },
+    };
+
+    expect(meta._runtime?.mcp?.version).toBe(1);
+    expect(meta._runtime?.mcp?.servers).toHaveLength(1);
+    expect(meta._runtime?.mcp?.servers[0].key).toBe('codex--example::demo-server');
+    expect(meta._runtime?.mcp?.servers[0].pluginId).toBe('codex--example');
+    expect(meta._runtime?.mcp?.servers[0].name).toBe('Demo Server');
+    expect(meta._runtime?.mcp?.servers[0].transport).toBe('stdio');
+    expect(meta._runtime?.mcp?.servers[0].sourceConfigPath).toBe('.mcp.json');
+    expect(meta._runtime?.mcp?.servers[0].defaultConnectionPolicy).toBe('on_demand');
+  });
 });

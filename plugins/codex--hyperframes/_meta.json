@@ -1,0 +1,18 @@
+{
+  "displayName": "Hyperframes (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/hyperframes",
+    "commitSha": "f09cfd210e21e96a0031f4d247be5f2e416d23b1",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

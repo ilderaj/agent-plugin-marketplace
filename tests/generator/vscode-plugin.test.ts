@@ -1262,4 +1262,59 @@ describe('VsCodePluginGenerator', () => {
       }
     }
   });
+
+  test('emits runtime MCP descriptors in _meta.json for MCP-bearing plugins', async () => {
+    const ir = await new ClaudeAdapter().parse(join(FIXTURES_DIR, 'claude-code-review'));
+    const outDir = join(OUTPUT_ROOT, 'claude-mcp-runtime');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const meta = await readJson(join(outDir, '_meta.json'));
+
+    // _runtime.mcp should be present with version 1
+    expect(meta._runtime).toBeDefined();
+    expect(meta._runtime.mcp).toBeDefined();
+    expect(meta._runtime.mcp.version).toBe(1);
+
+    // Should have server descriptors
+    const servers = meta._runtime.mcp.servers;
+    expect(Array.isArray(servers)).toBe(true);
+    expect(servers.length).toBeGreaterThan(0);
+
+    // Find the code-analyzer server (first one in fixture)
+    const codeAnalyzerServer = servers.find((s: any) => s.name === 'code-analyzer');
+    expect(codeAnalyzerServer).toBeDefined();
+    expect(codeAnalyzerServer.key).toBe('claude--code-review::code-analyzer');
+    expect(codeAnalyzerServer.pluginId).toBe('claude--code-review');
+    expect(codeAnalyzerServer.name).toBe('code-analyzer');
+    expect(codeAnalyzerServer.transport).toBe('stdio');
+    expect(codeAnalyzerServer.sourceConfigPath).toBe('.mcp.json');
+    expect(codeAnalyzerServer.defaultConnectionPolicy).toBe('on_demand');
+
+    // Find the linter server (second one in fixture)
+    const linterServer = servers.find((s: any) => s.name === 'linter');
+    expect(linterServer).toBeDefined();
+    expect(linterServer.key).toBe('claude--code-review::linter');
+    expect(linterServer.pluginId).toBe('claude--code-review');
+    expect(linterServer.name).toBe('linter');
+    expect(linterServer.transport).toBe('sse');
+    expect(linterServer.sourceConfigPath).toBe('.mcp.json');
+    expect(linterServer.defaultConnectionPolicy).toBe('on_demand');
+  });
+
+  test('omits _runtime.mcp when plugin has no MCP servers', async () => {
+    const ir = await new CodexAdapter().parse(join(FIXTURES_DIR, 'codex-no-app'));
+    const outDir = join(OUTPUT_ROOT, 'codex-no-mcp-runtime');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const meta = await readJson(join(outDir, '_meta.json'));
+
+    // _runtime should either be undefined or not contain mcp
+    if (meta._runtime) {
+      expect(meta._runtime.mcp).toBeUndefined();
+    }
+  });
 });

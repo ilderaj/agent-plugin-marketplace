@@ -283,7 +283,7 @@ export class ClaudeAdapter implements SourceAdapter {
           const serverConfig = config as any;
           servers.push({
             name,
-            transport: serverConfig.transport || 'stdio',
+            transport: serverConfig.transport || serverConfig.type || 'stdio',
           });
         }
       }

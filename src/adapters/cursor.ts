@@ -429,7 +429,7 @@ export class CursorAdapter implements SourceAdapter {
 
     const servers = Object.entries(config.mcpServers).map(([name, serverConfig]) => ({
       name,
-      transport: (serverConfig as any).transport || 'stdio',
+      transport: (serverConfig as any).transport || (serverConfig as any).type || 'stdio',
     }));
 
     if (servers.length === 0) {

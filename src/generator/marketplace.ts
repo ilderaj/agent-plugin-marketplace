@@ -29,6 +29,25 @@ export interface MarketplaceDocument {
   plugins: MarketplacePluginEntry[];
 }
 
+/** MCP connection policy: whether a server should be disabled, connected on demand, or preconnected. */
+export type McpConnectionPolicy = 'disabled' | 'on_demand' | 'preconnect';
+
+/** Runtime MCP server descriptor carrying key, plugin info, transport details, and connection policy. */
+export interface RuntimeMcpServerDescriptor {
+  key: string;
+  pluginId: string;
+  name: string;
+  transport: string;
+  sourceConfigPath: string;
+  defaultConnectionPolicy: Exclude<McpConnectionPolicy, 'disabled'>;
+}
+
+/** Runtime MCP metadata with version and servers. */
+export interface RuntimeMcpMetadata {
+  version: 1;
+  servers: RuntimeMcpServerDescriptor[];
+}
+
 /** Official plugin manifest — written to `plugin.json` (Copilot CLI compatible). */
 export interface OfficialPluginManifest {
   name: string;
@@ -64,6 +83,9 @@ export interface MetaPluginManifest {
     notes: string[];
     warnings: string[];
     droppedComponents: DroppedComponent[];
+  };
+  _runtime?: {
+    mcp?: RuntimeMcpMetadata;
   };
 }
 

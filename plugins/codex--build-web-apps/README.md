@@ -15,7 +15,7 @@
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: deploy-to-vercel, web-design-guidelines, frontend-skill, react-best-practices, supabase-best-practices, stripe-best-practices, shadcn-best-practices
+- Skills: supabase-best-practices, shadcn-best-practices, react-best-practices, frontend-app-builder, stripe-best-practices
 - Agents: openai.md
 - Hooks: none
 - MCP: none

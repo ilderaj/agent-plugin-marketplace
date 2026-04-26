@@ -23,14 +23,8 @@ Start with Google Drive for file discovery and file lifecycle tasks, then route 
 3. Route to the narrowest sibling skill that matches the file type and job.
 - Drive, Docs, Sheets, or Slides comment creation, comment replies, comment resolution, or review-by-comments: use [google-drive-comments](../google-drive-comments/SKILL.md).
 - Google Docs content summary, revision planning, prose rewriting, or section edits: use [google-docs](../google-docs/SKILL.md).
-- Google Sheets range inspection, table cleanup, data restructuring, or batch updates: use [google-sheets](../google-sheets/SKILL.md).
-- Google Sheets formula design or repair: use [google-sheets-formula-builder](../google-sheets-formula-builder/SKILL.md).
-- Google Sheets chart creation or repair: use [google-sheets-chart-builder](../google-sheets-chart-builder/SKILL.md).
-- Google Slides deck summary, content edits, new deck creation, or import handoff: use [google-slides](../google-slides/SKILL.md).
-- Google Slides visual cleanup: use [google-slides-visual-iteration](../google-slides-visual-iteration/SKILL.md).
-- Google Slides PPT/PPTX/ODP import: use [google-slides-import-presentation](../google-slides-import-presentation/SKILL.md).
-- Google Slides repeated-layout repair: use [google-slides-template-surgery](../google-slides-template-surgery/SKILL.md).
-- Google Slides template migration: use [google-slides-template-migration](../google-slides-template-migration/SKILL.md).
+- Google Sheets creation, local spreadsheet import, range inspection, table cleanup, data restructuring, formula design or repair, chart creation or repair, or batch updates: use [google-sheets](../google-sheets/SKILL.md).
+- Google Slides deck summary, content edits, new deck creation, local presentation import, visual cleanup, structural repair, or template migration: use [google-slides](../google-slides/SKILL.md).
 
 ## Routing Rules
 
@@ -40,6 +34,10 @@ Start with Google Drive for file discovery and file lifecycle tasks, then route 
   - Deck -> Slides skill
 - If the user wants to find a file and then edit it, do both in one flow: Drive for discovery, then the file-type skill for the edit.
 - If the user wants a Google Workspace outcome but has not named a file type yet, start with Drive discovery instead of asking them to choose among separate Google plugins.
+- If the user asks to create a new Google Sheet, route to the Sheets skill. The Sheets skill should prefer the `[@spreadsheets](plugin://spreadsheets@openai-primary-runtime)` plugin or `$Excel` skill to create a local `.xlsx`, then import it as native Google Sheets.
+- If the user asks to import a local `.xlsx`, `.xls`, `.ods`, `.csv`, or `.tsv` into Google Sheets, route to the Sheets skill and use native Google Sheets conversion by default. Preserve the source file type only when the user explicitly asks for that.
+- If the user asks to create a new Google Slides deck, route to the Slides skill. The Slides skill should prefer the `[@presentations](plugin://presentations@openai-primary-runtime)` plugin or `$PowerPoint` skill to create a local `.pptx`, then import it as native Google Slides.
+- If the user asks to import a local `.ppt`, `.pptx`, or `.odp` into Google Slides, route to the Slides skill and use native Google Slides conversion by default.
 
 ## Write Safety
 
@@ -52,10 +50,4 @@ Start with Google Drive for file discovery and file lifecycle tasks, then route 
 - Comments: [google-drive-comments](../google-drive-comments/SKILL.md)
 - Docs: [google-docs](../google-docs/SKILL.md)
 - Sheets: [google-sheets](../google-sheets/SKILL.md)
-- Sheets formulas: [google-sheets-formula-builder](../google-sheets-formula-builder/SKILL.md)
-- Sheets charts: [google-sheets-chart-builder](../google-sheets-chart-builder/SKILL.md)
 - Slides: [google-slides](../google-slides/SKILL.md)
-- Slides visual iteration: [google-slides-visual-iteration](../google-slides-visual-iteration/SKILL.md)
-- Slides import: [google-slides-import-presentation](../google-slides-import-presentation/SKILL.md)
-- Slides template surgery: [google-slides-template-surgery](../google-slides-template-surgery/SKILL.md)
-- Slides template migration: [google-slides-template-migration](../google-slides-template-migration/SKILL.md)

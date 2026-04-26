@@ -361,6 +361,43 @@ describe('CodexAdapter', () => {
     });
   });
 
+  test('parse infers http transport from type field when transport is missing', async () => {
+    const { mkdir, writeFile } = await import('fs/promises');
+
+    await withScratchPlugin('http-type-transport', async (pluginDir) => {
+      await mkdir(join(pluginDir, '.codex-plugin'), { recursive: true });
+      await writeFile(
+        join(pluginDir, '.codex-plugin', 'plugin.json'),
+        JSON.stringify({
+          name: 'http-type-transport',
+          version: '1.0.0',
+          description: 'test plugin',
+          author: { name: 'test' },
+          license: 'MIT',
+        }),
+      );
+      await writeFile(
+        join(pluginDir, '.mcp.json'),
+        JSON.stringify({
+          mcpServers: {
+            'cloudflare-api': {
+              type: 'http',
+              url: 'https://mcp.cloudflare.com/mcp',
+            },
+          },
+        }),
+      );
+
+      const ir = await adapter.parse(pluginDir);
+
+      expect(ir.components.mcpServers).toHaveLength(1);
+      expect(ir.components.mcpServers[0]).toEqual({
+        configPath: '.mcp.json',
+        servers: [{ name: 'cloudflare-api', transport: 'http' }],
+      });
+    });
+  });
+
   test('parse correctly sets hasScripts to false when no scripts directory exists', async () => {
     const ir = await adapter.parse(NO_APP_FIXTURE);
     const skill = ir.components.skills[0];

@@ -144,4 +144,40 @@ describe("generated artifact audit", () => {
     const matches = Array.from(forbiddenMentions).sort();
     expect(matches).toEqual([]);
   });
+
+  test("MCP-bearing plugins preserve runtime metadata in _meta.json", async () => {
+    const issues: string[] = [];
+
+    for (const pluginName of await listPluginNames()) {
+      const pluginDir = join(PLUGINS_DIR, pluginName);
+      const mcpJsonPath = join(pluginDir, ".mcp.json");
+
+      if (!existsSync(mcpJsonPath)) continue;
+
+      const metaJsonPath = join(pluginDir, "_meta.json");
+      if (!existsSync(metaJsonPath)) {
+        issues.push(`${pluginName}: has .mcp.json but missing _meta.json`);
+        continue;
+      }
+
+      const metaContent = JSON.parse(await readFile(metaJsonPath, "utf8"));
+      const mcpContent = JSON.parse(await readFile(mcpJsonPath, "utf8"));
+
+      if (!metaContent._runtime?.mcp?.servers) {
+        issues.push(`${pluginName}: has .mcp.json but _meta.json lacks _runtime.mcp.servers`);
+        continue;
+      }
+
+      const runtimeServers = metaContent._runtime.mcp.servers;
+      const mcpServers = mcpContent.mcpServers || {};
+
+      if (runtimeServers.length === 0) {
+        issues.push(
+          `${pluginName}: _runtime.mcp.servers exists but is empty (expected ${Object.keys(mcpServers).length} servers)`
+        );
+      }
+    }
+
+    expect(issues).toEqual([]);
+  });
 });

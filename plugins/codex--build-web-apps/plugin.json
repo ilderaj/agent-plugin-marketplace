@@ -1,7 +1,7 @@
 {
   "name": "codex--build-web-apps",
   "version": "0.1.0",
-  "description": "Build web apps with workflows for UI reviews, React improvements, deployment, payments, and database design.",
+  "description": "Build web apps with frontend asset design, browser testing, UI components, payments, and database guidance.",
   "author": {
     "name": "OpenAI",
     "email": "support@openai.com",
@@ -13,13 +13,15 @@
   "keywords": [
     "build-web-apps",
     "build",
-    "react",
-    "vercel",
+    "product-apps",
+    "frontend",
+    "image-generation",
+    "browser-testing",
     "stripe",
     "supabase",
     "shadcn",
     "full-stack",
-    "ui-review"
+    "frontend-qa"
   ],
   "skills": "./skills/",
   "agents": "./agents/",
