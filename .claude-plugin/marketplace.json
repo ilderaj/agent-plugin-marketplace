@@ -310,7 +310,7 @@
     {
       "name": "codex--build-web-apps",
       "source": "./plugins/codex--build-web-apps",
-      "description": "Build web apps with workflows for UI reviews, React improvements, deployment, payments, and database design. (from Codex)",
+      "description": "Build web apps with frontend asset design, browser testing, UI components, payments, and database guidance. (from Codex)",
       "strict": false,
       "version": "0.1.0",
       "author": {
@@ -322,13 +322,15 @@
       "keywords": [
         "build-web-apps",
         "build",
-        "react",
-        "vercel",
+        "product-apps",
+        "frontend",
+        "image-generation",
+        "browser-testing",
         "stripe",
         "supabase",
         "shadcn",
         "full-stack",
-        "ui-review"
+        "frontend-qa"
       ]
     },
     {
@@ -959,6 +961,31 @@
         "datasets",
         "spaces",
         "machine-learning"
+      ]
+    },
+    {
+      "name": "codex--hyperframes",
+      "source": "./plugins/codex--hyperframes",
+      "description": "Write HTML, render video. Compositions, GSAP animations, captions, voiceovers, audio-reactive visuals, and website-to-video capture for HyperFrames. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "HeyGen",
+        "email": "hyperframes@heygen.com",
+        "url": "https://hyperframes.heygen.com"
+      },
+      "repository": "https://github.com/heygen-com/hyperframes",
+      "keywords": [
+        "hyperframes",
+        "video",
+        "html",
+        "gsap",
+        "animation",
+        "composition",
+        "rendering",
+        "captions",
+        "tts",
+        "audio-reactive"
       ]
     },
     {
@@ -1744,6 +1771,29 @@
       },
       "repository": "https://github.com/openai/plugins",
       "keywords": []
+    },
+    {
+      "name": "codex--temporal",
+      "source": "./plugins/codex--temporal",
+      "description": "Comprehensive skill for the entire Temporal lifecycle — developing applications, using the Temporal CLI, running and managing Temporal Server, and working with Temporal Cloud. (from Codex)",
+      "strict": false,
+      "version": "0.2.0",
+      "author": {
+        "name": "Temporal",
+        "url": "https://temporal.io/"
+      },
+      "repository": "https://github.com/temporalio/codex-temporal-plugin",
+      "keywords": [
+        "temporal",
+        "workflow",
+        "durable-execution",
+        "python",
+        "typescript",
+        "go",
+        "java",
+        "microservices",
+        "distributed-systems"
+      ]
     },
     {
       "name": "codex--test-android-apps",

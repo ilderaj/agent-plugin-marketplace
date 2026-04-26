@@ -1,10 +1,10 @@
 {
-  "lastSyncAt": "2026-04-21T18:20:34.447Z",
+  "lastSyncAt": "2026-04-24T05:29:35.660Z",
   "toolchainFingerprint": "a0b005b7d608686a2aa39ffe290294a016778ec7086d8ec2fa8ed43ccfa15a72",
   "sources": {
     "codex": {
       "repoUrl": "https://github.com/openai/plugins.git",
-      "lastCommit": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+      "lastCommit": "f09cfd210e21e96a0031f4d247be5f2e416d23b1",
       "plugins": {
         "alpaca": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
@@ -51,8 +51,8 @@
           "syncedAt": "2026-04-21T18:20:28.189Z"
         },
         "build-web-apps": {
-          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
-          "syncedAt": "2026-04-21T18:20:28.259Z"
+          "commitSha": "ca0c87f63084e73a4679190ae023c28dd80787bb",
+          "syncedAt": "2026-04-24T05:29:35.370Z"
         },
         "canva": {
           "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
@@ -183,8 +183,8 @@
           "syncedAt": "2026-04-21T18:20:28.874Z"
         },
         "google-drive": {
-          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
-          "syncedAt": "2026-04-21T18:20:28.903Z"
+          "commitSha": "ef252645027ad549214cc15c3cd992f83abaae85",
+          "syncedAt": "2026-04-24T05:29:35.466Z"
         },
         "govtribe": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
@@ -461,12 +461,20 @@
         "yepcode": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
           "syncedAt": "2026-04-21T18:20:30.418Z"
+        },
+        "hyperframes": {
+          "commitSha": "f09cfd210e21e96a0031f4d247be5f2e416d23b1",
+          "syncedAt": "2026-04-24T05:29:35.510Z"
+        },
+        "temporal": {
+          "commitSha": "3af3fd9b2133999a685bd81c9e209ddd715456d4",
+          "syncedAt": "2026-04-24T05:29:35.660Z"
         }
       }
     },
     "claude-code": {
       "repoUrl": "https://github.com/anthropics/claude-code.git",
-      "lastCommit": "fe53778ed90fd971bf4ec78fa1f65ccf0536352f",
+      "lastCommit": "ab3ce06c9ac0a6a0405850e642b80b0bb2c9fb25",
       "plugins": {
         "agent-sdk-dev": {
           "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",

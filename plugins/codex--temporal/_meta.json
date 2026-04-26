@@ -1,0 +1,18 @@
+{
+  "displayName": "Temporal (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/temporal",
+    "commitSha": "3af3fd9b2133999a685bd81c9e209ddd715456d4",
+    "version": "0.2.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}
