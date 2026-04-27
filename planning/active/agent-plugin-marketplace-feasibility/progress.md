@@ -16,3 +16,5 @@
 - 已在功能分支提交 `013a9d1 feat: sync asc cli skills as a permanent upstream plugin`
 - 已将本地 `dev` 快进到 `013a9d1`，并在合并后的 `dev` 上再次通过 `bun test` 与 `bun run build`
 - 已推送 `origin/dev` 到 `013a9d1`
+- 本次继续处理时，已将本地 `main` 对齐到 `origin/main` 的 `095ca08`，再将当前 `dev` 快进到同一提交并推送 `origin/dev`
+- 现在本地 `main` / `dev` 与 `origin/main` / `origin/dev` 已对齐到 `095ca08`
