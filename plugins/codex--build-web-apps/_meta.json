@@ -4,24 +4,16 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/build-web-apps",
-    "commitSha": "ca0c87f63084e73a4679190ae023c28dd80787bb",
+    "commitSha": "3366719b279424b2844a5fc9b81f5a9398d6ed6d",
     "version": "0.1.0"
   },
   "_compatibility": {
     "overall": "partial",
     "notes": [
       "Skill: full — Skills are cross-platform compatible",
-      "Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.",
-      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+      "Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted."
     ],
-    "warnings": [
-      "App connector will be dropped when converting to other platforms"
-    ],
-    "droppedComponents": [
-      {
-        "type": "app",
-        "reason": "App connectors are Codex-specific and not supported on other platforms"
-      }
-    ]
+    "warnings": [],
+    "droppedComponents": []
   }
 }

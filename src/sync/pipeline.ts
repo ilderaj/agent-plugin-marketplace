@@ -47,6 +47,7 @@ export interface SyncPipelineOptions {
 }
 
 const TOOLCHAIN_RUNTIME_FILES = [
+  "adapters/asc-skills.ts",
   "adapters/claude.ts",
   "adapters/codex.ts",
   "adapters/cursor.ts",
@@ -120,7 +121,8 @@ export class SyncPipeline {
       const discoveredNames = new Set(discoveredPlugins.map((p) => p.name));
 
       for (const plugin of discoveredPlugins) {
-        const pluginCommitSha = await getFileCommitSha(repoDir, relative(repoDir, plugin.path));
+        const pluginRelPath = relative(repoDir, plugin.path) || ".";
+        const pluginCommitSha = await getFileCommitSha(repoDir, pluginRelPath);
         if (!this.options.stateManager.needsUpdate(adapter.platform, plugin.name, pluginCommitSha)) {
           continue;
         }
@@ -128,7 +130,7 @@ export class SyncPipeline {
         const isNew = !this.options.stateManager.hasPlugin(adapter.platform, plugin.name);
 
         const ir = await adapter.parse(plugin.path);
-        const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha, relative(repoDir, plugin.path));
+        const hydratedIr = this.hydrateIR(ir, repoUrl, pluginCommitSha, pluginRelPath);
 
         const outDir = join(
           this.options.config.outputDir,

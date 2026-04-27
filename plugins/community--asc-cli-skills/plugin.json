@@ -1,0 +1,28 @@
+{
+  "name": "community--asc-cli-skills",
+  "version": "0.0.0",
+  "description": "Agent Skills for App Store Connect workflows using asc.",
+  "author": {
+    "name": "rorkai",
+    "url": "https://github.com/rorkai"
+  },
+  "homepage": "https://asccli.sh/",
+  "repository": "https://github.com/rorkai/app-store-connect-cli-skills",
+  "keywords": [
+    "ios",
+    "macos",
+    "app-store-connect",
+    "testflight",
+    "notarization",
+    "xcode",
+    "asc"
+  ],
+  "tags": [
+    "ios",
+    "macos",
+    "app-store-connect",
+    "community"
+  ],
+  "skills": "./skills/",
+  "strict": false
+}

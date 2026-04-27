@@ -1,11 +1,11 @@
-import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, mock, setDefaultTimeout, test } from "bun:test";
 import { cp, mkdir, readFile, rm, stat, writeFile } from "fs/promises";
 import { randomUUID } from "crypto";
 import { join } from "path";
+import { createDefaultSyncConfig, createPipeline, main } from "../../src/index";
 import { CodexAdapter } from "../../src/adapters/codex";
 import { MarketplaceGenerator } from "../../src/generator/marketplace";
 import { VsCodePluginGenerator } from "../../src/generator/vscode-plugin";
-import { main } from "../../src/index";
 import {
   computeDefaultToolchainFingerprint,
   SyncPipeline,
@@ -14,9 +14,12 @@ import {
 import { SyncStateManager } from "../../src/sync/sync-state";
 
 const FIXTURE = join(import.meta.dir, "..", "fixtures", "codex-github");
+const ASC_FIXTURE = join(import.meta.dir, "..", "fixtures", "asc-cli-skills");
 const GENERATED_ROOT = join(import.meta.dir, "..", ".generated", "sync-pipeline");
 
 let workspaceDir: string;
+
+setDefaultTimeout(15_000);
 
 async function createWorkspace(name: string): Promise<string> {
   await mkdir(GENERATED_ROOT, { recursive: true });
@@ -67,6 +70,28 @@ async function createLocalUpstream() {
     bareRepoUrl: `file://${bareRepo}`,
     sourceRepo,
     pluginDir,
+  };
+}
+
+async function createLocalAscUpstream() {
+  const upstreamRoot = join(workspaceDir, "asc-upstream");
+  const bareRepo = join(upstreamRoot, "origin.git");
+  const sourceRepo = join(upstreamRoot, "source");
+
+  await mkdir(upstreamRoot, { recursive: true });
+  await runGit(["init", "--bare", bareRepo]);
+  await runGit(["init", sourceRepo]);
+  await runGit(["config", "user.name", "Test User"], sourceRepo);
+  await runGit(["config", "user.email", "test@example.com"], sourceRepo);
+  await cp(ASC_FIXTURE, sourceRepo, { recursive: true });
+  await runGit(["add", "."], sourceRepo);
+  await runGit(["commit", "-m", "Initial asc skill pack"], sourceRepo);
+  await runGit(["remote", "add", "origin", bareRepo], sourceRepo);
+  await runGit(["push", "-u", "origin", "HEAD"], sourceRepo);
+
+  return {
+    bareRepoUrl: `file://${bareRepo}`,
+    sourceRepo,
   };
 }
 
@@ -238,6 +263,59 @@ describe("SyncPipeline", () => {
     expect(claudeMarketplace).toEqual(
       JSON.parse(await readFile(join(workspaceDir, "output", "marketplace.json"), "utf-8")),
     );
+  });
+
+  test("createPipeline syncs the asc skills upstream into marketplace outputs", async () => {
+    const upstream = await createLocalAscUpstream();
+    const originals = {
+      codex: Bun.env.CODEX_REPO_URL,
+      claude: Bun.env.CLAUDE_CODE_REPO_URL,
+      cursor: Bun.env.CURSOR_REPO_URL,
+      asc: Bun.env.ASC_SKILLS_REPO_URL,
+    };
+
+    Bun.env.CODEX_REPO_URL = upstream.bareRepoUrl;
+    Bun.env.CLAUDE_CODE_REPO_URL = upstream.bareRepoUrl;
+    Bun.env.CURSOR_REPO_URL = upstream.bareRepoUrl;
+    Bun.env.ASC_SKILLS_REPO_URL = upstream.bareRepoUrl;
+
+    try {
+      const pipeline = createPipeline(createDefaultSyncConfig(workspaceDir));
+      const report = await pipeline.run();
+
+      expect(report).toEqual({
+        updated: 1,
+        total: 1,
+        added: [{ name: "asc-cli-skills", platform: "community" }],
+        removed: [],
+        changed: [],
+      });
+
+      const pluginJson = JSON.parse(
+        await readFile(
+          join(workspaceDir, "plugins", "community--asc-cli-skills", "plugin.json"),
+          "utf-8",
+        ),
+      );
+
+      expect(pluginJson.name).toBe("community--asc-cli-skills");
+      expect(pluginJson.skills).toBe("./skills/");
+    } finally {
+      const entries = [
+        ["CODEX_REPO_URL", originals.codex],
+        ["CLAUDE_CODE_REPO_URL", originals.claude],
+        ["CURSOR_REPO_URL", originals.cursor],
+        ["ASC_SKILLS_REPO_URL", originals.asc],
+      ] as const;
+
+      for (const [key, value] of entries) {
+        if (value === undefined) {
+          delete Bun.env[key];
+        } else {
+          Bun.env[key] = value;
+        }
+      }
+    }
   });
 
   test("run keeps marketplace complete when nothing changed on the second sync", async () => {

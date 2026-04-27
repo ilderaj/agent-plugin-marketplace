@@ -1,0 +1,18 @@
+{
+  "displayName": "Chatgpt Apps (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/chatgpt-apps",
+    "commitSha": "7f12b10b793e470da287827f8fdd5488923bcc2c",
+    "version": "0.1.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

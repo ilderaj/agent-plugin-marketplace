@@ -1,4 +1,4 @@
-# Pr Review Canvas (from Cursor)
+# PR Review Canvas (from Cursor)
 
 ## Source
 - Platform: cursor

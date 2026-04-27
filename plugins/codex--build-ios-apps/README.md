@@ -14,7 +14,7 @@
 - MCP: full — MCP servers are cross-platform compatible
 
 ## Components
-- Skills: ios-app-intents, swiftui-liquid-glass, swiftui-performance-audit, swiftui-ui-patterns, ios-debugger-agent, swiftui-view-refactor
+- Skills: ios-app-intents, ios-memgraph-leaks, swiftui-liquid-glass, swiftui-performance-audit, swiftui-ui-patterns, ios-ettrace-performance, ios-debugger-agent, swiftui-view-refactor
 - Agents: openai.md
 - Hooks: none
 - MCP: xcodebuildmcp

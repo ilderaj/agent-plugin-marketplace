@@ -1,6 +1,6 @@
 # Agent Plugin Marketplace
 
-Cross-platform agent plugin sync pipeline. Pulls plugins from **Codex**, **Claude Code**, and **Cursor** upstream repos, converts them to **VS Code / GitHub Copilot** compatible format, and publishes a Git-hosted marketplace manifest.
+Cross-platform agent plugin sync pipeline. Pulls plugins from **Codex**, **Claude Code**, **Cursor**, and the **Community ASC skills** upstream, converts them to **VS Code / GitHub Copilot** compatible format, and publishes a Git-hosted marketplace manifest.
 
 ## Quick Start
 
@@ -73,6 +73,7 @@ git add -A && git commit -m "chore: sync upstream plugins" && git push
 CODEX_REPO_URL=https://github.com/your-org/codex-plugins.git \
 CLAUDE_CODE_REPO_URL=https://github.com/your-org/claude-plugins.git \
 CURSOR_REPO_URL=https://github.com/your-org/cursor-plugins.git \
+ASC_SKILLS_REPO_URL=https://github.com/your-org/app-store-connect-cli-skills.git \
 bun run sync
 ```
 
@@ -113,10 +114,12 @@ flowchart TD
     codex[Codex repo] --> codexAdapter[CodexAdapter]
     claude[Claude Code repo] --> claudeAdapter[ClaudeAdapter]
     cursor[Cursor repo] --> cursorAdapter[CursorAdapter]
+    community[ASC skills repo] --> ascAdapter[AscSkillsAdapter]
 
     codexAdapter --> ir[Plugin IR<br/>unified intermediate representation]
     claudeAdapter --> ir
     cursorAdapter --> ir
+    ascAdapter --> ir
 
     ir --> vscodeGen[VsCodePluginGenerator]
     ir --> marketplaceGen[MarketplaceGenerator]
@@ -132,7 +135,7 @@ flowchart TD
 ### Sync Steps
 
 1. **Clone / pull** each upstream repo into `.cache/sync/<platform>/`
-2. **Discover** plugins via platform-specific marker directories (`.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/`)
+2. **Discover** plugins via platform-specific marker directories (`.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/`) or repo-root `skills/` packs for supported community upstreams
 3. **Check** per-plugin commit SHA against `sync-state.json` — skip if unchanged
 4. **Parse** each plugin into a unified `PluginIR` via its platform adapter
 5. **Generate** VS Code plugin directory with converted files under `plugins/`
@@ -170,6 +173,13 @@ Each generated `_meta.json` includes `_compatibility` metadata with per-componen
 | Codex (OpenAI) | `https://github.com/openai/plugins.git` | `CodexAdapter` |
 | Claude Code (Anthropic) | `https://github.com/anthropics/claude-code.git` | `ClaudeAdapter` |
 | Cursor | `https://github.com/cursor/plugins.git` | `CursorAdapter` |
+| Community | `https://github.com/rorkai/app-store-connect-cli-skills.git` | `AscSkillsAdapter` |
+
+### Community Upstreams
+
+The marketplace now includes `community--asc-cli-skills`, generated from the `rorkai/app-store-connect-cli-skills` repository.
+
+Runtime prerequisite: install the `asc` CLI separately. The plugin ships the skill pack and documentation, not the CLI binary itself.
 
 ---
 
@@ -210,6 +220,7 @@ Push this repo to GitHub and ensure Actions are enabled. The sync workflow uses 
 src/
 ├── index.ts                  # CLI entrypoint (sync command)
 ├── adapters/
+│   ├── asc-skills.ts         # ASC community skill-pack discovery + parsing
 │   ├── codex.ts              # Codex plugin discovery + parsing
 │   ├── claude.ts             # Claude Code plugin discovery + parsing
 │   └── cursor.ts             # Cursor plugin discovery + parsing
@@ -232,6 +243,7 @@ src/
 | `CODEX_REPO_URL` | `https://github.com/openai/plugins.git` | Override Codex upstream |
 | `CLAUDE_CODE_REPO_URL` | `https://github.com/anthropics/claude-code.git` | Override Claude Code upstream |
 | `CURSOR_REPO_URL` | `https://github.com/cursor/plugins.git` | Override Cursor upstream |
+| `ASC_SKILLS_REPO_URL` | `https://github.com/rorkai/app-store-connect-cli-skills.git` | Override the ASC skills upstream |
 | `MARKETPLACE_OWNER_NAME` | `agent-plugin-marketplace` | Marketplace owner name |
 | `MARKETPLACE_OWNER_EMAIL` | — | Marketplace owner email |
 | `MARKETPLACE_OWNER_URL` | — | Marketplace owner URL |

@@ -573,4 +573,43 @@ describe("Test Fixtures Structure", () => {
       expect(existsSync(readmePath)).toBe(true);
     });
   });
+
+  describe("asc-cli-skills fixture", () => {
+    const fixturePath = join(FIXTURES_DIR, "asc-cli-skills");
+
+    test("directory exists", () => {
+      expect(existsSync(fixturePath)).toBe(true);
+      expect(statSync(fixturePath).isDirectory()).toBe(true);
+    });
+
+    test("skills directory exists with valid SKILL.md files", () => {
+      const usageSkill = join(fixturePath, "skills", "asc-cli-usage", "SKILL.md");
+      const releaseSkill = join(fixturePath, "skills", "asc-release-flow", "SKILL.md");
+
+      expect(existsSync(usageSkill)).toBe(true);
+      expect(existsSync(releaseSkill)).toBe(true);
+      expect(validateSkillFrontmatter(usageSkill)).toBe(true);
+      expect(validateSkillFrontmatter(releaseSkill)).toBe(true);
+    });
+
+    test("fixture includes repo README, references, and scripts", () => {
+      expect(existsSync(join(fixturePath, "README.md"))).toBe(true);
+      expect(
+        existsSync(
+          join(fixturePath, "skills", "asc-cli-usage", "references", "commands.md"),
+        ),
+      ).toBe(true);
+      expect(
+        existsSync(
+          join(
+            fixturePath,
+            "skills",
+            "asc-release-flow",
+            "scripts",
+            "check-readiness.sh",
+          ),
+        ),
+      ).toBe(true);
+    });
+  });
 });

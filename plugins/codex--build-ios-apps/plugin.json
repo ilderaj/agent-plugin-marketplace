@@ -1,7 +1,7 @@
 {
   "name": "codex--build-ios-apps",
   "version": "0.1.0",
-  "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance audits, and simulator debugging.",
+  "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance profiling, leak investigation, and simulator debugging.",
   "author": {
     "name": "OpenAI",
     "email": "support@openai.com",

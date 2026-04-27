@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, test } from 'bun:test';
 import { chmod, mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'fs/promises';
 import { join } from 'path';
+import { AscSkillsAdapter } from '../../src/adapters/asc-skills';
 import { tmpdir } from 'os';
 import { CodexAdapter } from '../../src/adapters/codex';
 import { ClaudeAdapter } from '../../src/adapters/claude';
@@ -339,6 +340,25 @@ describe('VsCodePluginGenerator', () => {
 
     const manifest = await readJson(join(outDir, 'plugin.json'));
     expect(manifest.version).toBe('0.0.0');
+  });
+
+  test('generates a community asc skills plugin', async () => {
+    const ir = await new AscSkillsAdapter().parse(join(FIXTURES_DIR, 'asc-cli-skills'));
+    const outDir = join(OUTPUT_ROOT, 'asc-community');
+
+    await ensureCleanDir(outDir);
+    await new VsCodePluginGenerator().generate(ir, outDir);
+
+    const manifest = await readJson(join(outDir, 'plugin.json'));
+    expect(manifest.name).toBe('community--asc-cli-skills');
+    expect(manifest.skills).toBe('./skills/');
+    expect(manifest.agents).toBeUndefined();
+
+    const meta = await readJson(join(outDir, '_meta.json'));
+    expect(meta.displayName).toBe('ASC CLI Skills (from Community)');
+
+    const readme = await readFile(join(outDir, 'README.md'), 'utf-8');
+    expect(readme).toContain('Requires the `asc` CLI');
   });
 
   test('normalizes text files inside copied skill directories while preserving binary files', async () => {

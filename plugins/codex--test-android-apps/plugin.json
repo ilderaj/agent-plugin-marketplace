@@ -1,7 +1,7 @@
 {
   "name": "codex--test-android-apps",
   "version": "0.1.0",
-  "description": "Test Android apps with emulator workflows for reproduction, screenshots, UI inspection, and log capture.",
+  "description": "Test Android apps with emulator workflows for reproduction, screenshots, UI inspection, log capture, and performance profiling.",
   "author": {
     "name": "OpenAI",
     "email": "support@openai.com",
@@ -16,7 +16,13 @@
     "emulator",
     "qa",
     "logcat",
-    "uiautomator"
+    "uiautomator",
+    "performance",
+    "simpleperf",
+    "perfetto",
+    "memory",
+    "leaks",
+    "heap"
   ],
   "skills": "./skills/",
   "agents": "./agents/",
