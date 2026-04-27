@@ -13,7 +13,7 @@
 - Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.
 
 ## Components
-- Skills: android-emulator-qa
+- Skills: android-performance, android-emulator-qa
 - Agents: openai.md
 - Hooks: none
 - MCP: none

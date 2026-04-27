@@ -14,7 +14,7 @@
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: google-sheets, google-drive, google-slides, google-drive-comments, google-docs
+- Skills: google-docs, google-drive-comments, google-sheets, google-drive, google-slides
 - Agents: none
 - Hooks: none
 - MCP: none

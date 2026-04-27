@@ -1,4 +1,4 @@
-# Cli For Agents (from Cursor)
+# CLI for Agents (from Cursor)
 
 ## Source
 - Platform: cursor

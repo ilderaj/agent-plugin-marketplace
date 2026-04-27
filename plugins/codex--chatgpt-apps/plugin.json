@@ -1,0 +1,21 @@
+{
+  "name": "codex--chatgpt-apps",
+  "version": "0.1.0",
+  "description": "Skills that help developers build ChatGPT Apps and prepare app submission materials from local app and MCP server codebases.",
+  "author": {
+    "name": "OpenAI"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://developers.openai.com/apps-sdk/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "chatgpt-apps",
+    "apps-sdk",
+    "build",
+    "mcp",
+    "submissions",
+    "tool-hints"
+  ],
+  "skills": "./skills/",
+  "strict": false
+}

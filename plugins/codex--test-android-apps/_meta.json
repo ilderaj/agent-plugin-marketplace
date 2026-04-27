@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/test-android-apps",
-    "commitSha": "42e54808e826d2002f73d85d6538c144dd805059",
+    "commitSha": "421657af0e7e94573f3a5f2c51091df43668da94",
     "version": "0.1.0"
   },
   "_compatibility": {

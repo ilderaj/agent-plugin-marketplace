@@ -259,7 +259,7 @@
     {
       "name": "codex--build-ios-apps",
       "source": "./plugins/codex--build-ios-apps",
-      "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance audits, and simulator debugging. (from Codex)",
+      "description": "Build iOS apps with workflows for App Intents, SwiftUI UI work, refactors, performance profiling, leak investigation, and simulator debugging. (from Codex)",
       "strict": false,
       "version": "0.1.0",
       "author": {
@@ -384,6 +384,25 @@
       },
       "repository": "https://github.com/openai/plugins",
       "keywords": []
+    },
+    {
+      "name": "codex--chatgpt-apps",
+      "source": "./plugins/codex--chatgpt-apps",
+      "description": "Skills that help developers build ChatGPT Apps and prepare app submission materials from local app and MCP server codebases. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "chatgpt-apps",
+        "apps-sdk",
+        "build",
+        "mcp",
+        "submissions",
+        "tool-hints"
+      ]
     },
     {
       "name": "codex--circleback",
@@ -1798,7 +1817,7 @@
     {
       "name": "codex--test-android-apps",
       "source": "./plugins/codex--test-android-apps",
-      "description": "Test Android apps with emulator workflows for reproduction, screenshots, UI inspection, and log capture. (from Codex)",
+      "description": "Test Android apps with emulator workflows for reproduction, screenshots, UI inspection, log capture, and performance profiling. (from Codex)",
       "strict": false,
       "version": "0.1.0",
       "author": {
@@ -1813,7 +1832,13 @@
         "emulator",
         "qa",
         "logcat",
-        "uiautomator"
+        "uiautomator",
+        "performance",
+        "simpleperf",
+        "perfetto",
+        "memory",
+        "leaks",
+        "heap"
       ]
     },
     {
@@ -1960,6 +1985,33 @@
       },
       "repository": "https://github.com/openai/plugins",
       "keywords": []
+    },
+    {
+      "name": "community--asc-cli-skills",
+      "source": "./plugins/community--asc-cli-skills",
+      "description": "Agent Skills for App Store Connect workflows using asc. (from Community)",
+      "strict": false,
+      "version": "0.0.0",
+      "author": {
+        "name": "rorkai",
+        "url": "https://github.com/rorkai"
+      },
+      "repository": "https://github.com/rorkai/app-store-connect-cli-skills",
+      "keywords": [
+        "ios",
+        "macos",
+        "app-store-connect",
+        "testflight",
+        "notarization",
+        "xcode",
+        "asc"
+      ],
+      "tags": [
+        "ios",
+        "macos",
+        "app-store-connect",
+        "community"
+      ]
     },
     {
       "name": "cursor--agent-compatibility",

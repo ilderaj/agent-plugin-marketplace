@@ -28,6 +28,8 @@ export function platformLabel(platform: PluginIR['source']['platform']) {
       return 'Codex';
     case 'cursor':
       return 'Cursor';
+    case 'community':
+      return 'Community';
   }
 }
 
@@ -139,7 +141,7 @@ export class VsCodePluginGenerator {
     const runtime = this.buildRuntimeMcpMetadata(ir);
 
     return {
-      displayName: `${this.humanizeName(ir.manifest.displayName ?? ir.manifest.name)} (from ${platformLabel(ir.source.platform)})`,
+      displayName: `${ir.manifest.displayName ?? this.humanizeName(ir.manifest.name)} (from ${platformLabel(ir.source.platform)})`,
       _source: {
         platform: ir.source.platform,
         upstream: ir.source.repoUrl,

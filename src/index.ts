@@ -1,5 +1,6 @@
 import { join } from "path";
 import { writeFile } from "fs/promises";
+import { AscSkillsAdapter } from "./adapters/asc-skills";
 import { ClaudeAdapter } from "./adapters/claude";
 import { CodexAdapter } from "./adapters/codex";
 import { CursorAdapter } from "./adapters/cursor";
@@ -13,6 +14,7 @@ const DEFAULT_REPO_URLS = {
   codex: "https://github.com/openai/plugins.git",
   "claude-code": "https://github.com/anthropics/claude-code.git",
   cursor: "https://github.com/cursor/plugins.git",
+  community: "https://github.com/rorkai/app-store-connect-cli-skills.git",
 } satisfies SyncConfig["repoUrls"];
 
 type PipelineRunner = Pick<SyncPipeline, "run">;
@@ -35,6 +37,7 @@ export function createDefaultSyncConfig(baseDir = process.cwd()): SyncConfig {
       codex: Bun.env.CODEX_REPO_URL ?? DEFAULT_REPO_URLS.codex,
       "claude-code": Bun.env.CLAUDE_CODE_REPO_URL ?? DEFAULT_REPO_URLS["claude-code"],
       cursor: Bun.env.CURSOR_REPO_URL ?? DEFAULT_REPO_URLS.cursor,
+      community: Bun.env.ASC_SKILLS_REPO_URL ?? DEFAULT_REPO_URLS.community,
     },
     marketplace: {
       name: "agent-plugin-marketplace",
@@ -54,7 +57,7 @@ export function createDefaultSyncConfig(baseDir = process.cwd()): SyncConfig {
 
 export function createPipeline(config = createDefaultSyncConfig()): SyncPipeline {
   return new SyncPipeline({
-    adapters: [new CodexAdapter(), new ClaudeAdapter(), new CursorAdapter()],
+    adapters: [new CodexAdapter(), new ClaudeAdapter(), new CursorAdapter(), new AscSkillsAdapter()],
     generator: new VsCodePluginGenerator(),
     marketplaceGen: new MarketplaceGenerator(config.marketplace),
     stateManager: new SyncStateManager(join(config.outputDir, "data", "sync-state.json")),

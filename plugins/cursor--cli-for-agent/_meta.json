@@ -1,5 +1,5 @@
 {
-  "displayName": "Cli For Agents (from Cursor)",
+  "displayName": "CLI for Agents (from Cursor)",
   "_source": {
     "platform": "cursor",
     "upstream": "https://github.com/cursor/plugins.git",

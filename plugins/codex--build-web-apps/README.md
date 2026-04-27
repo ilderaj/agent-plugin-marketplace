@@ -11,11 +11,9 @@
 - Overall: partial
 - Skill: full — Skills are cross-platform compatible
 - Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.
-- .app.json: unsupported — App connectors are Codex-specific and not supported on other platforms
-- Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: supabase-best-practices, shadcn-best-practices, react-best-practices, frontend-app-builder, stripe-best-practices
+- Skills: react-best-practices, supabase-best-practices, stripe-best-practices, shadcn-best-practices, frontend-app-builder
 - Agents: openai.md
 - Hooks: none
 - MCP: none
@@ -23,9 +21,9 @@
 - Instructions: none
 
 ## Dropped Components
-- .app.json: App connectors are Codex-specific and not supported on other platforms
+- None
 
 ## Notes
 - No additional conversion notes.
 - No command files required manual verification.
-- Codex `.app.json` support is not available in VS Code and was omitted from the generated plugin.
+- No platform-specific app connectors were dropped.

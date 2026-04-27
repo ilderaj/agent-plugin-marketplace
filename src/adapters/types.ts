@@ -4,7 +4,7 @@
  */
 
 /** Supported agent platforms - identifies the source/origin platform of a plugin */
-export type Platform = 'codex' | 'claude-code' | 'cursor';
+export type Platform = "codex" | "claude-code" | "cursor" | "community";
 
 /** Hook configuration format - identifies the format/style of hook component definitions */
 export type HookFormat = 'claude' | 'codex' | 'cursor';

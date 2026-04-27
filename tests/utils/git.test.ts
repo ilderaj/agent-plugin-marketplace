@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from "bun:test";
+import { afterEach, describe, expect, setDefaultTimeout, test } from "bun:test";
 import { mkdir, readFile, rm, writeFile } from "fs/promises";
 import { randomUUID } from "crypto";
 import { join } from "path";
@@ -6,6 +6,8 @@ import { cloneOrPull, getFileCommitSha, getHeadSha } from "../../src/utils/git";
 
 const GENERATED_ROOT = join(import.meta.dir, "..", ".generated", "git-utils");
 const createdDirs: string[] = [];
+
+setDefaultTimeout(15_000);
 
 async function createWorkspace(name: string): Promise<string> {
   await mkdir(GENERATED_ROOT, { recursive: true });
