@@ -15,7 +15,7 @@
 - Warning: App connector will be dropped when converting to other platforms
 
 ## Components
-- Skills: figma-generate-design, figma-create-new-file, figma-implement-design, figma-generate-library, figma-use, figma-code-connect-components, figma-create-design-system-rules
+- Skills: figma-implement-design, figma-use, figma-generate-design, figma-generate-library, figma-create-new-file, figma-create-design-system-rules, figma-code-connect-components
 - Agents: openai.md
 - Hooks: none
 - MCP: none

@@ -401,7 +401,7 @@
         "build",
         "mcp",
         "submissions",
-        "tool-hints"
+        "app-review"
       ]
     },
     {
@@ -500,6 +500,24 @@
         "ai",
         "coderabbit",
         "codex"
+      ]
+    },
+    {
+      "name": "codex--codex-security",
+      "source": "./plugins/codex--codex-security",
+      "description": "Codex Security workflows for security scans, analysis, and investigation. (from Codex)",
+      "strict": false,
+      "version": "0.1.0",
+      "author": {
+        "name": "OpenAI"
+      },
+      "repository": "https://github.com/openai/plugins",
+      "keywords": [
+        "security",
+        "code-review",
+        "diff-review",
+        "appsec",
+        "threat-modeling"
       ]
     },
     {
@@ -1725,6 +1743,26 @@
       "keywords": []
     },
     {
+      "name": "codex--supabase",
+      "source": "./plugins/codex--supabase",
+      "description": "Access your Supabase projects and perform tasks like managing tables, fetching config, and querying data. (from Codex)",
+      "strict": false,
+      "version": "0.1.4",
+      "author": {
+        "name": "Supabase",
+        "email": "support@supabase.io",
+        "url": "https://supabase.com"
+      },
+      "repository": "https://github.com/supabase-community/codex-plugin",
+      "keywords": [
+        "supabase",
+        "postgres",
+        "database",
+        "backend",
+        "mcp"
+      ]
+    },
+    {
       "name": "codex--superpowers",
       "source": "./plugins/codex--superpowers",
       "description": "An agentic skills framework & software development methodology that works: planning, TDD, debugging, and collaboration workflows. (from Codex)",
@@ -2119,11 +2157,41 @@
       ]
     },
     {
-      "name": "cursor--cursor-team-kit",
-      "source": "./plugins/cursor--cursor-team-kit",
-      "description": "Internal workflows used by Cursor developers for CI, code review, and shipping. Covers the full dev loop: CI monitoring and fixing, PR creation, merge conflicts, smoke tests, compiler checks, code cleanup, and work summaries. (from Cursor)",
+      "name": "cursor--cursor-sdk",
+      "source": "./plugins/cursor--cursor-sdk",
+      "description": "Build apps, scripts, CI pipelines, and automations on top of the Cursor TypeScript SDK (@cursor/sdk) — runtime selection, auth, streaming, MCP, error handling, and ready-to-extend integration patterns. (from Cursor)",
       "strict": false,
       "version": "1.0.0",
+      "author": {
+        "name": "Cursor",
+        "email": "plugins@cursor.com"
+      },
+      "repository": "https://github.com/cursor/plugins",
+      "keywords": [
+        "cursor-sdk",
+        "cursor",
+        "sdk",
+        "typescript",
+        "agents",
+        "automation",
+        "ci",
+        "mcp",
+        "streaming"
+      ],
+      "category": "developer-tools",
+      "tags": [
+        "sdk",
+        "agents",
+        "automation",
+        "developer-tools"
+      ]
+    },
+    {
+      "name": "cursor--cursor-team-kit",
+      "source": "./plugins/cursor--cursor-team-kit",
+      "description": "Internal workflows used by Cursor developers for CI, code review, shipping, control-cli, control-ui, verify-this, test reliability, code cleanup, and work summaries. Designed to work without requiring third-party service integrations. (from Cursor)",
+      "strict": false,
+      "version": "1.1.0",
       "author": {
         "name": "Cursor",
         "email": "plugins@cursor.com"
@@ -2134,13 +2202,17 @@
         "ci",
         "code-review",
         "shipping",
-        "testing"
+        "testing",
+        "verification",
+        "local-automation"
       ],
       "category": "developer-tools",
       "tags": [
         "internal-workflows",
         "quality",
-        "delivery"
+        "delivery",
+        "review",
+        "automation"
       ]
     },
     {

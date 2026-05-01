@@ -1,10 +1,10 @@
 {
-  "lastSyncAt": "2026-04-27T05:36:17.366Z",
+  "lastSyncAt": "2026-05-01T06:10:26.808Z",
   "toolchainFingerprint": "2cab80cd5d2a98ada1bd34883892d34905f913845f2e562bc063798699f49ee5",
   "sources": {
     "codex": {
       "repoUrl": "https://github.com/openai/plugins.git",
-      "lastCommit": "b066e4a04761672ce316491d2d62b10ad27a6b15",
+      "lastCommit": "3c46336323290cda7c90d78e7a0134f47cc73713",
       "plugins": {
         "alpaca": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
@@ -51,8 +51,8 @@
           "syncedAt": "2026-04-27T05:35:07.305Z"
         },
         "build-web-apps": {
-          "commitSha": "3366719b279424b2844a5fc9b81f5a9398d6ed6d",
-          "syncedAt": "2026-04-27T05:35:07.397Z"
+          "commitSha": "b092358b9a6abe7af8795ffb24ac5c8083bcb71c",
+          "syncedAt": "2026-05-01T06:10:24.245Z"
         },
         "canva": {
           "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
@@ -151,8 +151,8 @@
           "syncedAt": "2026-04-27T05:35:08.603Z"
         },
         "figma": {
-          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
-          "syncedAt": "2026-04-27T05:35:08.702Z"
+          "commitSha": "dc4f824cc86fffdddef654bbf2009ebdee4e0ba3",
+          "syncedAt": "2026-05-01T06:10:24.376Z"
         },
         "finn": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
@@ -183,8 +183,8 @@
           "syncedAt": "2026-04-27T05:35:09.041Z"
         },
         "google-drive": {
-          "commitSha": "ef252645027ad549214cc15c3cd992f83abaae85",
-          "syncedAt": "2026-04-27T05:35:09.105Z"
+          "commitSha": "886026e933fcf4e5b4d15049d7baecc21a24c8fe",
+          "syncedAt": "2026-05-01T06:10:24.429Z"
         },
         "govtribe": {
           "commitSha": "b1986b3d3da5bb8a04d3cb1e69af5a29bb5c2c04",
@@ -231,8 +231,8 @@
           "syncedAt": "2026-04-27T05:35:09.607Z"
         },
         "linear": {
-          "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
-          "syncedAt": "2026-04-27T05:35:09.640Z"
+          "commitSha": "56bcc02edd95018fa313cc82896ddd342898a55f",
+          "syncedAt": "2026-05-01T06:10:24.510Z"
         },
         "marcopolo": {
           "commitSha": "ebbba10ea598bb8cc03b749e7a7d8e2e86a3c80b",
@@ -463,22 +463,30 @@
           "syncedAt": "2026-04-27T05:35:11.504Z"
         },
         "hyperframes": {
-          "commitSha": "b066e4a04761672ce316491d2d62b10ad27a6b15",
-          "syncedAt": "2026-04-27T05:35:09.430Z"
+          "commitSha": "7c7fa1d5d33c152b996e48059f657177db67fa3c",
+          "syncedAt": "2026-05-01T06:10:24.496Z"
         },
         "temporal": {
           "commitSha": "3af3fd9b2133999a685bd81c9e209ddd715456d4",
           "syncedAt": "2026-04-27T05:35:11.156Z"
         },
         "chatgpt-apps": {
-          "commitSha": "7f12b10b793e470da287827f8fdd5488923bcc2c",
-          "syncedAt": "2026-04-27T05:35:07.578Z"
+          "commitSha": "4ce8a86b1a23c9b674008a4082c8bc31bbc7a618",
+          "syncedAt": "2026-05-01T06:10:24.266Z"
+        },
+        "codex-security": {
+          "commitSha": "60302735b37d7db8ee48d9d5399c17f1d72b0c32",
+          "syncedAt": "2026-05-01T06:10:24.296Z"
+        },
+        "supabase": {
+          "commitSha": "f951c6ef531d3e6a16799a02bc19b049c14f9c68",
+          "syncedAt": "2026-05-01T06:10:24.655Z"
         }
       }
     },
     "claude-code": {
       "repoUrl": "https://github.com/anthropics/claude-code.git",
-      "lastCommit": "7e936457e4e3899460b2be2f2b9b9f0b0174e859",
+      "lastCommit": "5bf19945e4e9e38d298ddc2befd5c30a7d504fb8",
       "plugins": {
         "agent-sdk-dev": {
           "commitSha": "cabd74fa9e2613b4f3fe19900862fe273c79f443",
@@ -532,7 +540,7 @@
     },
     "cursor": {
       "repoUrl": "https://github.com/cursor/plugins.git",
-      "lastCommit": "7ec1de4230b1f5086daec529363cadb9108df55d",
+      "lastCommit": "7dd9fea1e0e9bb88fcf059f5e77eb5a9d31bef1e",
       "plugins": {
         "agent-compatibility": {
           "commitSha": "f006be721cf80886bfa0055872cd8bc39ec4cd02",
@@ -551,8 +559,8 @@
           "syncedAt": "2026-04-27T05:36:14.636Z"
         },
         "cursor-team-kit": {
-          "commitSha": "469d9f7d7885e0f6dcaa46ad66228b8a150380c0",
-          "syncedAt": "2026-04-27T05:36:14.658Z"
+          "commitSha": "d018dc4d9161cc5bfa6be12fcf330445970a6b7c",
+          "syncedAt": "2026-05-01T06:10:26.808Z"
         },
         "docs-canvas": {
           "commitSha": "442ab7d08f4d629b39a6a6d9726e51442b93db4d",
@@ -569,6 +577,10 @@
         "teaching": {
           "commitSha": "2cf89ae30b83b8e2ae2361ea457169bdc5bc74d8",
           "syncedAt": "2026-04-27T05:36:14.719Z"
+        },
+        "cursor-sdk": {
+          "commitSha": "61d06b7bdba5654a77989f34f879193e889b74d3",
+          "syncedAt": "2026-05-01T06:10:26.790Z"
         }
       }
     },

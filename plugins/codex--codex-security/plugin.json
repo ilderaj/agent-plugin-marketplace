@@ -1,0 +1,20 @@
+{
+  "name": "codex--codex-security",
+  "version": "0.1.0",
+  "description": "Codex Security workflows for security scans, analysis, and investigation.",
+  "author": {
+    "name": "OpenAI"
+  },
+  "license": "Proprietary",
+  "homepage": "https://openai.com/index/codex-security-now-in-research-preview/",
+  "repository": "https://github.com/openai/plugins",
+  "keywords": [
+    "security",
+    "code-review",
+    "diff-review",
+    "appsec",
+    "threat-modeling"
+  ],
+  "skills": "./skills/",
+  "strict": false
+}

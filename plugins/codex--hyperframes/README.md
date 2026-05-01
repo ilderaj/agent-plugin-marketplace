@@ -12,7 +12,7 @@
 - Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: hyperframes, website-to-hyperframes, hyperframes-cli, hyperframes-registry, gsap
+- Skills: gsap, hyperframes-registry, hyperframes, website-to-hyperframes, hyperframes-cli
 - Agents: none
 - Hooks: none
 - MCP: none
