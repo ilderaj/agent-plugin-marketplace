@@ -14,7 +14,7 @@
     "build",
     "mcp",
     "submissions",
-    "tool-hints"
+    "app-review"
   ],
   "skills": "./skills/",
   "strict": false

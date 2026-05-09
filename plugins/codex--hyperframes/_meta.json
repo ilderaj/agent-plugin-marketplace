@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/hyperframes",
-    "commitSha": "b066e4a04761672ce316491d2d62b10ad27a6b15",
+    "commitSha": "7c7fa1d5d33c152b996e48059f657177db67fa3c",
     "version": "0.1.0"
   },
   "_compatibility": {

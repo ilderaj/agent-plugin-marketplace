@@ -1,0 +1,26 @@
+{
+  "displayName": "Supabase (from Codex)",
+  "_source": {
+    "platform": "codex",
+    "upstream": "https://github.com/openai/plugins.git",
+    "pluginPath": "plugins/supabase",
+    "commitSha": "f951c6ef531d3e6a16799a02bc19b049c14f9c68",
+    "version": "0.1.4"
+  },
+  "_compatibility": {
+    "overall": "partial",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible",
+      ".app.json: unsupported — App connectors are Codex-specific and not supported on other platforms"
+    ],
+    "warnings": [
+      "App connector will be dropped when converting to other platforms"
+    ],
+    "droppedComponents": [
+      {
+        "type": "app",
+        "reason": "App connectors are Codex-specific and not supported on other platforms"
+      }
+    ]
+  }
+}

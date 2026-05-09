@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/google-drive",
-    "commitSha": "ef252645027ad549214cc15c3cd992f83abaae85",
+    "commitSha": "886026e933fcf4e5b4d15049d7baecc21a24c8fe",
     "version": "0.1.0"
   },
   "_compatibility": {

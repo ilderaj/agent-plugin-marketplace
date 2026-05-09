@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/build-web-apps",
-    "commitSha": "3366719b279424b2844a5fc9b81f5a9398d6ed6d",
+    "commitSha": "b092358b9a6abe7af8795ffb24ac5c8083bcb71c",
     "version": "0.1.0"
   },
   "_compatibility": {
