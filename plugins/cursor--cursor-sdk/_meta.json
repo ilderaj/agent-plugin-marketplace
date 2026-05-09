@@ -1,0 +1,18 @@
+{
+  "displayName": "Cursor SDK (from Cursor)",
+  "_source": {
+    "platform": "cursor",
+    "upstream": "https://github.com/cursor/plugins.git",
+    "pluginPath": "cursor-sdk",
+    "commitSha": "61d06b7bdba5654a77989f34f879193e889b74d3",
+    "version": "1.0.0"
+  },
+  "_compatibility": {
+    "overall": "full",
+    "notes": [
+      "Skill: full — Skills are cross-platform compatible"
+    ],
+    "warnings": [],
+    "droppedComponents": []
+  }
+}

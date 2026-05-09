@@ -13,7 +13,7 @@
 - Agent: partial — Codex YAML agents are converted to markdown with frontmatter (name, description) and body (developer_instructions). Fields sandbox_mode and nickname_candidates have no VS Code equivalent and are omitted.
 
 ## Components
-- Skills: react-best-practices, supabase-best-practices, stripe-best-practices, shadcn-best-practices, frontend-app-builder
+- Skills: supabase-best-practices, shadcn-best-practices, react-best-practices, frontend-app-builder, stripe-best-practices
 - Agents: openai.md
 - Hooks: none
 - MCP: none

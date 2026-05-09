@@ -12,7 +12,7 @@
 - Skill: full — Skills are cross-platform compatible
 
 ## Components
-- Skills: build-chatgpt-app, mcp-tool-hint-justifications
+- Skills: chatgpt-app-submission, build-chatgpt-app
 - Agents: none
 - Hooks: none
 - MCP: none

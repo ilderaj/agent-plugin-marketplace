@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/chatgpt-apps",
-    "commitSha": "7f12b10b793e470da287827f8fdd5488923bcc2c",
+    "commitSha": "4ce8a86b1a23c9b674008a4082c8bc31bbc7a618",
     "version": "0.1.0"
   },
   "_compatibility": {

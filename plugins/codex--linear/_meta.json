@@ -4,7 +4,7 @@
     "platform": "codex",
     "upstream": "https://github.com/openai/plugins.git",
     "pluginPath": "plugins/linear",
-    "commitSha": "27651a43bf55185d924f7a1fc49043a0a8be65a0",
+    "commitSha": "56bcc02edd95018fa313cc82896ddd342898a55f",
     "version": "0.0.0"
   },
   "_compatibility": {

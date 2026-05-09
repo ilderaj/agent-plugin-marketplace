@@ -4,8 +4,8 @@
     "platform": "cursor",
     "upstream": "https://github.com/cursor/plugins.git",
     "pluginPath": "cursor-team-kit",
-    "commitSha": "469d9f7d7885e0f6dcaa46ad66228b8a150380c0",
-    "version": "1.0.0"
+    "commitSha": "d018dc4d9161cc5bfa6be12fcf330445970a6b7c",
+    "version": "1.1.0"
   },
   "_compatibility": {
     "overall": "partial",

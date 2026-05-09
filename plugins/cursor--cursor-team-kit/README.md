@@ -5,7 +5,7 @@
 - Plugin ID: cursor--cursor-team-kit
 - Upstream: https://github.com/cursor/plugins.git
 - Source Path: cursor-team-kit
-- Version: 1.0.0
+- Version: 1.1.0
 
 ## Compatibility Summary
 - Overall: partial
@@ -15,7 +15,7 @@
 - Warning: Cursor .mdc rules were converted to VS Code .instructions.md files.
 
 ## Components
-- Skills: get-pr-comments, new-branch-and-pr, weekly-review, what-did-i-get-done, loop-on-ci, fix-merge-conflicts, review-and-ship, run-smoke-tests, deslop, fix-ci, check-compiler-errors, pr-review-canvas
+- Skills: deslop, make-pr-easy-to-review, weekly-review, control-ui, review-and-ship, new-branch-and-pr, what-did-i-get-done, fix-ci, loop-on-ci, verify-this, workflow-from-chats, get-pr-comments, run-smoke-tests, fix-merge-conflicts, check-compiler-errors, control-cli, pr-review-canvas
 - Agents: ci-watcher.md
 - Hooks: none
 - MCP: none
